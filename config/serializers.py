@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 
+
 class CakesSerializer(serializers.Modelserializer):
     class Meta:
         model = Item
@@ -8,7 +9,7 @@ class CakesSerializer(serializers.Modelserializer):
                   'icing', 'quantity')
 
 
-class pastriesSerializer(serializers.Modelserialzer):
+class PasterySerializer(serializers.Modelserialzer):
     class Meta:
         model = Item
         fields = ('name', 'quantity')
@@ -44,7 +45,7 @@ class FillingsSerializer(serializers.Modelserialzer):
         fields = ('type', 'price')
 
 
-class dToppingsSerializer(serializers.Modelserialzer):
+class DougnutSerializer(serializers.Modelserialzer):
     class Meta:
-        model = dougnutTopping
+        model = DougnutTopping
         fields = ('type', 'price', 'image')
