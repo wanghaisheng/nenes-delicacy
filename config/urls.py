@@ -5,12 +5,14 @@ from rest_framework import routers
 from . import views
 
 router = routers.DefaulRouter()
-router.register(r'cakes', views.CakeView, 'cakes')
-router.register(r'snacks', views.SnackView, 'snacks')
-router.register(r'chops', views.ChopsView, 'chops')
-router.register(r'flavours', views.ChopsView, 'chops')
-router.register(r'icings', views.ChopsView, 'chops')
-router.register(r'toppings', views.ChopsView, 'chops')
+router.register(r'cakes', views.CakeView)
+router.register(r'pastery', views.PasteryView)
+router.register(r'savoury', views.SavouryView)
+router.register(r'glaze', views.GlazeView)
+router.register(r'icings', views.IcingsView)
+router.register(r'toppings', views.ToppingsView)
+router.register(r'fillings', views.ToppingsView)
+
 
 urlpatterns = [
     path('api/', include(router.urls)),

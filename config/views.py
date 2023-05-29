@@ -5,23 +5,18 @@ from .models import *
 # Create your views here.
 
 class CakeView(viewsets.Modelviewset):
-   serializer_class = CakesSerializer
-   queryset = Item.objects.filter(isCake=True)
+   serializer_class = ItemsSerializer
+   queryset = Item.objects.filter(cake=True)
 
 
-class SnackView(viewsets.Modelviewset):
-   serializer_class = PasterySerializer
-   queryset = Item.objects.filter(isSnacks=True)
+class PasteryView(viewsets.Modelviewset):
+   serializer_class = ItemsSerializer
+   queryset = Item.objects.filter(pastery=True)
 
 
-class ChopsView(viewsets.Modelviewset):
-   serializer_class = PasterySerializer
-   queryset = Item.objects.filter(isChops=True)
-
-
-class FlavoursView(viewsets.Modelviewset):
-   serializer_class = FlavoursSerializer
-   queryset = Flavour.objects.all()
+class SavouryView(viewsets.Modelviewset):
+   serializer_class = ItemsSerializer
+   queryset = Item.objects.filter(savoury=True)
    
 
 class IcingsView(viewsets.Modelviewset):
@@ -34,9 +29,9 @@ class ToppingsView(viewsets.Modelviewset):
    queryset = Topping.objects.all()
 
 
-class DougnutView(viewsets.Modelviewset):
-   serializer_class = DougnutSerializer
-   queryset = DougnutTopping.objects.all()
+class GlazeView(viewsets.Modelviewset):
+   serializer_class = GlazeSerializer
+   queryset = Glaze.objects.all()
 
 class FillingsView(viewsets.Modelviewset):
    serializer_class = FillingsSerializer
