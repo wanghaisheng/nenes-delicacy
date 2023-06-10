@@ -1,0 +1,64 @@
+@use '../../index.scss';
+
+section.product {
+    display: flex;
+    font-family: montserrat alternates, 'san-serif';
+
+    &>div:first-child {
+        flex-basis: 50%;
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        justify-content: center;
+        padding: 15px 40px 0 15px;
+        background: #bae8d4;
+
+        ul {
+            list-style: none;
+            position: absolute;
+            top: 0;
+            padding:0 ;
+            display: flex;
+            gap: 10px;
+
+            li:nth-of-type(2) {
+                display: flex;
+                align-items: center;
+            }
+
+            li {
+                text-decoration: underline;
+                font-size: .85em;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+        }
+
+        .banner-text {
+            &>h1 {
+                margin: .5em 0 0 0;
+                font-weight: bold;
+                font-size: 1.8em;
+            } 
+
+            div {
+                font-size: 1.1em;
+                padding: 15px 0;
+            }
+        }
+    }
+
+    &>div:nth-child(2) {
+        flex-basis: 50%;
+        min-height: 100px;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+            height: 100%;
+        }
+    }
+}

@@ -1,0 +1,256 @@
+section.main {
+   
+    .wrapper {
+        background: url('images/cupcakes-with-pink-icing-pink-drink.jpg');
+        background-size: cover;
+        justify-content: flex-end;
+        align-items: center;
+        display: flex;
+        background-position: left;
+        position: relative;
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100%;
+    
+        &>div:first-child {
+            position: relative;
+            width: 440px;
+            margin-right: 80px;
+            margin-top: 30px;
+    
+            &>div {
+                position: absolute;
+                text-align: center;
+                margin: auto 0;
+                top: 50%;
+                left: 0;
+                right: 0;
+                margin: auto;
+                transform: translateY(-50%);
+                padding: 0 25px;
+    
+                h1 {
+                    font-size: 2.1em;
+                    font-weight: 600;
+                    margin-bottom: 1em;
+                }
+
+                p {
+                    font-size: 1.3em;
+                }
+    
+                h1, p{
+                    color: rgb(30, 15, 6);
+                }
+
+                .tab-view {
+                    display: block;
+
+                    img {
+                        max-width: 100px;
+                    }
+                }
+            }
+    
+            svg {
+                width: 100%;
+                color: #ffffff5c;
+            }
+        }
+    }
+
+    &>div:nth-child(2) {
+        text-align: center;
+        // background: rgba(243, 255, 234, 0.79);
+        margin-top: 2em;
+        padding: 20px 0 50px;
+
+        h1 {
+            font-weight: 600;
+            font-size: 2.3em;
+            margin-bottom: 8px;
+        }
+
+        p {
+            padding: 0 10%;
+            font-size: 1.2em;
+            margin: 0 auto;
+        }
+
+        .products {
+            display: flex;
+            padding: 0 20px 0;
+            margin-top: 2em;
+            scrollbar-width: none;
+            position: relative;
+            overflow-x: auto;
+            gap: 15px;
+
+            &>ul {
+                
+                font-size: 2.2em;
+                right: 20px;
+                padding: 0;
+                display: flex;
+                gap: 10px;
+                list-style: none;
+                margin: 0;
+            }
+
+            &>div {
+                width: 350px;
+                flex-shrink: 0;
+                text-align: center;
+                overflow: hidden;
+                position: relative;
+                border-radius: 10px;
+                // border-top-left-radius: 20px;
+                // border-bottom-right-radius: 40px;
+                cursor: pointer;
+                aspect-ratio: 15/12;
+    
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: .3s;
+                }
+
+                div {
+                    position: absolute;
+                    top: 50%;
+                    width: 100%;
+                    z-index: 2;
+
+                    p {
+                        color: white;
+                        font-weight: 400;
+                        font-size: 1.4em;
+                    }
+                }
+            }
+
+            &>div::after {
+                content: "";
+                width: inherit;
+                position: absolute;
+                top: 0;
+                display: block;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.32);
+            }
+
+            &>div:hover {
+
+                img {
+                    transform: scale(1.1);
+                }
+            }
+        } 
+
+        .products::-webkit-scrollbar {
+            display: none;
+          }
+    }
+}
+
+@media (max-width: 1023px) {
+    section.main .wrapper {
+            justify-content: center;
+        
+            &>div:first-child {
+                margin: 0 auto;
+           }
+        }
+    }
+
+@media (min-height: 1024px) and (max-height: 1400px) {
+    section.main .wrapper > div:first-child {
+
+        width: 590px;
+       
+        &>div {
+
+            h1 {
+                font-size: 3em;
+            }
+
+            p {
+                font-size: 1.8em;
+            }
+        }
+    }
+
+    // section.main > div:nth-child(2) {
+        
+    //     p {
+    //         max-width: 95vw;
+    //     }
+
+    //     .products {
+    //         flex-direction: row;
+    //     }
+    // } 
+}
+
+@media (max-width: 767px) {
+    section.main .wrapper > div:first-child {
+        width: 300px;
+
+        &>div {
+            .tab-view {
+                display: none;
+            }
+        }
+    }
+
+    section.main > div:nth-child(2) {
+
+        .products > div{
+            width: 280px;
+        }
+
+        .products > ul{
+            display: none;
+        }
+
+        p {
+            padding: 0 5%;
+
+            span {
+            display: none;
+            }
+        }
+    }
+}
+
+
+@media (max-width: 280px) {
+
+    section.main  {
+
+        .wrapper > div:first-child {
+            width: 250px;
+
+            &>div {
+
+                h1 {
+                    font-size: 1.5em;
+                }
+
+                p {
+                    font-size: 1.1em;
+                }
+            }
+
+        }
+
+        &>div:nth-child(2) {
+            top: -50px; 
+
+            .products > div {
+                width: 200px;
+            }
+        }
+    }
+}
