@@ -4,35 +4,32 @@ from rest_framework import viewsets
 from .models import *
 # Create your views here.
 
-class CakeView(viewsets.Modelviewset):
+class ItemView(viewsets.ModelViewSet):
    serializer_class = ItemsSerializer
-   queryset = Item.objects.filter(cake=True)
 
-
-class PasteryView(viewsets.Modelviewset):
-   serializer_class = ItemsSerializer
-   queryset = Item.objects.filter(pastery=True)
-
-
-class SavouryView(viewsets.Modelviewset):
-   serializer_class = ItemsSerializer
-   queryset = Item.objects.filter(savoury=True)
+   def get_queryset(self):
+      queryset = Item.objects.all()
+      print(queryset[0].type)
+      type = self.request.query_params.get('type')
+      if type is not None:
+         queryset = queryset.filter(type=type)
+      return queryset
    
 
-class IcingsView(viewsets.Modelviewset):
+class IcingsView(viewsets.ModelViewSet):
    serializer_class = IcingsSerializer
    queryset = Icing.objects.all()
 
 
-class ToppingsView(viewsets.Modelviewset):
+class ToppingsView(viewsets.ModelViewSet):
    serializer_class = ToppingsSerializer
    queryset = Topping.objects.all()
 
 
-class GlazeView(viewsets.Modelviewset):
+class GlazeView(viewsets.ModelViewSet):
    serializer_class = GlazeSerializer
    queryset = Glaze.objects.all()
 
-class FillingsView(viewsets.Modelviewset):
+class FillingsView(viewsets.ModelViewSet):
    serializer_class = FillingsSerializer
    queryset = Topping.objects.all()

@@ -1,13 +1,22 @@
 import './main.scss';
 import { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { products } from '../utils/projects'
 import Footer from '../footer/footer'
 
 const Main = () => {
-
     const slider = useRef()
-    useEffect(() => {
-        
-    }, [])
+
+    const slide = (el) => {
+        const scrollLength = (window.innerWidth / 385) * 385
+
+        if (el.target.name.includes('forward')) {
+            slider.current.scrollBy({left: scrollLength, behavior: "smooth"})
+
+        } else {
+            slider.current.scrollBy({left: -scrollLength, behavior: "smooth"})
+        }
+    }
 
     return ( 
         <>
@@ -24,7 +33,7 @@ const Main = () => {
                                 bite transports you to a realm of pure bliss.
                             </p>
                             <div className='tab-view'>
-                                <img src="images/noun-decorative-line-4253413.png" alt="line break" srcset="" />
+                                <img src="images/noun-decorative-line-4253413.png" alt="line break" srcSet="" />
                                 <p>whether you're celebrating a special occasion or simply craving a moment of indulgence, let us be your trusted companion on this journey of sweet ecstasy</p>
                             </div>
                         </div>
@@ -32,32 +41,26 @@ const Main = () => {
             
                 </div>
                 <div>
-                    <h1>Our projects</h1>
+                    <h1>Our products</h1>
                     <p>
                         Get ready to embark on a gastronomic journey with us as we unlock a world of flavors <br/>
                         <span className='laptop-view'>and discover the true artistry behind the finest food products</span>.
                     </p>
-                    <div className='products' ref={slider}>
-                       
-                        <div>
-                            <img src="images/cake.jpg" alt="vanilla cake" />
-                            <div><p>Cakes</p></div>
-                        </div>
-                        <div>
-                            <img src="images/sugar glazed doughnut.jpg" alt="dougnut stuffed with nutella" />
-                            <div><p>Pastries</p></div>
-                        </div>
-                        <div>
-                            <img src="images/chops.png" alt="small chops" />
-                            <div><p>Finger food</p></div>
-                        </div>
-                        <div>
-                            <img src="images/chocolate-chip-muffin.jpg" alt="small chops" />
-                            <div><p>Cup cakes</p></div>
-                        </div>
-                        <div>
-                            <img src="images/chocolate-chip-cookies.jpg" alt="small chops" />
-                            <div><p>Cookies</p></div>
+                    <div>
+                        <ul>
+                            <li onClick={(el) => slide(el)}><ion-icon name="chevron-back-circle-sharp"></ion-icon></li>
+                            <li onClick={(el) => slide(el)}><ion-icon name="chevron-forward-circle-sharp"></ion-icon></li>
+                        </ul>               
+                        <div ref={slider} className="products">
+                            {products.map(product => (
+
+                            <Link to={`products/${product.parameter}`}>
+                                <div key={product.title}>
+                                    <img src={product.image} alt={product.title} />
+                                    <div><p>{product.title}</p></div>
+                                </div>
+                            </Link>
+                            ))}
                         </div>
                     </div>
                 </div>

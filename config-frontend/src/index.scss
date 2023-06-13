@@ -1,11 +1,10 @@
-$primary-color: rgb(170, 216, 237);
-
-
+$black: #252525;
+$dark-pink: #880d3e;
+$white: #fefefe;
 
 :root {
   font-family: bentham, sans-serif;
   color-scheme: light dark;
-  overflow-x: hidden;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -20,4 +19,6 @@ $primary-color: rgb(170, 216, 237);
 
 body {
   margin: 0;
+  background: $white;
+  overflow-x: hidden;
 }

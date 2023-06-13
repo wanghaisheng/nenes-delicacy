@@ -11,8 +11,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/products" element={<Product />} />
+        <Route path="/" element={<Main />}/>
+        <Route path="/products/:type" element={<Product />}/>
       </Routes>
     </Router>
   </React.StrictMode>

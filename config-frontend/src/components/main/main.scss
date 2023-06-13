@@ -1,3 +1,5 @@
+@use '../../index.scss';
+
 section.main {
    
     .wrapper {
@@ -61,26 +63,44 @@ section.main {
 
     &>div:nth-child(2) {
         text-align: center;
-        // background: rgba(243, 255, 234, 0.79);
-        margin-top: 2em;
+        margin-top: 2.5em;
         padding: 20px 0 50px;
 
         h1 {
             font-weight: 600;
-            font-size: 2.3em;
+            font-size: 2.5em;
             margin-bottom: 8px;
         }
 
         p {
-            padding: 0 10%;
-            font-size: 1.2em;
+            padding: 0 5%;
+            font-size: 1.4em;
             margin: 0 auto;
+        }
+
+        &>div:first-of-type ul {
+            list-style: none;
+            display: flex;
+            padding: 0 .2em 0 0;
+            justify-content: flex-end;
+            margin: .5em 0 .2em;
+            gap: 20px;
+            font-size: 2.25em;
+
+            li {
+                transition: 0.30s;
+                color: index.$black;
+            }
+
+            li:hover {
+                cursor: pointer;
+                color: rgba(0, 0, 0, 0.774);
+            }
         }
 
         .products {
             display: flex;
             padding: 0 20px 0;
-            margin-top: 2em;
             scrollbar-width: none;
             position: relative;
             overflow-x: auto;
@@ -97,8 +117,8 @@ section.main {
                 margin: 0;
             }
 
-            &>div {
-                width: 350px;
+            a>div {
+                width: 385px;
                 flex-shrink: 0;
                 text-align: center;
                 overflow: hidden;
@@ -206,20 +226,26 @@ section.main {
 
     section.main > div:nth-child(2) {
 
-        .products > div{
-            width: 280px;
-        }
-
-        .products > ul{
+        p span {
             display: none;
         }
 
-        p {
-            padding: 0 5%;
+        &>div:first-of-type {
 
-            span {
-            display: none;
+            ul {
+                display: none;
             }
+
+            .products {
+
+                div {
+                    width: 280px;
+                }
+    
+                ul{
+                    display: none;
+                }
+            }  
         }
     }
 }

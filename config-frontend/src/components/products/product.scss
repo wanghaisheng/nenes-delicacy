@@ -1,23 +1,22 @@
 @use '../../index.scss';
 
 section.product {
-    display: flex;
-    font-family: montserrat alternates, 'san-serif';
-
+    
     &>div:first-child {
-        flex-basis: 50%;
         display: flex;
-        position: relative;
-        flex-direction: column;
-        justify-content: center;
-        padding: 15px 40px 0 15px;
-        background: #bae8d4;
+
+        &>div:first-child {
+            flex-basis: 56%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 15px 40px 15px 20px;
+            background: #bae8d4;
 
         ul {
             list-style: none;
-            position: absolute;
-            top: 0;
             padding:0 ;
+            margin-top: 0;
             display: flex;
             gap: 10px;
 
@@ -28,7 +27,6 @@ section.product {
 
             li {
                 text-decoration: underline;
-                font-size: .85em;
             }
 
             a {
@@ -41,24 +39,63 @@ section.product {
             &>h1 {
                 margin: .5em 0 0 0;
                 font-weight: bold;
-                font-size: 1.8em;
+                font-size: 2.5em;
             } 
 
             div {
-                font-size: 1.1em;
+                font-size: 1.2em;
                 padding: 15px 0;
             }
         }
     }
 
     &>div:nth-child(2) {
-        flex-basis: 50%;
+        flex-basis: 44%;
         min-height: 100px;
 
         img {
             width: 100%;
             object-fit: cover;
             height: 100%;
+        }
+    }
+
+    }
+
+    .products {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 4em;
+        
+        &>div {
+            cursor: pointer;
+
+            .image-wrapper {
+                max-width: 350px;
+                height: 300px;
+                border-radius: 5px;
+                overflow: hidden;
+                aspect-ratio: 16/9;
+            }
+
+            img {
+                width: 100%;
+                border-radius: inherit;
+                transition: 0.30s;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            img:hover {
+                transform: scale(1.1)
+            }
+        }
+
+        p {
+            font-size: 1.5em;
+            margin: .3em 0 0;
         }
     }
 }

@@ -1,34 +1,41 @@
 @use '../../index.scss';
 
-header {
+.navbar, .onScroll {
     width: 100vw;
-    padding: 15px 4% 15px 20px;
+    padding: 15px 3% 15px 20px;
     display: flex;
+    transition: 0.3s ease-in 0.2s;
     justify-content: space-between;
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 4;
-    background: white;
+    color: index.$dark-pink;
     align-items: center;
 
-    &>p {
+    &>a {
         font-family: dancing script;
-        font-size: 1.5em;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        font-size: 2em;
         font-weight: 700;
-        margin: 0;
+
+        p {
+            margin: 0;
+        }
     }
    
     &>div {
         font-size: 1.6em;
         display: flex;
         position: relative;
-        gap: 25px;
+        gap: 30px;
 
         .user {
             display: flex;
             cursor: pointer;
             position: relative;
-            gap: 5px;
+            gap: 1px;
             align-items: center;
 
             ion-icon:first-child {
@@ -84,11 +91,15 @@ header {
     } 
 }
 
+.onScroll {
+    background: index.$white;
+}
+
 @media (min-height: 1024px) and (max-height: 1400px) {
 
-   header {
-    &>p {
-        font-size: 2.4em;
+   .navbar, .onScroll {
+    &>a p {
+        font-size: 1.4em;
     }
 
     &>div {
@@ -98,7 +109,7 @@ header {
 }
 
 @media (max-width: 767px) {
-    header {
+    .navbar, .onScroll {
         position: fixed;
     }
 }
