@@ -12,9 +12,11 @@ const Footer = () => {
         <footer>
             <div  className='footer'>
                 <div>
-                    <h1>KEEP IN TOUCH!</h1>
-                    <p>Have any questions or suggestions? <br/>
-                       reach out to us on any of our social media handles.</p>
+                    <h1>Have any questions or suggestions?</h1>
+                    <p> Reach out to us on any of our social media handles. <br/>
+                        and we'll get back to you as soon as possible
+                    </p>
+                    
 
                     <ul>
                         <a href=""><li><ion-icon name="logo-facebook"></ion-icon></li></a>
@@ -22,28 +24,68 @@ const Footer = () => {
                         <a href=""><li><ion-icon name="logo-twitter"></ion-icon></li></a>
                     </ul>
 
-                    <p>and we'll get back to you as soon as possible</p>
-                </div>
-
-                <div className='logo'>
-                    <img src="images/logo.png" alt="nene's delicacy logo" />
+                    <p>Don't forget to follow us too!!</p>
                 </div>
 
                 <div>
-                    <p>Kindly note that we accept only the following debit and credit cards</p>
+                    <h1>Our menu</h1>
                     <ul>
-                        <li><FontAwesomeIcon icon="fa-brands fa-cc-mastercard" /></li>
-                        <li><FontAwesomeIcon icon="fa-brands fa-cc-visa" /></li>
+                        <a href="">
+                            <li>Cakes</li>
+                        </a>
+                        <a href="">
+                            <li>Cup cakes</li>
+                        </a>
+                        <a href="">
+                            <li>Pasteries</li>
+                        </a>
+                        <a href="">
+                            <li>Cookies</li>
+                        </a>
+                        <a href="">
+                            <li>Finger food</li>
+                        </a>
                     </ul>
+                </div>
 
-                    <div>
-                        <p>TERMS OF SERVICE</p>
-                        <p>PRIVACY POLICY</p>
-                    </div>
+                <div>
+                    <h1>Learn</h1>
+                    <ul>
+                        <a href="">
+                            <li>What we stand for</li>
+                        </a>
+
+                        <a href="">
+                            <li>Community</li>
+                        </a>
+                        
+                        <a href="">
+                            <li>Contact Us</li>
+                        </a>
+                        <a href="">
+                            <li>About us</li>
+                        </a>
+                    </ul>
+                </div>
+
+                <div>
+                    <h1>How can we help</h1>
+                    <ul>
+                        <a href="">
+                            <li>Privacy Policy</li>
+                        </a>
+                        <a href="">
+                            <li>Accessibility</li>
+                        </a>
+        
+                        <a href="">
+                            <li>Terms & conditions</li>
+                        </a>
+                    </ul>
                 </div>
             </div>
 
-            <div>&#169; NENE'S DELICACY, INC</div>
+            <div>NENE'S DELICACY &#169; 2022, ALL RIGHTS RESERVED</div>
         </footer>
      );
 }

@@ -1,21 +1,15 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios'
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import './product.scss'
 
 const Product = () => {
-    const [products, setProduct] = useState([]);
+
 
     useEffect(() => {
         document.title = "Nene's Delicacy | Cakes";
-
-        axios.get('http://127.0.0.1:8000/api/products?type=FF')
-        .then(response => {
-            setProduct(response.data)
-        })
-
-        console.log(products)
-
     }, [])
+    
+    const products = useSelector(state => state.fetchAPI)
 
     return (
         <section className='product'>

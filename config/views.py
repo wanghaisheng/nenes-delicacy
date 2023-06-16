@@ -9,7 +9,7 @@ class ItemView(viewsets.ModelViewSet):
 
    def get_queryset(self):
       queryset = Item.objects.all()
-      print(queryset[0].type)
+
       type = self.request.query_params.get('type')
       if type is not None:
          queryset = queryset.filter(type=type)

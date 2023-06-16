@@ -1,11 +1,14 @@
 import './main.scss';
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
+import { getProducts } from '../../actions';
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { products } from '../utils/projects'
+import { products } from '../../utils/products'
 import Footer from '../footer/footer'
 
 const Main = () => {
     const slider = useRef()
+    const dispatch = useDispatch()
 
     const slide = (el) => {
         const scrollLength = (window.innerWidth / 385) * 385
@@ -53,15 +56,32 @@ const Main = () => {
                         </ul>               
                         <div ref={slider} className="products">
                             {products.map(product => (
-
-                            <Link to={`products/${product.parameter}`}>
-                                <div key={product.title}>
+                            <Link to={product.parameter} key={product.title}>
+                                <div onClick={() => dispatch(getProducts(product.parameter))}>
                                     <img src={product.image} alt={product.title} />
                                     <div><p>{product.title}</p></div>
                                 </div>
                             </Link>
                             ))}
                         </div>
+                    </div>
+                </div>
+
+                <div className="news-letter">
+                    <div>
+                        <h1>Join our Newsletter</h1>
+                        <p>Sign up to receive exclusive offers and be the first to know about seasonal specials, brand new treats, and 
+                            enjoy 10% off on your birthday when you share the date with us!
+                        </p>
+
+                        <form action="">
+                            <div>
+                                <input type="email" name="" id="" placeholder="ENTER EMAIL ADDRESS"/>
+                                <button>
+                                    <ion-icon name="arrow-forward-outline"></ion-icon>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </section>
