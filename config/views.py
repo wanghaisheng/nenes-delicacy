@@ -1,35 +1,35 @@
-# from django.shortcuts import render
-from .serializers import *
 from rest_framework import viewsets
-from .models import *
-# Create your views here.
-
-class ItemView(viewsets.ModelViewSet):
-   serializer_class = ItemsSerializer
-
-   def get_queryset(self):
-      queryset = Item.objects.all()
-      print(queryset[0].type)
-      type = self.request.query_params.get('type')
-      if type is not None:
-         queryset = queryset.filter(type=type)
-      return queryset
-   
-
-class IcingsView(viewsets.ModelViewSet):
-   serializer_class = IcingsSerializer
-   queryset = Icing.objects.all()
+from django.contrib.auth.models import User
+from .models import Cake, Topping, Order, CustomerProfile
+from .serializers import (
+    ToppingSerializer,
+    CakeSerializer,
+    UserSerializer,
+    OrderSerializer,
+    CustomerProfileSerializer,
+)
 
 
-class ToppingsView(viewsets.ModelViewSet):
-   serializer_class = ToppingsSerializer
-   queryset = Topping.objects.all()
+class ToppingViewSet(viewsets.ModelViewSet):
+    queryset = Topping.objects.all()
+    serializer_class = ToppingSerializer
 
 
-class GlazeView(viewsets.ModelViewSet):
-   serializer_class = GlazeSerializer
-   queryset = Glaze.objects.all()
+class CakeViewSet(viewsets.ModelViewSet):
+    queryset = Cake.objects.all()
+    serializer_class = CakeSerializer
 
-class FillingsView(viewsets.ModelViewSet):
-   serializer_class = FillingsSerializer
-   queryset = Topping.objects.all()
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class CustomerProfileViewSet(viewsets.ModelViewSet):
+    queryset = CustomerProfile.objects.all()
+    serializer_class = CustomerProfileSerializer

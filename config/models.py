@@ -1,58 +1,62 @@
 from django.db import models
-
-# Create your models here.
-
-class Size(models.Model):
-    type = models.CharField(max_length=100)
-    price  = models.DecimalField(max_digits=20, decimal_places=2)
-
-    def __str__(self) -> str:
-        return self.type
-
-
-class Icing(models.Model):
-    type = models.CharField(max_length=100)
-    price  = models.DecimalField(max_digits=20, decimal_places=2)
-
-    def __str__(self) -> str:
-        return self.type
-
+from django.contrib.auth.models import User
 
 class Topping(models.Model):
     name = models.CharField(max_length=100)
-    price  = models.DecimalField(max_digits=20, decimal_places=2)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return self.name
 
-class Filling(models.Model):
-    type = models.CharField(max_length=100)
-    price  = models.DecimalField(max_digits=20, decimal_places=2, null=True)
-
-    def __str__(self) -> str:
-        return self.type
-
-
-class Glaze(models.Model):
-    type = models.CharField(max_length=100)
-
-    def __str__(self) -> str:
-        return self.type
-
-
-class Item(models.Model):
-
-    TYPES_IN_CHOICES = [
-        ('cake', 'cake'),
-        ('finger-food', 'finger food'),
-        ('pasteries', 'pasteries'),
-        ('cookies', 'cookies'),
-        ('cupcakes', 'cupcakes')
+class Cake(models.Model):
+    FLAVOR_CHOICES = [
+        ('chocolate', 'Chocolate'),
+        ('vanilla', 'Vanilla'),
+        ('strawberry', 'Strawberry'),
+        ('red velvet', 'Red Velvet'),
+        
     ]
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images/', blank=True)
-    price  = models.DecimalField(max_digits=20, decimal_places=2, null=True)
-    type = models.CharField(max_length=12, choices=TYPES_IN_CHOICES, null=True)
 
-    def __str__(self) -> str:
+    SIZE_CHOICES = [
+        ('small', 'Small'),
+        ('medium', 'Medium'),
+        ('large', 'Large'),
+    ]
+
+
+
+    name = models.CharField(max_length=100)
+    flavor = models.CharField(max_length=20, choices=FLAVOR_CHOICES)
+    size = models.CharField(max_length=20, choices=SIZE_CHOICES)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    toppings = models.ManyToManyField(Topping, blank=True)
+
+    def __str__(self):
         return self.name
+
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+
+    cake = models.ForeignKey(Cake, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customization = models.TextField(blank=True)
+    delivery_date = models.DateField()
+    delivery_time = models.TimeField()
+    delivery_address = models.CharField(max_length=200)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+
+    def __str__(self):
+        return f"{self.cake.name} - {self.customer.username}"
+
+
+class CustomerProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20)
+    address = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.user.username
