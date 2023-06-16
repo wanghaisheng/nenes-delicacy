@@ -29,6 +29,7 @@ class Cake(models.Model):
     size = models.CharField(max_length=20, choices=SIZE_CHOICES)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     toppings = models.ManyToManyField(Topping, blank=True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
@@ -48,9 +49,11 @@ class Order(models.Model):
     delivery_time = models.TimeField()
     delivery_address = models.CharField(max_length=200)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    quantity = models.IntegerField(default=4)
 
     def __str__(self):
         return f"{self.cake.name} - {self.customer.username}"
+
 
 
 class CustomerProfile(models.Model):
