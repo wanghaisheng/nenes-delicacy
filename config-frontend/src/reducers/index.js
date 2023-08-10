@@ -1,6 +1,7 @@
-import fetchAPI from './fetch';
+import { getBlurred, cartLength } from "./util"
 import { combineReducers } from 'redux';
 
 export const allReducers = combineReducers({
-    fetchAPI,
+    getBlurred,
+    cartLength
 })

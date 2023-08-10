@@ -1,14 +1,12 @@
-import './main.scss';
-import { useRef } from 'react';
-import { getProducts } from '../../actions';
-import { useDispatch } from 'react-redux'
+import './index.scss';
+import { useEffect, useRef, useState} from 'react';
+import { get } from '../../utils';
 import { Link } from 'react-router-dom';
-import { products } from '../../utils/products'
-import Footer from '../footer/footer'
 
-const Main = () => {
+
+const Index = () => {
     const slider = useRef()
-    const dispatch = useDispatch()
+    const [products, setProducts] = useState([]);
 
     const slide = (el) => {
         const scrollLength = (window.innerWidth / 385) * 385
@@ -21,9 +19,19 @@ const Main = () => {
         }
     }
 
+
+    useEffect(() => {
+
+        get('categories').then(res => {
+            setProducts(res)
+        })
+
+    }, [])
+
+
     return ( 
-        <>
-            <section className='main'>
+        
+            <section className='index'>
                 <div className="wrapper">
                     <div>
                         <svg viewBox="0 0 532 632" fill="#ffffff99" xmlns="http://www.w3.org/2000/svg">
@@ -56,38 +64,19 @@ const Main = () => {
                         </ul>               
                         <div ref={slider} className="products">
                             {products.map(product => (
-                            <Link to={product.parameter} key={product.title}>
-                                <div onClick={() => dispatch(getProducts(product.parameter))}>
+                            <Link to={product.parameter} key={product.id}>
+                                <div>
                                     <img src={product.image} alt={product.title} />
-                                    <div><p>{product.title}</p></div>
+                                    <div><p>{product.product_name}</p></div>
                                 </div>
                             </Link>
                             ))}
                         </div>
                     </div>
                 </div>
-
-                <div className="news-letter">
-                    <div>
-                        <h1>Join our Newsletter</h1>
-                        <p>Sign up to receive exclusive offers and be the first to know about seasonal specials, brand new treats, and 
-                            enjoy 10% off on your birthday when you share the date with us!
-                        </p>
-
-                        <form action="">
-                            <div>
-                                <input type="email" name="" id="" placeholder="ENTER EMAIL ADDRESS"/>
-                                <button>
-                                    <ion-icon name="arrow-forward-outline"></ion-icon>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </section>
-            <Footer />
-        </>
+    
      );
 }
 
-export default Main;
+export default Index;

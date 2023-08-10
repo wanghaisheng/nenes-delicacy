@@ -1,17 +1,19 @@
-@use '../../index.scss';
+@use '../../main.scss';
 
 section.product {
     
     &>div:first-child {
+        height: 300px;
         display: flex;
 
         &>div:first-child {
-            flex-basis: 56%;
+            flex-basis: 50%;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
             padding: 15px 40px 15px 20px;
-            background: #bae8d4;
+            color: main.$black;
+            background: main.$green;
 
         ul {
             list-style: none;
@@ -38,64 +40,90 @@ section.product {
         .banner-text {
             &>h1 {
                 margin: .5em 0 0 0;
-                font-weight: bold;
-                font-size: 2.5em;
+                font-weight: 600;
+                font-size: 2em;
             } 
 
             div {
-                font-size: 1.2em;
+                
                 padding: 15px 0;
             }
         }
     }
 
     &>div:nth-child(2) {
-        flex-basis: 44%;
-        min-height: 100px;
+        flex-basis: 50%;
+        height: 100%;
 
         img {
             width: 100%;
+            height: inherit;
             object-fit: cover;
-            height: 100%;
         }
     }
 
     }
 
     .products {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        flex-wrap: wrap;
-        margin-top: 4em;
-        
-        &>div {
-            cursor: pointer;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 0 60px;
+        margin: 4em 0;
 
-            .image-wrapper {
-                max-width: 350px;
-                height: 300px;
-                border-radius: 5px;
-                overflow: hidden;
-                aspect-ratio: 16/9;
-            }
+        &>a {
 
-            img {
+            text-decoration: none;
+            color: main.$black;
+
+            &>div {
+                cursor: pointer;
                 width: 100%;
-                border-radius: inherit;
-                transition: 0.30s;
-                height: 100%;
-                object-fit: cover;
+    
+                .image-wrapper {
+                    min-height: 200px;
+                    border-radius: 5px;
+                    overflow: hidden;
+                    aspect-ratio: 16/9;
+                }
+    
+                img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: inherit;
+                    transition: 0.30s;
+                    height: 100%;
+                    object-fit: cover;
+                }
+    
+                img:hover {
+                    transform: scale(1.1)
+                }
+            }
+    
+            p:first-of-type {
+                font-size: 1.35em;
+                font-weight: 600;
+                margin: .3em 0 0;
+            }
+    
+            p:nth-of-type(2) {
+                overflow: hidden;
+                display: -webkit-box;
+                font-size: 0.95em;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                text-align: left;
             }
 
-            img:hover {
-                transform: scale(1.1)
-            }
-        }
+            div:last-child {
 
-        p {
-            font-size: 1.5em;
-            margin: .3em 0 0;
+                .naira {
+                    margin-left: 10px;
+                    font-size: .9em;
+                }
+            }
+
         }
     }
 }

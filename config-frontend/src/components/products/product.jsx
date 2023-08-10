@@ -1,47 +1,76 @@
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import './product.scss'
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { get } from '../../utils';
+import './product.scss';
+
 
 const Product = () => {
+    
+    const [current, setCurrent] = useState([])
+    const [products, setProducts] = useState([])
+    const param = useParams()
 
 
     useEffect(() => {
-        document.title = "Nene's Delicacy | Cakes";
-    }, [])
     
-    const products = useSelector(state => state.fetchAPI)
+        get('categories').then(res => {
+            const result = res.find(type => type.parameter === param.type)
+            setCurrent(result)
+        })
+
+    }, [])
+
+
+    useEffect(() => {
+        document.title = `${current.product_name} | Nene's Delicacy `;
+
+        get('products').then(res => {
+            console.log(res)
+            const result = res.filter(product => product.product_type.id === current.id)
+            setProducts(result)
+    
+        })
+
+    }, [current])
+
+    console.log(products)
 
     return (
         <section className='product'>
             <div>
                 <div>
                     <ul className="links">
-                        <li><a href="">Our products</a></li>
+                        <li><a href="">Home</a></li>
                         <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
-                        <li>Cakes</li>
+                        <li>{current.product_name}</li>
                     </ul>
                     <div className='banner-text'>
-                        <h1>Cakes</h1>
-                        <div>
-                            Our cakes bring layers of joy (and rich buttercream frosting) to any occasion,
-                            with flavors for every type of sweets-lover. From classics to limited-time creations,
-                            all of our beautifully decorated cakes are made the old-fashioned way: from scratch and with love.
-                        </div>
+                        <h1>{current.product_name}</h1>
+                        <div>{current.banner_text}</div>
                     </div>
                 </div>
-                <div>
-                    <img src="images/cake.jpg" alt="colorful cake" srcSet="" />
-                </div>
+                <div><img src={current.banner_image} alt="colorful cake" srcSet="" /></div>
             </div>
 
             <div className="products">
                 {products.map(product => (
-                    <div>
-                        <div className='image-wrapper'>
-                            <img src={product.image} alt="" />
+                    <Link to={product.name} key={product.id}>
+                        <div>
+                            <div className='image-wrapper'>
+                                <img src={product.image} alt="" />
+                            </div>
+                            <p>{product.name}</p>
+                            <p>{product.description}</p>
+                            <div> Starting at  
+                                <span className='naira'>
+                                    <FontAwesomeIcon icon="fa-solid fa-naira-sign" />
+                                </span>   
+                                <span>{product.unit_price}</span>
+                            </div>
                         </div>
-                        <p>{product.name}</p>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </section>

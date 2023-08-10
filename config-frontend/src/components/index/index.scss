@@ -1,6 +1,8 @@
-@use '../../index.scss';
+@use '../../main.scss';
 
-section.main {
+section.index {
+
+    width: 100vw;
    
     .wrapper {
         background: url('images/cupcakes-with-pink-icing-pink-drink.jpg');
@@ -16,10 +18,10 @@ section.main {
     
         &>div:first-child {
             position: relative;
-            width: 440px;
-            margin-right: 80px;
-            margin-top: 30px;
-    
+            width: 400px;
+            margin-right: 60px;
+            margin-top: 50px;
+
             &>div {
                 position: absolute;
                 text-align: center;
@@ -32,13 +34,13 @@ section.main {
                 padding: 0 25px;
     
                 h1 {
-                    font-size: 2.1em;
-                    font-weight: 600;
-                    margin-bottom: 1em;
+                    font-size: 1.9em;
+                    font-weight: 500;
                 }
 
                 p {
-                    font-size: 1.3em;
+                    font-size: 1.2em;
+                    margin: 0;
                 }
     
                 h1, p{
@@ -63,18 +65,19 @@ section.main {
 
     &>div:nth-child(2) {
         text-align: center;
+        color: main.$black;
         margin-top: 2.5em;
         padding: 20px 0 50px;
 
         h1 {
             font-weight: 600;
-            font-size: 2.5em;
+            font-size: 1.9em;
             margin-bottom: 8px;
         }
 
         p {
             padding: 0 5%;
-            font-size: 1.4em;
+            font-size: 1.2em;
             margin: 0 auto;
         }
 
@@ -89,7 +92,7 @@ section.main {
 
             li {
                 transition: 0.30s;
-                color: index.$black;
+                color: main.$black;
             }
 
             li:hover {
@@ -124,8 +127,6 @@ section.main {
                 overflow: hidden;
                 position: relative;
                 border-radius: 10px;
-                // border-top-left-radius: 20px;
-                // border-bottom-right-radius: 40px;
                 cursor: pointer;
                 aspect-ratio: 15/12;
     
@@ -140,7 +141,7 @@ section.main {
                     position: absolute;
                     top: 50%;
                     width: 100%;
-                    z-index: 2;
+                    z-index: 1;
 
                     p {
                         color: white;
@@ -173,146 +174,71 @@ section.main {
           }
     }
 
-    .news-letter {
-        background: url('images/flower-background.jpg');
-        background-position: center;
-        padding: 50px 20px;
-        background-size: cover;
-        width: 100%;
-
-        &>div {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-
-            h1 {
-                font-weight: 700;
-                margin-bottom: 0;
-                font-size: 3em;
-            }
-
-            p {
-                font-size: 1.2em;
-                margin-bottom: 2.5em;
-            }
-
-            form >div {
-                    max-width: 400px;
-                    // position: relative;
-                    border-radius: 10px;
-                    background: index.$white;
-                    box-shadow: 2px 1px 7px rgba(0, 0, 0, 0.183);
-                    display: flex;
-                    padding:0 20px;
-                    height: 50px;
-                    align-items: center;
-                    margin: 0 auto;
-
-                    input {
-                        width: 100%;
-                        
-                        border: none;
-                        outline: none;
-                    }
     
-                    input::placeholder {
-                        font-size: .85em;
-                        font-family: bentham;
-                    }
-    
-                    input:focus {
-                        outline: none;
-                    }
-
-                    button {
-                        background: inherit;
-                        display: flex;
-                        align-items: center;
-                        border: none;
-
-                        ion-icon {
-                            font-size: 1.15em;
-                            color: gray;
-                            cursor: pointer;
-                    }
-                }
-            }
-        }
-    }
 }
 
 @media (max-width: 1023px) {
-    section.main .wrapper {
+    section.index {
+
+        .wrapper {
             justify-content: center;
-        
-            &>div:first-child {
-                margin: 0 auto;
-           }
         }
-    }
+    } 
+}
 
 @media (min-height: 1024px) and (max-height: 1400px) {
-    section.main .wrapper > div:first-child {
+    section.index {
 
-        width: 590px;
-       
-        &>div {
+        .wrapper > div:first-child {
 
-            h1 {
-                font-size: 3em;
-            }
-
-            p {
-                font-size: 1.8em;
+            width: 590px;
+           
+            &>div {
+    
+                h1 {
+                    font-size: 3em;
+                }
+    
+                p {
+                    font-size: 1.8em;
+                }
             }
         }
     }
-
-    // section.main > div:nth-child(2) {
-        
-    //     p {
-    //         max-width: 95vw;
-    //     }
-
-    //     .products {
-    //         flex-direction: row;
-    //     }
-    // } 
 }
 
 @media (max-width: 767px) {
-    section.main .wrapper > div:first-child {
-        width: 300px;
-
-        &>div {
-            .tab-view {
-                display: none;
-            }
-        }
-    }
-
-    section.main > div:nth-child(2) {
-
-        p span {
-            display: none;
-        }
-
-        &>div:first-of-type {
-
-            ul {
-                display: none;
-            }
-
-            .products {
-
-                div {
-                    width: 280px;
-                }
     
-                ul{
+    .tab-view {
+                display: none;
+    }
+    
+
+    section.index {
+
+        &>div:nth-child(2) {
+
+            p span {
+                display: none;
+            }
+    
+            &>div:first-of-type {
+    
+                ul {
                     display: none;
                 }
-            }  
+    
+                .products {
+    
+                    div {
+                        width: 280px;
+                    }
+        
+                    ul{
+                        display: none;
+                    }
+                }  
+            }
         }
     }
 }
@@ -320,7 +246,7 @@ section.main {
 
 @media (max-width: 280px) {
 
-    section.main  {
+    section.index, .blur {
 
         .wrapper > div:first-child {
             width: 250px;

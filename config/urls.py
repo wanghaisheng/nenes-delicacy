@@ -6,11 +6,12 @@ from . import views
 
 
 router = routers.DefaultRouter()
-router.register(r'products', views.ItemView, basename='products')
-router.register(r'glaze', views.GlazeView)
-router.register(r'icings', views.IcingsView)
-router.register(r'toppings', views.ToppingsView)
-router.register(r'fillings', views.ToppingsView)
+router.register(r'products', views.ProductView, basename='products')
+router.register(r'cart', views.CartView, basename='cart')
+router.register(r'categories', views.ProductTypeView, basename='categories')
+router.register(r'icings', views.IcingView, basename='icings')
+router.register(r'toppings', views.ToppingView, basename='toppings')
+router.register(r'size', views.SizeView, basename='size')
 
 
 urlpatterns = [

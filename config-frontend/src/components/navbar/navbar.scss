@@ -1,35 +1,52 @@
-@use '../../index.scss';
+@use '../../main.scss';
 
-.navbar, .onScroll {
+.navbar {
     width: 100vw;
-    padding: 15px 3% 15px 20px;
-    display: flex;
     transition: 0.3s ease-in 0.2s;
-    justify-content: space-between;
+    background: main.$white;
     position: fixed;
-    top: 0;
     z-index: 4;
-    color: index.$dark-pink;
+    color: main.$black;
     align-items: center;
 
-    &>a {
-        font-family: dancing script;
-        cursor: pointer;
-        text-decoration: none;
-        color: inherit;
-        font-size: 2em;
-        font-weight: 700;
-
-        p {
-            margin: 0;
-        }
-    }
    
-    &>div {
+    &>div:first-child {
         font-size: 1.6em;
+        padding: 10px 20px;
         display: flex;
-        position: relative;
+        width: 100%;
+        justify-content: space-between;
         gap: 30px;
+
+        &>a {
+            font-family: dancing script;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            font-weight: 700;
+    
+            p {
+                margin: 0;
+            }
+        }
+
+        &>div {
+            display: flex;
+            gap: 30px;
+
+            div {
+                color: main.$black;
+                cursor: pointer;
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                .cart-number {
+                    position: absolute;
+                    color: main.$white;
+                }
+            }
+        }
 
         .user {
             display: flex;
@@ -46,17 +63,18 @@
                 position: absolute;
                 background:white;
                 border-radius: 5px;
-                z-index: -1;
+                z-main: -1;
                 width: 170px;
                 transition: .5s;
                 animation: slideout .5s ease-in-out;
-                visibility: hidden;
+                visibility: hidden;  
                 top:26.5px;
                 left:-100px;
     
                 ul {
                     list-style: none;
                     padding: 10px 0;
+                    width: 100%;
                     display: flex;
                     gap: 10px;
                     align-items: flex-start;
@@ -86,14 +104,17 @@
             .dropdown {
                 visibility: visible;
                 animation: slidein .5s ease-in-out;
+
+                ul {
+                    animation: inherit;
+                }
             }
         }
-    } 
+
+    }
+
 }
 
-.onScroll {
-    background: index.$white;
-}
 
 @media (min-height: 1024px) and (max-height: 1400px) {
 
@@ -108,22 +129,15 @@
    }
 }
 
-@media (max-width: 767px) {
-    .navbar, .onScroll {
-        position: fixed;
-    }
-}
 
 @keyframes slidein {
 
     from {
-        transform: translateY(-60px);
-        opacity: 0;
+        height: 0;
     }
 
     to {
-        transform: translateY(0);
-        opacity: 1;
+        height: 100px;
     }
     
 }
@@ -131,13 +145,11 @@
 @keyframes slideout {
 
     from {
-        transform: translateY(0);
-        opacity: 1;
+        height: 100px;
     }
 
     to {
-        transform: translateY(-60px);
-        opacity: 0;
+        height: 0;
     }
     
 }

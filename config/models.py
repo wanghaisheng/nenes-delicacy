@@ -1,84 +1,87 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Topping(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return self.name
+
+
+class Glaze(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.name
     
+
+class Filling(models.Model):
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.name
+
 
 class Sizes(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def __str__(self):
+        return self.name
+    
 
 class Icing(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    def __str__(self):
+        return self.name
+    
+class ProductType(models.Model):
+    product_name = models.CharField(max_length=100)
+    banner_text = models.TextField()
+    banner_image = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='images', blank=True)
+    parameter = models.CharField(max_length=100)
 
-class Cake(models.Model):
+    def __str__(self):
+        return self.product_name
 
-    COLOR_CHOICES = [
-        ('red', 'red'),
-        ('yellow', 'yellow'),
-        ('blue', 'blue'),
-        ('green', 'green'),
-        ('pink', 'pink'),
-        ('purple', 'purple')
-        ('orange', 'orange')
-        ('white', 'white')
-        ('black', 'black')
-        ('vanilla', 'vanilla')
-    ]
+
+class Products(models.Model):
 
     name = models.CharField(max_length=100)
-    size = models.ForeignKey(Sizes, on_delete=models.CASCADE)
-    color = models.CharField(max_length=100, choices=COLOR_CHOICES)
-    icing = models.ForeignKey(Icing, on_delete=models.CASCADE)
-    toppings = models.ManyToManyField(Topping, blank=True)
+    image = models.ImageField(upload_to='images', blank=True)
     description = models.TextField(blank=True)
-    inscription = models.TextField(blank=True)
-
-    @property
-    def price(self):
-        topping_price = [topping.price for topping in self.toppings.all()]
-        return topping_price + self.size.price + self.icing.price
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, blank=True)
 
 
     def __str__(self):
         return self.name
     
 
-class Products(models.Model):
-
-    TYPE_CHOICES = [
-        ('cookies', 'cookies'),
-        ('fingerfood', 'fingerfood'),
-        ('cupcakes', 'cupcakes'),
-        ('pasteries', 'pasteries')
-    ]
-
-    TYPE_PIECES = [
-        ('6', '6'),
-        ('10', '10'),
-        ('30', '30'),
-        ('50', '50'),
-        ('100', '100')
-    ]
-
-    name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
-    unit_price = price = models.DecimalField(max_digits=10, decimal_places=2)
-    type = models.CharField(max_length=500, choices=TYPE_CHOICES)
-    pieces = models.CharField(max_length=500, choices=TYPE_PIECES)
-
-    @property
-    def price(self):
-        return self.price * int(self.pieces)
+class User(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.id)
+    
+class Cart(models.Model):
+    session_id = models.CharField(max_length=100, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.session_id)
+
+
+class Cartitem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, blank=True, null=True)
+    item =  models.ForeignKey(Products, on_delete=models.CASCADE, blank=True, null=True)
+    quantity = models.IntegerField(null=True)
+
+    def __str__(self):
+        return f' {self.item}: {self.quantity}' 
+

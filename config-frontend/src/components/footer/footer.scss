@@ -1,26 +1,113 @@
-@use '../../index.scss';
+@use '../../main.scss';
 
 footer {
     padding-top: 20px;
-    // background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(168, 223, 248));
-    background: rgba(195, 243, 195, 0.676);
     width: 100%;
     height: 100%;
 
-    .footer * {
-        color: index.$dark-green;
+    .news-letter {
+        background: url('images/collection-pink-flowers.jpg');
+        color: main.$black;
+        background-position: center;
+        padding: 50px 20px;
+        background-size: cover;
+        width: 100%;
+
+        &>div {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+
+            h1 {
+                font-weight: 600;
+                margin-bottom: 0;
+                font-size: 2.5em;
+            }
+
+            p {
+                font-size: 1.2em;
+                margin-bottom: 2.8em;
+            }
+
+            form >div {
+                    max-width: 400px;
+                    border-radius: 10px;
+                    background: main.$white;
+                    box-shadow: 2px 1px 7px rgba(0, 0, 0, 0.183);
+                    display: flex;
+                    padding:0 20px;
+                    height: 50px;
+                    align-items: center;
+                    margin: 0 auto;
+
+                    input {
+                        width: 100%;
+                        background: main.$white;
+                        color: main.$black;
+                        border: none;
+                        outline: none;
+                    }
+    
+                    input::placeholder {
+                        font-size: .85em;
+                        font-family: bentham;
+                    }
+    
+                    input:focus {
+                        outline: none;
+                    }
+
+                    button {
+                        background: inherit;
+                        display: flex;
+                        align-items: center;
+                        border: none;
+
+                        ion-icon {
+                            font-size: 1.15em;
+                            color: gray;
+                            cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+
+    &>div {
+        background: main.$green;
+
+        &>div:last-child {
+                
+            text-align: center;
+            margin-top: 4.5em;
+            padding: 10px;
+            font-size: .8em;
+    
+            ul {
+                justify-content: flex-end;
+            }
+    
+            &>div:last-of-type {
+                margin: 20px 0;
+    
+                p {
+                    margin: 0;
+                    font-weight: 600;
+                    }
+                }
+           }    
     }
 
     .footer {
         display: flex;
-        padding: 0 40px;
+        color: main.$black;
+        padding: 5px 40px 0;
         justify-content: space-between;
         gap: 30px;
 
         h1 {
             font-weight: 600;
-           
-            font-size: 1.6em;
+            font-size: 1.2em;
         }
 
         ion-icon {
@@ -29,15 +116,12 @@ footer {
 
         ul {
             padding-left: 0;
+            margin: 15px 0;
             list-style: none;
 
             a {
-                color: index.$black;
+                color: main.$black;
                 text-decoration:none;
-
-                li {
-                    font-size: 1.2em;
-                }
             }
 
             a:hover {
@@ -47,9 +131,12 @@ footer {
 
         &>div:first-child {
 
+            flex-basis: 35%;
+
             ul {
                 display: flex;
-                gap: 20px;            }
+                gap: 20px;
+            }
     
             a {
                 color: black;
@@ -57,10 +144,6 @@ footer {
             
             p:last-of-type {
                 margin: .1em 0 0;
-            }
-
-            p {
-                font-size: 1.3em;
             }
 
         }
@@ -74,37 +157,17 @@ footer {
                width:100%;
             }
        }
-
-       &>div:last-child {
-
-        ul {
-            justify-content: flex-end;
-        }
-
-        div:last-of-type {
-            margin: 20px 0;
-
-            p {
-                margin: 0;
-                font-weight: 600;
-                }
-            }
-       }
     }
 
-    &>div:last-child {
-        text-align: center;
-        margin-top: 4em;
-        padding: 10px;
-        font-size: .8em;
-        font-weight: 600;
-    }
-
-    
 }
 
 @media (max-width: 767px) {
     footer .footer {
+
+        &>div:nth-last-child(-n+3) {
+            display: none;
+        }
+
         flex-direction: column;
         align-items: center;
         gap:10px;

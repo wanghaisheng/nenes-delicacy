@@ -1,17 +1,34 @@
 $black: #252525;
 $dark-pink: #880d3e;
 $white: #fefefe;
-$dark-green: rgb(5, 35, 5);
+$green: #bae8d4;
+$dark-green: rgb(4, 58, 4);
 $light-green: #fff6d985;
+$lightest-pink: #ffe8e8;
 
 :root {
-  font-family: bentham, sans-serif;
+  font-family: 'Noto Serif', serif;;
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+#root {
+  position: relative;
+}
+
+#root::before { 
+  content: '';
+  z-index: 2;
+  display: none;
+  background: black;
+  opacity: 0.6;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 

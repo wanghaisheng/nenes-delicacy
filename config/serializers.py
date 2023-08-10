@@ -1,40 +1,46 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Cake, Topping, Order, CustomerProfile
+from .models import *
+
+
+class ProductSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Products
+        fields = '__all__'
+        depth = 1
 
 
 class ToppingSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Topping
+        fields =  '__all__'
+
+
+class CartItemSerializer(serializers.ModelSerializer):
+
+    item = ProductSerializer(many=False)
+
+    class Meta:
+        model = Cartitem
+        fields = ('id', 'cart', 'item', 'quantity')
+
+
+class SizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sizes
         fields = '__all__'
 
 
-class CakeSerializer(serializers.ModelSerializer):
-    toppings = ToppingSerializer(many=True)
-
+class IcingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Cake
+        model = Icing
         fields = '__all__'
+        
 
-
-class UserSerializer(serializers.ModelSerializer):
+class ProductTypeSerializer(serializers.ModelSerializer):
+   
     class Meta:
-        model = User
-        fields = ['id', 'username', 'email']
-
-
-class OrderSerializer(serializers.ModelSerializer):
-    cake = CakeSerializer()
-    customer = UserSerializer()
-
-    class Meta:
-        model = Order
-        fields = '__all__'
-
-
-class CustomerProfileSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
-    class Meta:
-        model = CustomerProfile
+        model = ProductType
         fields = '__all__'
