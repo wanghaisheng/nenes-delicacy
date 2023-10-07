@@ -38,6 +38,7 @@ section.product {
         }
 
         .banner-text {
+            
             &>h1 {
                 margin: .5em 0 0 0;
                 font-weight: 600;
@@ -66,10 +67,9 @@ section.product {
 
     .products {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        padding: 0 60px;
-        margin: 4em 0;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        padding: 40px;
 
         &>a {
 
@@ -81,10 +81,10 @@ section.product {
                 width: 100%;
     
                 .image-wrapper {
-                    min-height: 200px;
+                    min-height: 100px;
                     border-radius: 5px;
                     overflow: hidden;
-                    aspect-ratio: 16/9;
+                    aspect-ratio: 10/8;
                 }
     
                 img {
@@ -102,12 +102,13 @@ section.product {
             }
     
             p:first-of-type {
-                font-size: 1.35em;
+                font-size: 1.3em;
+                -webkit-line-clamp: 2;
                 font-weight: 600;
                 margin: .3em 0 0;
             }
     
-            p:nth-of-type(2) {
+            p {
                 overflow: hidden;
                 display: -webkit-box;
                 font-size: 0.95em;
@@ -119,7 +120,7 @@ section.product {
             div:last-child {
 
                 .naira {
-                    margin-left: 10px;
+                    opacity: .88;
                     font-size: .9em;
                 }
             }
@@ -127,3 +128,58 @@ section.product {
         }
     }
 }
+
+@media (max-width: 912px) {
+
+    section.product .products {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+@media (max-width: 767px) {
+        section.product {
+
+            &>div:first-child {
+                display: none
+            }
+
+            .products {
+                padding: 100px 20px 0;   
+            } 
+        }
+    }
+
+@media (max-width: 540px) {
+
+    section.product {
+
+        font-size: .7em;
+
+        &>div:first-child {
+            display: none
+        }
+
+        .products {
+            grid-template-columns: repeat(1, 1fr);
+            padding: 100px 20px 0;
+    
+            &>a>div {
+                display: flex;
+                gap: 10px;
+
+
+                .image-wrapper {
+                    max-width: 110px;
+                }
+            }
+        }
+    }
+}
+
+// @media (max-width: 282px) {
+
+//     section.product .products a > div .image-wrapper{
+//             grid-template-columns: repeat(1, 1fr);
+//         }
+//     }
+

@@ -1,3 +1,4 @@
+
 const getBlurred = (state = false, action) => {
 
     switch(action.type) {
@@ -8,13 +9,13 @@ const getBlurred = (state = false, action) => {
     }
 }
 
-const cartLength = (state = 0, action) =>{
+const getOrderDetails = (state = false, action) =>{
     switch(action.type) {
-        case "LENGTH":
-            return action.payload
+        case "DETAILS":
+            return !state
         default: 
             return state
     }
 }
 
-export { getBlurred, cartLength }
+export { getBlurred, getOrderDetails }

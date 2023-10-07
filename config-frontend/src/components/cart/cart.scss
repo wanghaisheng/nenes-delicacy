@@ -3,15 +3,15 @@
 .cart, .open-cart {
     background: main.$white;
     color: main.$black;
-    width: 50vw;
+    width: 40vw;
     position: absolute;
-    height: 100vh;
+    height: 92.5vh;
     right: 0;
 
     &>header {
         text-align: center;
         font-family: dancing script;
-        font-size: 1.5em;
+        font-size: 1.7em;
         margin: 0 10px;
         border-bottom: 1px solid main.$black;
         padding: 15px 0;
@@ -19,31 +19,147 @@
 
     .cartitems  {
         overflow-y: scroll;
+        height: 75%;
 
         &>div {
-         
             display: flex;
             gap: 10px;
-            margin: 20px 10px;
+            margin: 25px 10px;
 
             .cart-image {
-                max-width: 20vw;
+                max-width: 100px;
 
                 img {
                     width: 100%;
+                    border-radius: 5px;
                     height: 100%;
                     object-fit: cover;
                     aspect-ratio: 16/9;
                 }
             }
 
-            &>div:last-child:hover {
+            &>div:nth-child(2) {
+                flex-basis: 55%;
+
+                &>span {
+                    font-weight: 600;
+                }
+
+                &>div:nth-child(2) {
+                    margin-top: 3px;
+                }
+
+                .naira-sign {
+                    font-size: 14px;
+                }
+
+                .quantity {
+                    display: flex;
+                    margin-top: 10px;
+                    gap: 2px;
+                    
+                    &>button {
+                        background: inherit;
+                        display: flex;
+                        align-items: center;
+                        border: none;
+                        padding: 0;
+
+                        ion-icon {
+                            font-size: 13px;
+                            cursor: pointer;
+                        }
+    
+                        ion-icon:disabled {
+                            color: gray;
+                        }
+                    }
+                }
+            }
+
+            &>div:last-child {
+                flex-basis: 5%;
+            }
+
+            &>div:last-child ion-icon:hover {
                 cursor: pointer;
-                color: red;
+                color: main.$green;
             }
 
         }
+    }
 
+    .checkout {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        background:main.$white;
+        box-shadow: 0 1px 4px 0 main.$black;
+        z-index: 1;
+
+        &>a {
+            display: flex;
+            justify-content: center;
+
+            &>div {
+                margin:11px 0;
+                display: flex;
+                cursor: pointer;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                
+                
+                svg {
+                    fill: main.$black;  
+    
+                    transition: .3s ease-in-out;
+                }
+
+                &>div {
+                    position: absolute;
+                    transition: all .3s ease-in-out;
+                    text-align: center;
+                    font-weight: bold;
+                    color: main.$green;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+
+                    .naira-sign {
+                        color: main.$green;
+                    }
+
+                    span:nth-child(2) {
+                        font-size: 1.4em;
+                        width: .065em;
+                        height: 20px;
+                        background: main.$green;
+                        font-weight: bolder;
+                    }
+                }
+            }
+
+            &>div:hover {
+
+                & > * {
+                    transition: .3s ease-in-out;
+                }
+
+                svg {
+                    fill: main.$green;
+                    stroke: main.$dark-green;
+                }
+
+                &>div, .fa-naira-sign {
+                    color: main.$black;
+                }
+
+                span:nth-child(2) {
+                    background: main.$black;
+                }
+            }
+        }
     }
 }
 
@@ -58,6 +174,15 @@
 
 .cart {
     transition:all .25s ease-in-out;
-    transform: translateX(50vw);
+    transform: translateX(100vw);
+    visibility: hidden;
+}
+
+
+
+@media (max-width: 767px) {
+    .cart, .open-cart {
+        width: 100vw;
+    }
 }
 

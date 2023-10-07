@@ -1,14 +1,20 @@
 @use '../../main.scss';
 
 section.item {
+
+    padding: 120px 30px;
     
     &>div:first-child {
-        display: flex;
-        margin-top: 30px;
-        padding: 0 40px;
         gap: 5px;
+        display: flex;
+        margin-bottom: 25px;
         color: main.$black;
         align-items: center;
+
+        div {
+            display: flex;
+            align-items: center;
+        }
 
         a {
             text-decoration: none;
@@ -18,26 +24,36 @@ section.item {
         a:hover {
             text-decoration: underline;
         }
+
+        a:last-child {
+            color: main.$light-gray;
+            cursor: default;
+            text-decoration: none;
+        }
     }
 
     &>div:nth-child(2) {
-        display: flex;
-        padding: 20px 40px;
-        gap: 50px;
-        
+        display: grid;
+        align-items: start;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    
         &>div:first-child {
-            width: 50vw;
-            height: 70vh;
-        
+            max-width: 600px;
+            position: sticky;
+            top: 90px;
+            
             .image {
-                width: inherit;
+                width: 100%;
                 height: inherit;
+                border-radius: 10px;
         
                 img {
                     width: 100%;
+                    border-radius: inherit;
+                    aspect-ratio: 16/14;
                     height: 100%;
                     object-fit: cover;
-                    border-radius: 10px;
                 }
             }
 
@@ -47,9 +63,10 @@ section.item {
 
     .item-info {
         color: main.$black;
+        padding: 0 20px;
 
         p:first-child {
-            font-size: 2.7em;
+            font-size: 2.1em;
             font-weight: 600;
             margin: 0;
         }
@@ -59,7 +76,7 @@ section.item {
         }
 
         &>div:nth-child(2) {
-            margin-top: .5em;
+            margin-top: .15em;
             font-size: 1.7em;
 
             span {
@@ -76,28 +93,66 @@ section.item {
         &>div:first-child {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
 
-            ion-icon {
-                font-size: 2em;
-                color: main.$dark-pink;
-                cursor: pointer;
+            button {
+                border: none;
+                background: inherit;
+                padding: 0;
+
+                ion-icon {
+                    font-size: 2em;
+                    color: main.$dark-pink;
+                    cursor: pointer;
+                }
             }
+
+            button:disabled {
+                opacity: 0.5;
+            }
+        
         }
         
         &>div:nth-child(2) {
 
             button {
-                width: 15vw;
                 cursor: pointer;
                 padding: 20px;
                 border: 0;
                 border-radius: 10px;
-                color: main.$white;
+                color: main.$light-pink;
                 font-weight: 900;
                 background: main.$dark-pink;
                 margin: 0%;
             }
+        }
+    }
+}
+
+@media(max-width: 767px) {
+
+    section.item {
+        padding: 60px 0;
+
+        &>div:nth-child(2) {
+            flex-direction: column;
+            display: flex;
+
+            &>div:first-child .image {
+                border-radius: 0;
+            }
+
+            &>div:first-child {
+                position: static;
+            }
+        }
+
+        .item-info {
+            padding: 10px 15px;
+        }
+
+        &>div:first-child {
+            display: none;
         }
     }
 }

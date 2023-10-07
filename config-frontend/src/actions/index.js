@@ -6,10 +6,9 @@ const Blur= () => {
     }
 }
 
-const cartLength = (length) => {
+const Details = () => {
     return {
-        type: "LENGTH",
-        payload: length
+        type: "DETAILS",
     }
 }
-export { Blur, cartLength}
+export { Blur, Details}

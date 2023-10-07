@@ -2,6 +2,7 @@ import axios from './axios';
 import Cookie from 'universal-cookie'
 import { v4 as uuid4} from 'uuid'
 
+
 const cookie = new Cookie();
 const date = new Date();
 
@@ -12,15 +13,16 @@ const get = async (url) => {
     return response.data
 }
 
+
 const post =  async (url, data) => {
     const response = await axios.post(url, data, { withCredentials: true })
-    return response.data
+    return response
 }
 
 
 const getCookie = () => {
     
-    const sessionid = cookie.get('sessionid')
+    let sessionid = cookie.get('sessionid')
     if (!sessionid) {
         sessionid = uuid4();
 
@@ -34,7 +36,19 @@ const getCookie = () => {
     }
     return sessionid
 }
+   
+
+const routeProtection = {
+    id: uuid4(), 
+    quantity: 1, 
+    item: { image: 'http://127.0.0.1:8000/media/route-package-protection-logo_small.avif',
+            name: 'Route package protection',
+            unit_price: 1000,
+            description: 'Against loss, theft or damage in transit and instant resolution'
+        }
+    }
 
 
 
-export { get, post, getCookie}
+export { get, post, getCookie, routeProtection }
+

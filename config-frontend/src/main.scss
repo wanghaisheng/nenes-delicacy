@@ -1,13 +1,18 @@
 $black: #252525;
-$dark-pink: #880d3e;
+$faint-black: #25252556;
+$dark-pink: #581b28;
+$light-pink: #f7c0c3;
 $white: #fefefe;
+$gray: rgb(86, 86, 86);
+$light-gray: rgba(110, 110, 110, 0.742);
+$border: 1px solid $light-gray;
 $green: #bae8d4;
-$dark-green: rgb(4, 58, 4);
+$dark-green: #a9dcc5;
 $light-green: #fff6d985;
 $lightest-pink: #ffe8e8;
 
 :root {
-  font-family: 'Noto Serif', serif;;
+  font-family: 'Montserrat Alternates';
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -29,6 +34,14 @@ $lightest-pink: #ffe8e8;
   position: absolute;
   height: 100%;
   width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(162, 162, 162, 0.653)
 }
 
 

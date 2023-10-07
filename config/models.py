@@ -69,7 +69,7 @@ class User(models.Model):
 
     def __str__(self):
         return str(self.id)
-    
+      
 class Cart(models.Model):
     session_id = models.CharField(max_length=100, blank=True, null=True)
 
@@ -83,5 +83,13 @@ class Cartitem(models.Model):
     quantity = models.IntegerField(null=True)
 
     def __str__(self):
-        return f' {self.item}: {self.quantity}' 
+        return f' {self.item}: {self.quantity}'
+    
+
+class States(models.Model):
+    state = models.CharField(max_length=100)
+    lga = models.JSONField(null=True)
+
+    def __str__(self):
+        return self.state
 

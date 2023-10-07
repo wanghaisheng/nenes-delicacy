@@ -1,7 +1,21 @@
 @use '../../main.scss';
 
+@mixin rounded-icons {
+    border-radius: 50%;
+    border: .075em solid main.$black;
+    transition: .3s ease-in-out;
+
+    ion-icon {
+        transition: inherit;
+        font-size: .85em;
+        padding: 3px;
+        color: main.$black;
+    }
+}
+
 .navbar {
     width: 100vw;
+    display: block;
     transition: 0.3s ease-in 0.2s;
     background: main.$white;
     position: fixed;
@@ -12,29 +26,112 @@
    
     &>div:first-child {
         font-size: 1.6em;
-        padding: 10px 20px;
+        padding: 15px 20px;
         display: flex;
+        position: relative;
         width: 100%;
         justify-content: space-between;
-        gap: 30px;
-
-        &>a {
-            font-family: dancing script;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            font-weight: 700;
-    
-            p {
-                margin: 0;
-            }
-        }
+        gap: 20px;
 
         &>div {
             display: flex;
-            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-info {
+            gap: 25px;
+            font-size: .6em;
+
+            a {
+                color:main.$black;
+                text-decoration: none;
+            }
 
             div {
+                display: flex;
+                gap: 2px;
+                align-items: center;
+
+                a {
+                    transition-delay: .2s;
+                }
+
+                ion-icon {
+                    transition: all .3s ease-in-out;
+                    transform: rotateZ(-180deg);
+                }
+            }
+            
+            div:hover {
+
+                cursor: pointer;
+                color: main.$green;
+
+                a {
+                    color: inherit;
+                }
+
+                ion-icon {
+                        transform: rotateZ(0);
+                    }
+            }
+        }
+
+        .logo {
+            position: absolute;
+            width: 150px;
+            left: 50%;
+            top: -20%;
+            transform: translate(-50%);
+            z-index: 6;
+            height: 150px;
+
+            img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        &>a {
+           
+            cursor: pointer;
+            text-decoration: none;
+            color: main.$black;
+        }
+
+        .user-info {
+            gap: 30px;
+
+            &>div {
+                @include rounded-icons;
+            }
+
+            &>div:hover {
+
+                border: .075em solid main.$green;
+
+                ion-icon {
+                    color: main.$green
+                }
+    
+                .cart-number {
+                    color: main.$black
+                }
+            }   
+
+            &>div:first-child {
+                display: flex;
+                cursor: pointer;
+                position: relative;
+                gap: 1px;
+                align-items: center;
+    
+                &>ion-icon:first-child {
+                    transition: 0.40s;
+                }
+            }
+    
+            &>div:nth-child(2) {
                 color: main.$black;
                 cursor: pointer;
                 position: relative;
@@ -43,91 +140,46 @@
 
                 .cart-number {
                     position: absolute;
-                    color: main.$white;
-                }
-            }
-        }
-
-        .user {
-            display: flex;
-            cursor: pointer;
-            position: relative;
-            gap: 1px;
-            align-items: center;
-
-            ion-icon:first-child {
-                transition: 0.40s;
-            }
-
-            .dropdown {
-                position: absolute;
-                background:white;
-                border-radius: 5px;
-                z-main: -1;
-                width: 170px;
-                transition: .5s;
-                animation: slideout .5s ease-in-out;
-                visibility: hidden;  
-                top:26.5px;
-                left:-100px;
-    
-                ul {
-                    list-style: none;
-                    padding: 10px 0;
+                    transition: .3s ease-in-out;
                     width: 100%;
+                    color: main.$green;
                     display: flex;
-                    gap: 10px;
-                    align-items: flex-start;
-                    flex-direction: column;
-                    margin: 0;
-                    font-size: .5em;
-
-                    li {
-                        width: 100%;
-                        padding: 10px;
-                    }
-
-                    li:hover {
-                        background: rgba(171, 171, 171, 0.338);
-
-                    }
+                    height: 100%;
+                    margin: 6px auto 0;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 11px;
+                    font-weight: bolder;
                 }
-            }
+            } 
         }
-
-        .user:hover {
-
-            ion-icon:first-child {
-                transform: rotate(180deg);
-            }
-
-            .dropdown {
-                visibility: visible;
-                animation: slidein .5s ease-in-out;
-
-                ul {
-                    animation: inherit;
-                }
-            }
-        }
-
     }
-
 }
 
+@media (max-width: '912px') {
 
-@media (min-height: 1024px) and (max-height: 1400px) {
+    .navbar > div:first-child {
+        padding: 10px 15px 5px;
+        .logo {
+            height: fit-content;
+            position: static;
+            transform: none;
+        }
 
-   .navbar, .onScroll {
-    &>a p {
-        font-size: 1.4em;
+        .user-info > div:first-child {
+            display:none;
+        }
+
+        .nav-info {
+            font-size: .85em;
+            &> div {
+                @include rounded-icons;
+            }
+
+        }
     }
-
-    &>div {
-        font-size: 2.3em;
-    }
-   }
 }
+
 
 
 @keyframes slidein {

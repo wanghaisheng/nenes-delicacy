@@ -17,7 +17,6 @@ class ToppingSerializer(serializers.ModelSerializer):
         model = Topping
         fields =  '__all__'
 
-
 class CartItemSerializer(serializers.ModelSerializer):
 
     item = ProductSerializer(many=False)
@@ -31,6 +30,7 @@ class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sizes
         fields = '__all__'
+        
 
 
 class IcingSerializer(serializers.ModelSerializer):
@@ -43,4 +43,11 @@ class ProductTypeSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = ProductType
+        fields = '__all__'
+
+
+class ShipmentSerialzer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = States
         fields = '__all__'

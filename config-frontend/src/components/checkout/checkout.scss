@@ -1,0 +1,70 @@
+@use '../../main.scss';
+
+
+section.checkout {
+    width: 100%;
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+
+
+    .shipping {
+      width: 48vw;
+
+      .buttons {
+        margin-top: 40px;
+      }
+      
+    }
+
+   h1 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 1.2em;
+   }
+
+   input:focus,
+   input:hover {
+    outline: none;
+   }
+ 
+   select {
+    outline: none;
+   }
+
+   option[hidden] {
+    color: white;
+   }
+
+
+   input, select {
+    width: 100%;
+    padding: 0 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: .1em solid rgba(0, 0, 0, 0.121);
+    height: 6.8vh;
+   }
+
+   .customer, .state {
+    display: flex;
+    gap: 15px;
+   }
+} 
+
+@media (max-width: 1023px) {
+  section.checkout {
+    padding: 0 20px;
+
+    .shipping {
+      width: 100vw;
+    }
+  }
+}
+
+@media (max-width: 528px) {
+  section.checkout {
+    padding: 0 15px;
+  }
+}
+

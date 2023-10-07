@@ -1,12 +1,12 @@
 @use '../../main.scss';
 
-footer {
+.main-footer {
     padding-top: 20px;
     width: 100%;
     height: 100%;
 
     .news-letter {
-        background: url('images/collection-pink-flowers.jpg');
+        background: url('images/Group_906.webp');
         color: main.$black;
         background-position: center;
         padding: 50px 20px;
@@ -20,29 +20,38 @@ footer {
 
             h1 {
                 font-weight: 600;
-                margin-bottom: 0;
-                font-size: 2.5em;
+                margin: 0;
+                font-family: 'dancing script';
+                font-size: 3.3em;
             }
 
             p {
-                font-size: 1.2em;
-                margin-bottom: 2.8em;
+                font-size: 1.11em;
+                margin-bottom: 2em;
             }
 
-            form >div {
+            form > div {
                     max-width: 400px;
                     border-radius: 10px;
                     background: main.$white;
-                    box-shadow: 2px 1px 7px rgba(0, 0, 0, 0.183);
-                    display: flex;
-                    padding:0 20px;
-                    height: 50px;
-                    align-items: center;
+                    position: relative;
                     margin: 0 auto;
+
+                    svg {
+                        width: 100%;
+                        top: 0;
+                        left: 0;
+                    }
 
                     input {
                         width: 100%;
-                        background: main.$white;
+                        height: 100%;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        z-index: 2;
+                        padding: 0 10px;
+                        background: transparent;
                         color: main.$black;
                         border: none;
                         outline: none;
@@ -58,9 +67,11 @@ footer {
                     }
 
                     button {
-                        background: inherit;
-                        display: flex;
-                        align-items: center;
+                        background: transparent;
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        right: 7px;
                         border: none;
 
                         ion-icon {
@@ -73,15 +84,16 @@ footer {
         }
     }
 
-    &>div {
+    &>div:nth-child(2) {
+
         background: main.$green;
 
         &>div:last-child {
-                
             text-align: center;
-            margin-top: 4.5em;
+            margin-top: 60px;
             padding: 10px;
-            font-size: .8em;
+            font-weight: 700;
+            font-size: .65em;
     
             ul {
                 justify-content: flex-end;
@@ -130,7 +142,6 @@ footer {
         }
 
         &>div:first-child {
-
             flex-basis: 35%;
 
             ul {
@@ -147,42 +158,47 @@ footer {
             }
 
         }
-
-        .logo {
-            max-width: 180px;
-            display: flex;
-            align-items: center;
-   
-            img {
-               width:100%;
-            }
-       }
     }
-
 }
 
 @media (max-width: 767px) {
-    footer .footer {
+    .main-footer {
 
-        &>div:nth-last-child(-n+3) {
-            display: none;
+        .news-letter > div {
+            font-size: .7em;
         }
 
-        flex-direction: column;
-        align-items: center;
-        gap:10px;
-        text-align: center;
+        .footer {
+            padding: 5px 15px 0;
 
-        ul {
-            justify-content: center;
-        }
-
-        &>div:last-child {
+            &>div:nth-last-child(-n+3) {
+                display: none;
+            }
+    
+            flex-direction: column;
+            align-items: center;
+           
+            gap:10px;
             text-align: center;
-
+    
             ul {
                 justify-content: center;
             }
         }
+
+        &>div:nth-child(2) {
+            font-size: .8em;
+
+            &>div:last-child {
+                margin-top: 30px;
+            }
+        }
     }
+}
+
+@media (max-width: 320px) {
+    .main-footer .news-letter > div {
+        font-size: .57em;
+    }
+
 }

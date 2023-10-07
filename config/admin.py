@@ -12,4 +12,5 @@ admin.site.register(Filling)
 admin.site.register(Cartitem)
 admin.site.register(Cart)
 admin.site.register(User)
+admin.site.register(States)
 

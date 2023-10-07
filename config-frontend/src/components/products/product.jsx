@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { get } from '../../utils';
 import './product.scss';
@@ -23,19 +24,17 @@ const Product = () => {
     }, [])
 
 
+
     useEffect(() => {
         document.title = `${current.product_name} | Nene's Delicacy `;
 
         get('products').then(res => {
-            console.log(res)
             const result = res.filter(product => product.product_type.id === current.id)
             setProducts(result)
     
         })
 
     }, [current])
-
-    console.log(products)
 
     return (
         <section className='product'>
@@ -61,13 +60,16 @@ const Product = () => {
                             <div className='image-wrapper'>
                                 <img src={product.image} alt="" />
                             </div>
-                            <p>{product.name}</p>
-                            <p>{product.description}</p>
-                            <div> Starting at  
-                                <span className='naira'>
-                                    <FontAwesomeIcon icon="fa-solid fa-naira-sign" />
-                                </span>   
-                                <span>{product.unit_price}</span>
+
+                            <div>
+                                <p>{product.name}</p>
+                                <p>{product.description}</p>
+                                <div>
+                                    <span className='naira'>
+                                        <FontAwesomeIcon icon={faNairaSign} />
+                                    </span>   
+                                    <span>{Intl.NumberFormat("en-US").format(product.unit_price)}</span>
+                                </div>
                             </div>
                         </div>
                     </Link>
