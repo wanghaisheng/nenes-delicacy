@@ -1,100 +1,125 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faNairaSign } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect, useRef} from "react";
-import { routeProtection  } from "../../utils";
-import { useQueryClient } from 'react-query'
+import { useState, useEffect, useRef, useMemo} from "react";
+import { payment, Details, shipping } from '../../actions';
+import { routeProtection, get, getCookie } from '../../utils';
+import { useLocation } from 'react-router-dom';
+import { useQueryClient, useQuery} from 'react-query'
 import { useMediaQuery } from 'react-responsive'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cookie from 'universal-cookie';     
 import route from '/icons/route.svg'
-import { v4 as uuid4 } from "uuid";
-import gsap from 'gsap'
-import './precart.scss'
+import { v4 as uuid4 } from "uuid"; 
+import './precart.scss'  
 
-
- const cookie = new Cookie()
 
 const Precart = () => {
-    const cursor = useRef()
-    const precart = useRef(null)
-    const hidden = useSelector((state) => state.getOrderDetails)
+    const dispatch = useDispatch()
+    const cookie = new Cookie()
     const queryClient = useQueryClient()
+    const cursor = useRef()
+    const location = useLocation()
+    const precart = useRef(null)
     const cart = queryClient.getQueryData(['carts'])
-    const [carts, setCart] = useState(cart)
-    const [ height, setHeight] = useState(0)
     const [protection, setProtection] = useState(cookie.get('route-protection'))
+    const isMobile = useMediaQuery({query: '(max-width: 767px)'})
+    const [carts, setCart] = useState(protection? [routeProtection, ...cart] : cart)  
+    const hidden = useSelector((state) => state.getOrderDetails)
+    const isCheckout = location.pathname == '/checkout'
+   
 
-    const isMobile = useMediaQuery({query: '(max-width: 920px)'})
+    const {data, isLoading, isError} = useQuery({
+        queryKey: ['shipping'],
+        queryFn: () => get(`shipping/get_shipping?sessionID=${getCookie()}`),
+    })  
+    
 
-
-
-    const handleChange = () => {
-
+    const handleChange = () => { 
         cursor.current.style.cursor = 'wait'
 
         setTimeout(() => {
-            if (!carts.includes(routeProtection)) {
-
+    
+            if (carts[0] !== routeProtection) {
                 cookie.set('route-protection', uuid4())
-                setCart([routeProtection, ...carts])
-            } else {
+                setCart([routeProtection, ...cart])
 
+            } else {
                 cookie.remove('route-protection', {path: '/'})
-                setCart(carts.filter(item => item !== routeProtection)) 
+                setCart(cart)
             }
 
             setProtection(cookie.get('route-protection')) 
             cursor.current.style.cursor = 'pointer'
-
         }, 700)  
     }
 
 
+    const {total, price} = useMemo(() => { 
+        let price = carts.reduce(
+            (acc, cart) => acc + Number(cart.item.unit_price * cart.quantity), 0
+        )
+        const total =  Math.ceil(price + (data? Number(data.price) : 0));
+        return { total, price }
+
+    }, [carts,  data])
+
+
+
+    //dispatches the grandtotal and shipping information to the redux store
     useEffect(() => {
-
-        const eleHeight = precart.current.scrollHeight
-        const timeInms = {duration: .5}
-    
-        if (protection || eleHeight) {  
-            setCart([routeProtection, ...cart])
-
-            if (eleHeight !== 0) {
-                setHeight(eleHeight)
-            }
+        if (data) {
+            dispatch(shipping(data))
         }
 
+        dispatch(payment(total))
+    }, [total, data])
 
-        if (isMobile) {
-            
-            hidden ?
-            gsap.to(precart.current, 
-             {height: `${height}px`, display: 'block', ...timeInms}) 
-            : 
-            
-            gsap.to(precart.current, 
-             {height: 0, display: 'none', ...timeInms})
+   
+    //returns JSX element based on a satisfied condition
+    const shippingInfo = () => {
 
+        if (isCheckout) {
+            return (
+            <div className='calculate-next'>Calculated at next step </div>
+        )}
 
-        } else {
-        
-                precart.current.style.height = `${height}px`;
-                precart.current.style.display = 'block'
-        }
-
-
-    }, [height, hidden, isMobile])
-
-
-    const total = carts.reduce(
-        (acc, cart) => acc + Number(cart.item.unit_price * cart.quantity), 0
-    )
-
-
-    return ( 
-        <section className="precart">
+        else {
+            return (
             <div>
-                <div ref={precart} className={"precart-wrapper"}>
-                <div className="precart-outer">
+                <FontAwesomeIcon icon={faNairaSign } />
+                {Intl.NumberFormat("en-US").format(Math.ceil(data? data.price: 0 ))} 
+            </div>)
+        }
+    }
+     
+
+    return (  
+        <section className="precart">
+             {isMobile? 
+                <div className="order-summary">
+                    <div onClick={() => {
+                                        dispatch(Details());
+                                        precart.current.classList.toggle('show-cart')
+                                    }}>
+                        <div>
+                            <div>{hidden? 'Show' : 'Hide'} order summary</div>
+                            <div><ion-icon name="chevron-down-outline"></ion-icon></div>
+                        </div>
+
+                        <div>
+                            <span><FontAwesomeIcon icon={faNairaSign} /></span>
+                            <span>
+                                {Intl.NumberFormat("en-US").format(total)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                : ''
+            }
+            
+            <div ref={precart} className="precart-wrapper">
+                <div>
+                    <div className="precart-outer">
                     {carts.map(cart => (
                         <div key={cart.id}>
                             <div className="precart-image">
@@ -106,23 +131,28 @@ const Precart = () => {
                                 <span>{cart.item.description}</span>
                             </div>
                             <div className="precart-price">
-                                <span><FontAwesomeIcon icon="fa-solid fa-naira-sign" /></span>
-                                <span>{Intl.NumberFormat("en-US").format(cart.item.unit_price * cart.quantity)}</span>
+                                <div>
+                                    <span><FontAwesomeIcon icon={faNairaSign} /></span>
+                                    <span>{Intl.NumberFormat("en-US").format(cart.item.unit_price * cart.quantity)}</span>
+                                </div>
                             </div>
                         </div>
                     ))}
-                </div>
-                <div className="pricing">
+                    </div>
+
+                    <div className="pricing">
                     <div>
                         <h1>Subtotal</h1>
                         <p>
-                            <FontAwesomeIcon icon="fa-solid fa-naira-sign" />
-                            {Intl.NumberFormat("en-US").format(total)}
+                            <FontAwesomeIcon icon={faNairaSign } />
+                            {Intl.NumberFormat("en-US").format(price)}
                         </p>
                     </div>
                     <div>
                         <h1>Shipping</h1>
-                        <p className="shipping-info">Calculated at next step</p>
+                        <div className={data? "shipping-info":""}>
+                            {shippingInfo()}
+                        </div>
                     </div>
                     <div className="total">
                         <span>Total</span>
@@ -131,7 +161,7 @@ const Precart = () => {
                             {Intl.NumberFormat("en-US").format(total)}
                         </p>
                     </div>
-                </div>
+                    </div>
                 </div>
 
                 <div className="route-protection-wrapper">
@@ -148,7 +178,7 @@ const Precart = () => {
                             </div>
                         </div>
                     </div>
-                    <p>By deselecting ROUTE package protection, customer acknowledges that Nene's delicacy will not be held liable for lost, broken or damaged proteties.</p>
+                    <p>By deselecting ROUTE package protection, customer acknowledges that Nene's delicacy will not be held liable for lost, broken or damaged properties.</p>
                 </div>
             </div>
         </section>

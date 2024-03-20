@@ -1,0 +1,96 @@
+@use '../../main.scss';
+
+section.shipping {
+    width: 83%;
+    margin: 30px auto 0;
+
+    .calender {
+        margin: 80px 0 50px;
+        color: main.$black;
+    
+        h1 {
+          text-align: center;
+          width: 45%;
+          margin: 0 auto;
+        }
+        
+        .rdp-months {
+          justify-content: center;
+        }
+  
+        .rdp-caption {
+          background: main.$green;
+  
+          .rdp-caption_label {
+            font-weight: normal;
+            font-size: .95em;
+          }
+        }
+  
+        .rdp-nav_button {
+          width: 1.5em;
+          border-radius:0;
+          transition: all .3s ease-in-out;
+  
+          svg {
+            width: 12px;
+          }
+        }
+  
+        .rdp-button {
+          transition: all .2s ease-in-out;
+          width: 32px;
+          height: 32px;
+        }
+  
+        .rdp-button:not([disabled]):hover:not(.rdp-day_selected):not(.rdp-nav_button) {
+          cursor: pointer;
+          background: rgba(0, 0, 0, 0.103);
+          color: main.$black; 
+        }
+  
+        .rdp-nav_button:not([disabled]):hover {
+          background: main.$black;
+          color: main.$green
+        } 
+  
+        .rdp-day_today:not(.rdp-day_outside) {
+          font-weight: normal;
+        }
+  
+        .rdp-day_selected {
+          background: main.$black;
+          color: main.$white;
+        }
+    }
+}
+
+
+@media (max-width: 767px) {
+
+    section.shipping {
+        width: 90%;
+
+        .preview > ul ul {
+            display: block;
+
+            li:nth-child(2) {
+                margin-top: 5px;
+                font-size: .9em;
+            }
+        }
+
+        .calender {
+            margin: 65px 35px;
+
+          .rdp {
+              margin-left: 0;
+              margin-right: 0;
+          }
+
+          h1 {
+              width: 100%;
+          }
+        }
+    }
+}

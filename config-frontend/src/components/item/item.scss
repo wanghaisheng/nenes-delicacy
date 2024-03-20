@@ -39,18 +39,17 @@ section.item {
         gap: 10px;
     
         &>div:first-child {
-            max-width: 600px;
+            max-width: 800px;
             position: sticky;
             top: 90px;
             
             .image {
                 width: 100%;
                 height: inherit;
-                border-radius: 10px;
         
                 img {
                     width: 100%;
-                    border-radius: inherit;
+                    border-radius: 5px;
                     aspect-ratio: 16/14;
                     height: 100%;
                     object-fit: cover;
@@ -67,7 +66,6 @@ section.item {
 
         p:first-child {
             font-size: 2.1em;
-            font-weight: 600;
             margin: 0;
         }
 
@@ -76,8 +74,9 @@ section.item {
         }
 
         &>div:nth-child(2) {
-            margin-top: .15em;
-            font-size: 1.7em;
+            margin-top: .25em;
+            font-weight: 600;
+            font-size: 1.6em;
 
             span {
                 font-size: .9em;
@@ -114,32 +113,55 @@ section.item {
         }
         
         &>div:nth-child(2) {
+            position: relative;
 
-            button {
+            svg {
+                fill: main.$dark-pink;
+                max-width: 200px;
+                height: 60px;
+            }
+
+            div {
+                display: flex;
+                width: 100%;
+                left: 0;
+                top:0;
+                height: 100%;
                 cursor: pointer;
-                padding: 20px;
-                border: 0;
-                border-radius: 10px;
-                color: main.$light-pink;
-                font-weight: 900;
-                background: main.$dark-pink;
-                margin: 0%;
+                position: absolute;
+                justify-content: center;
+                align-items: center;
+
+                button {
+                    border: 0;
+                    background: main.$dark-pink;
+                    background: inherit;
+                    color: main.$pink;
+                    font-weight: 600;
+                }
             }
         }
     }
 }
 
-@media(max-width: 767px) {
+
+
+@media(max-width: 650px) {
 
     section.item {
         padding: 60px 0;
 
         &>div:nth-child(2) {
+            margin: 0 auto;
             flex-direction: column;
             display: flex;
 
-            &>div:first-child .image {
-                border-radius: 0;
+            &>div:first-child {
+                width: 100%;
+
+                .image img {
+                    border-radius: 0;
+                }
             }
 
             &>div:first-child {

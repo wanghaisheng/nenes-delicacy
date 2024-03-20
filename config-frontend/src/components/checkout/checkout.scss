@@ -4,15 +4,20 @@
 section.checkout {
     width: 100%;
     margin-top: 25px;
+    padding: 0 20px;
     display: flex;
     justify-content: center;
 
-
-    .shipping {
-      width: 48vw;
+    .address {
+      width: 100%;
+      max-width: 700px;
 
       .buttons {
         margin-top: 40px;
+
+        button:disabled {
+          opacity: 0.5;
+        }
       }
       
     }
@@ -20,6 +25,7 @@ section.checkout {
    h1 {
     text-align: center;
     font-size: 1.5em;
+    color: main.$black;
     margin-bottom: 1.2em;
    }
 
@@ -42,8 +48,14 @@ section.checkout {
     padding: 0 10px;
     margin-bottom: 20px;
     border-radius: 5px;
-    border: .1em solid rgba(0, 0, 0, 0.121);
-    height: 6.8vh;
+    background: main.$white;
+    color: main.$black;
+    border: .1em solid main.$light-gray;
+    height: 50px;
+   }
+
+   input::placeholder, select::placeholder {
+    color: main.$black
    }
 
    .customer, .state {
@@ -51,20 +63,4 @@ section.checkout {
     gap: 15px;
    }
 } 
-
-@media (max-width: 1023px) {
-  section.checkout {
-    padding: 0 20px;
-
-    .shipping {
-      width: 100vw;
-    }
-  }
-}
-
-@media (max-width: 528px) {
-  section.checkout {
-    padding: 0 15px;
-  }
-}
 

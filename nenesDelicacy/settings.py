@@ -11,22 +11,33 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
 from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+#Initialise enviroment variables
+env = environ.Env()
+environ.Env.read_env()
+
+
+#configures email settings
+EMAIL_HOST_USER = 'catabong89@gmail.com'
+EMAIL_HOST_PASSWORD = 'ooja nklf yklb gtpx'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT =  587
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d60jxa44@p=s)3nf4s=4w1qc=j^xy#8mg&78t02mlc&uq%^-yg'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -38,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'phonenumber_field',
     'rest_framework',
     'corsheaders',
     'config'
@@ -59,7 +71,7 @@ ROOT_URLCONF = 'nenesDelicacy.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,7 +146,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR/'static']
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -151,6 +164,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1", 
+    "localhost"
 ]
 
 

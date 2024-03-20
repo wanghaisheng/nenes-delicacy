@@ -18,12 +18,17 @@ class ToppingSerializer(serializers.ModelSerializer):
         fields =  '__all__'
 
 class CartItemSerializer(serializers.ModelSerializer):
-
     item = ProductSerializer(many=False)
 
     class Meta:
         model = Cartitem
         fields = ('id', 'cart', 'item', 'quantity')
+
+
+class ShippingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShippingAddress
+        fields =  '__all__'
 
 
 class SizeSerializer(serializers.ModelSerializer):
@@ -46,7 +51,7 @@ class ProductTypeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ShipmentSerialzer(serializers.ModelSerializer):
+class StateSerialzer(serializers.ModelSerializer):
    
     class Meta:
         model = States

@@ -1,17 +1,43 @@
 import { Outlet } from "react-router-dom"; 
-import { useRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRef, useEffect} from "react";
+import { useLocation } from "react-router-dom";
+import './layoutFooter.scss'
 import './layouts.scss'
+
+
+const LayoutFooter = () => {
+    return (
+        <footer className='layout-footer'>
+                <ul>
+                    <a href="">
+                        <li>Privacy policy</li>
+                    </a>
+                    <a href="">
+                        <li>Refund policy</li>
+                    </a>
+                    <a href="">
+                        <li>Terms of service</li>
+                    </a>
+                </ul>
+        </footer>
+    )
+}
 
 
 function CheckoutNav() {
 
     const navigation = useRef()
-
+    const location = useLocation()
+    const preview = JSON.parse(window.sessionStorage.getItem('shipping'))
+    const navigate = useNavigate()
+    
+ 
     const links = [
         {
             id: 0,
             title: 'Information',
-            ref: 'pre-cart',
+            ref: '/checkout',
             hasNextSibling: true
         }, 
 
@@ -29,12 +55,18 @@ function CheckoutNav() {
             hasNextSibling: false
         }, 
     ]
-    
-    useEffect(() => {  
 
-        navigation.current.childNodes.forEach(node => {
+
+    useEffect(() => {
+
+        // if (!preview && (location.pathname !== '/checkout')) {
+        //     navigate('checkout')
+        // }
+
+        navigation.current.childNodes.forEach(node => { 
             if (node.firstChild.href === window.location.href) {
                 node.classList.add('active')
+                node.classList.remove('disabled')
                 
                 let nextElement = node.nextElementSibling;
                 while (nextElement) {
@@ -46,8 +78,9 @@ function CheckoutNav() {
             }
         })
 
-    }, [])
+    }, [location])
 
+      
     return ( 
         <div>
             <header>
@@ -68,22 +101,11 @@ function CheckoutNav() {
                     </ul>
                 </div>
             </header>
+            
             <Outlet />
-            <footer className='layout-footer'>
-                <ul>
-                    <a href="">
-                        <li>Privacy policy</li>
-                    </a>
-                    <a href="">
-                        <li>Refund policy</li>
-                    </a>
-                    <a href="">
-                        <li>Terms of service</li>
-                    </a>
-                </ul>
-            </footer>
+            <LayoutFooter />
         </div >
      );
 }
 
-export default CheckoutNav;
+export { CheckoutNav, LayoutFooter};

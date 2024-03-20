@@ -1,0 +1,43 @@
+@use '../../main.scss';
+
+
+.preview {
+    border: main.$border;
+    color: main.$black;
+    border-radius: 5px;
+
+    &>ul:not(ul:last-child) {
+        font-family: 'montserrat';
+        border-bottom: main.$border;
+    }
+
+    &>ul {
+        display: flex;
+        gap: 10px;
+        padding: 15px 0;
+        margin: 0 20px;
+        
+        li {
+            list-style: none;
+        }
+
+        li:first-child {
+            flex-basis: 25%;
+            font-weight: 600;
+            color: main.$gray
+        }
+
+        &>li:last-child{
+            font-size: .7em;
+        }
+
+        ul {
+            margin: 0;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0;
+        }
+    }
+}

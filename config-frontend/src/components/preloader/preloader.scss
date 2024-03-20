@@ -1,0 +1,59 @@
+@use '../../main.scss';
+
+//scss for preloader and error component
+.loading, .error {
+    margin: 0 auto;
+    color: main.$black;
+
+    &>div {
+        display: flex;
+        height: inherit;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .loader {
+            background: url('icons/Fading-lines.gif') no-repeat;
+            width: 64px;
+            height: 64px;
+        }
+
+        .no-network {
+            display: flex;
+            justify-content: center;
+            
+            img {
+                width: 30%;
+                margin: auto;
+            }
+        }
+
+        h1 {
+            margin: 8px 0;
+        }
+
+        span {
+            font-size: .85em;
+        }
+
+        button {
+            margin-top: 25px;
+            background: main.$black;
+            color: main.$white;
+            border: 0;
+            font-weight: bold;
+            padding: 12px 35px;
+            border-radius: 30px;
+        }
+    }
+}
+
+.loading > div {
+    gap: 35px;
+}
+
+.small-loading > div {
+    background: url('/icons/spinner.gif') no-repeat;
+    width: 30px;
+    height: 20px;
+}

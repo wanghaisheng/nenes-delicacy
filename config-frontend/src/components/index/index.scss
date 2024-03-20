@@ -3,17 +3,24 @@
 section.index {
 
     width: 100vw;
+
+    &>div:first-child {
+        position: relative;
+        height: 800px;
+    }
    
     .wrapper {
-        background: url('images/cupcakes-with-pink-icing-pink-drink-flip.jpg');
         background-size: cover;
         justify-content: flex-start;
         align-items: center;
+        padding: 0 20px;
+        top: 0;
+        background-color: main.$pink;
+        position: absolute;
         display: flex;
         background-position: center;
-        position: relative;
         background-repeat: no-repeat;
-        height: 800px;
+        height: 100%;
         width: 100%;
     
         &>div:first-child {
@@ -33,7 +40,7 @@ section.index {
                 transform: translateY(-50%);
     
                 h1 {
-                    font-size: 2.6em;
+                    font-size: 2.8em;
                     padding: 0 25px;
                     margin: 0 0 25px;
                     font-family: 'dancing script';
@@ -192,19 +199,23 @@ section.index {
     
     section.index {
 
-        .wrapper {
+        &>div:first-child {
             height: 600px;
+        }
+
+        .wrapper {
+            height: 100%;
             justify-content: center;
     
             &>div:first-child {
                 margin-left: 0;
                 width: 300px;
-                font-size: .7em;
+                font-size: .75em;
             }
         }
 
         &>div:nth-child(2) {
-            font-size: .7em;
+            font-size: .75em;
 
             .products {
                 margin-top: 20px;
@@ -229,9 +240,13 @@ section.index {
     
     section.index {
 
-        .wrapper {
+        &>div:first-child {
             height: 500px;
-            font-size: .75em;
+        }
+
+        .wrapper {
+            height: 100%;
+            font-size: .85em;
     
             &>div:first-child {
                 width: 230px;

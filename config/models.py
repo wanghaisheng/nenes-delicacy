@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from phonenumber_field.modelfields import PhoneNumberField
 
 class Topping(models.Model):
     name = models.CharField(max_length=100)
@@ -52,10 +53,10 @@ class ProductType(models.Model):
 
 
 class Products(models.Model):
-
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='images', blank=True)
-    description = models.TextField(blank=True)
+    lazyImage= models.ImageField(upload_to='images', default='images/placeholder-1-1.webp', blank=True, null=True)
+    description = models.TextField(blank=True)  
     unit_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, blank=True)
 
@@ -69,13 +70,16 @@ class User(models.Model):
 
     def __str__(self):
         return str(self.id)
-      
+
+    
 class Cart(models.Model):
     session_id = models.CharField(max_length=100, blank=True, null=True)
+    ordered = models.BooleanField(default=False, null=True, blank=True)
+    date_ordered = models.DateField(null=True, blank=True)
 
-    def __str__(self):
+    def __str__(self): 
         return str(self.session_id)
-
+  
 
 class Cartitem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, blank=True, null=True)
@@ -84,12 +88,28 @@ class Cartitem(models.Model):
 
     def __str__(self):
         return f' {self.item}: {self.quantity}'
+  
     
-
 class States(models.Model):
     state = models.CharField(max_length=100)
     lga = models.JSONField(null=True)
 
     def __str__(self):
         return self.state
+    
+ 
+class ShippingAddress(models.Model):
+    session_id = models.CharField(max_length=100, blank=True, null=True)
+    address = models.CharField(max_length=200, blank=True, null=True)
+    firstName = models.CharField(max_length=100, blank=True, null=True)
+    lastName = models.CharField(max_length=100, blank=True, null=True)
+    phone = PhoneNumberField(null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
+    lga = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(max_length=100, blank=True, null=True)
+    deliveryDate = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.session_id}: {self.address}'
 

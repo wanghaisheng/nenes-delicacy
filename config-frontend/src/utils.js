@@ -31,8 +31,7 @@ const getCookie = () => {
             path: '/'}
         );
 
-        get(`cart/createCart?sessionid=${sessionid}`) 
-        .then(res => console.log(res))
+        get(`cart/createCart?sessionid=${sessionid}`)
     }
     return sessionid
 }
@@ -49,6 +48,49 @@ const routeProtection = {
     }
 
 
+const backgroundImages = [
+    {
+        id: 0,
+        background: 'images/cupcakes-with-pink-icing-pink-drink-flip.jpg',
+        header: "Welcome to Nene's delicacy",
+        paragraph: "We invite you to enter a world where buttery\
+                    perfection meets irresistible flavors, where each\
+                    bite transports you to a realm of pure bliss.",
+        lineBreak: "images/noun-decorative-line-4253413.png",
+        lineBreakText: "whether you're celebrating a special occasion or simply craving a moment of indulgence, let us be your trusted companion on this journey of sweet ecstasy"
+    }, 
 
-export { get, post, getCookie, routeProtection }
+    {
+        id: 1,
+        background: 'images/cupcakes-with-pink-icing-pink-drink-flip.jpg',
+        header: "Welcome to Nene's delicacy",
+        paragraph: "We invite you to enter a world where buttery\
+                    perfection meets irresistible flavors, where each\
+                    bite transports you to a realm of pure bliss.",
+        lineBreak: "images/noun-decorative-line-4253413.png",
+        lineBreakText: "whether you're celebrating a special occasion or simply craving a moment of indulgence, let us be your trusted companion on this journey of sweet ecstasy"
+    }
+]
+
+const placeHolder = {
+    address: '',
+    firstName: '',  
+    lastName: '',
+    phone: '',
+    price: '',
+    state: '',
+    lga: '',
+    email: '',
+    deliveryDate: ''
+}
+
+
+export { 
+        get, 
+        post, 
+        getCookie, 
+        routeProtection,
+        backgroundImages,
+        placeHolder
+     }
 

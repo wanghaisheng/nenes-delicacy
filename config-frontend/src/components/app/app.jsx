@@ -1,59 +1,93 @@
+import { 
+    BrowserRouter as Router, 
+    Routes, 
+    Route } from "react-router-dom";
 import { useSelector } from 'react-redux'
-import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useQuery } from 'react-query'
-import Layout from './appLayout';
 import { get, getCookie } from '../../utils';
-import CheckoutNav from '../checkout/checkoutNav';
+import { lazy, Suspense, useEffect } from "react";
+import { useQuery } from "react-query";
+import ProductPreloader from '../products/productPreloader';
 import CheckoutLayout from '../checkout/checkoutLayout';
+import ItemPreloader from '../item/itemPreloader';
+import Shipping from "../shipping/shipping";
+import Payment from "../payments/payment";
+import Checkout from "../checkout/checkout";
+import { CheckoutNav } from '../checkout/checkoutNav';
+import { useMediaQuery } from 'react-responsive'
+import Layout from './appLayout';
+import PaymentStatus from "../payments/Paymentstatus";
+import Index from '../index';
 import './app.scss';
 
-
-const Index = lazy(() => import("../index")) 
-const Shipping = lazy(() => import('../checkout/Shipping'))
 const Product = lazy(() => import("../products/product"))
-const Checkout = lazy(() => import("../checkout/checkout")) 
 const Item = lazy(() => import("../item/item"))
 
 
-
 const App = () => {
-
+   
     const state = useSelector(state => state.getBlurred)
+    const menuState = useSelector(state => state.getMenu)
+    const isDesktop = useMediaQuery({query: '(min-width: 912px)'}); 
 
+    
+    useEffect(() => {
+        if (!state && !menuState) {
+            document.body.style.overflow = 'auto';
+        } else {
+            document.body.style.overflow = 'hidden';
+        }
 
+    }, [state, menuState])
+ 
     const getCart = useQuery({
         queryKey: ['carts'],
-        queryFn: () =>  get(`cart?sessionid=${getCookie()}`), 
+        queryFn: () =>  get(`cart/getCart?sessionid=${getCookie()}`), 
+        staleTime: Infinity,
+        retry: 1
     }, )
+
+    console.log(getCart.data)
+
     
     if (getCart.isLoading) {
-        return <div>Loading...</div>
-     }
+          return <p>Loading Bitch</p>
+     }   
     
      if (getCart.isError) {
         return <pre>Something happened {JSON.stringify(getCart.error)}</pre>
      }
     
-    return ( 
-        <div className={state? 'show': 'app'}>
+
+    return (  
+        <div className={(!state && !menuState || (isDesktop && menuState)) ? 'app': 'show'}>
             <Router>
                 <Routes>
                     <Route element={<Layout />}>
-                             <Route path="/" element={<Suspense><Index /></Suspense>}/>
-                             <Route path="/:type" element={<Suspense><Product /></Suspense>}/>
-                             <Route path="/:type/:name" element={<Suspense><Item /></Suspense>}/>
+                             <Route path="/" element={<Index />} />
+                             <Route path="/:type" element={
+                                <Suspense fallback={<ProductPreloader />}>
+                                    <Product />
+                                </Suspense>
+                            }/>
+
+                             <Route path="/:type/:name" element={
+                                <Suspense fallback={<ItemPreloader />}>
+                                    <Item />
+                                </Suspense>
+                             }/>
                     </Route>
                             
                     <Route element={<CheckoutLayout />}>
-                                <Route element={<CheckoutNav />}>
-                                    <Route path="/pre-cart" element={<Suspense><Checkout /></Suspense>} />
-                                    <Route path="/shipping" element={<Suspense><Shipping /></Suspense>} />
-                                </Route>
-                    </Route>   
+                        <Route element={<CheckoutNav />}>
+                            <Route path="/checkout" element={<Checkout />}/>
+                            <Route path="/shipping" element={<Shipping />}/>
+                            <Route path="/payment" element={<Payment />}/>
+                        </Route>
+                    </Route>
+                    <Route path="/payment-status" element={<PaymentStatus/>}/>
                 </Routes> 
             </Router>
-        </div>
+        </div> 
      ); 
 }
 

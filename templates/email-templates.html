@@ -1,0 +1,34 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="email-body" style="background: red;">
+        <img class="logo" src="{% static 'images/mobile-view-logo.jpg' %}" alt="" style="width: 100px; height: 64px">
+        <h1>Thank you for your purchase!</h1>
+        <p>Your order is confirmed and our team is getting ready to ship your items to you. You can find your order details below.</p>
+        {% for item in order%}
+            <div>
+                <div>
+                    <div class="item-image"><img style="width: 100px;" src="media/{{item.item.image}}" alt=""></div>
+                    <div>Qty:{{item.quantity}}</div>
+                </div>
+                <div>{% widthratio item.item.unit_price item.quantity 1 %}</div>
+            </div>
+        {%endfor%}
+        <div>
+            <div>Subtotal:</div>
+            <div>Shipping: </div>
+            <div>Total:</div>
+        </div>
+    </div>
+</body>
+</html>
+
+

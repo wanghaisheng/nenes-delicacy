@@ -2,205 +2,259 @@
 
 .precart {
     background: main.$green;
+    color: main.$black;
     border-left: 2px solid main.$dark-green;
     flex-basis: 43%;
-    padding:0 40px ;
 
-    &>div {
-        margin: 60px 0;
-    }
 
-    .precart-wrapper {
-        animation: close-cart 2s ease-in-out;
-    }
+    .order-summary {
+        background: rgb(246, 246, 246);
+        border-top: 1px solid rgba(216, 216, 216, 0.95);
 
-    .precart-outer {
-
-        &>div {
+        &>div{
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
             justify-content: space-between;
+            padding: 20px;
     
-            .precart-image {
-                position: relative;
+            div:first-child {
+                display: flex;
+                gap: 5px;
+                
     
-                &>div:first-child {
-                    position: absolute;
-                    font-size: 12px;
-                    font-weight: bold;
+                div:last-child {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    right: -8px;
-                    color: main.$white;
-                    background: rgba(0, 0, 0, 0.205);
-                    z-index: 1;
-                    top: -8px;
-                    height: 20px;
-                    width: 20px;
-                    border-radius: 10px;
-                }
-               
-                img {
-                    width: 70px;
-                    border-radius: 5px;
-                    aspect-ratio: 16/14;
-                    object-fit: cover;
                 }
             }
     
-            .precart-info {
-                font-size: 12px;
-                flex-basis: 60%;
-    
-                h1 {
-                    margin: 0 0 5px;
-                    font-size: 1em;
-                }
-    
-                span {
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    font-size: .9em ;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    line-clamp: 2;
-                    -webkit-box-orient: vertical;
-                }
-            }
-    
-            .precart-price {
-                text-align: right;
-                display: flex;
-                flex-basis: 20%;
-
-                span:first-child {
-                    width: 100%;
-                    font-size: 13px;
-                }
-
-                span:last-child {
-                    font-weight: bold;
-                    font-size: .8em;
-                }
-            }
-        }
-
-         
-    }
-
-    .pricing {
-        border-top: main.$border;
-        margin-top: 20px;
-    
-        &>div:last-child {
-           
-             span {
-                font-weight: bold;
-             }
-
-             p, span {
-                font-size: 1.1em;
-             }
-        }
-
-        &>div:nth-child(2) {
-            border-bottom: main.$border;
-        }
-
-        &>div {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-    
-            h1 {
+            div:last-child span:first-child {
                 font-size: .9em;
-                font-weight: 200;
-                color: main.$gray;
+                opacity: .75;
+            }
+        }
+    }
+    
+
+    .precart-wrapper {
+        padding:60px 25px;
+        display: grid;
+        transition: all .3s ease-in-out;
+        grid-template-rows: 0fr;
+
+        &>div:first-child {
+
+            .precart-outer > div {
+                    display: flex;
+                    gap: 10px;
+                    margin-bottom: 15px;
+                    justify-content: space-between;
+            
+                    .precart-image {
+                        position: relative;
+            
+                        &>div:first-child {
+                            position: absolute;
+                            font-size: 12px;
+                            font-weight: bold;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            right: -8px;
+                            color: main.$white;
+                            background: rgba(0, 0, 0, 0.205);
+                            z-index: 1;
+                            top: -8px;
+                            height: 20px;
+                            width: 20px;
+                            border-radius: 10px;
+                        }
+                       
+                        img {
+                            width: 70px;
+                            border-radius: 5px;
+                            aspect-ratio: 16/14;
+                            object-fit: cover;
+                        }
+                    }
+            
+                    .precart-info {
+                        font-size: 12px;
+                        flex-basis: 60%;
+            
+                        h1 {
+                            margin: 0 0 5px;
+                            font-size: 1em;
+                        }
+            
+                        span {
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            font-size: .9em ;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            line-clamp: 2;
+                            -webkit-box-orient: vertical;
+                        }
+                    }
+            
+                    .precart-price {
+                        text-align: right;
+                        flex-basis: 20%;
+        
+                        &>div {
+                            display: flex;
+                        }
+        
+                        span:first-child {
+                            width: 100%;
+                            font-size: 13px;
+                        }
+        
+                        span:last-child {
+                            font-weight: bold;
+                            font-size: .8em;
+                        }
+                    
+                }
+            }
+
+            .pricing {
+                border-top: main.$border;
+                margin-top: 20px;
+            
+                &>div:last-child {
+                   
+                     span {
+                        font-weight: bold;
+                     }
+        
+                     p, span {
+                        font-size: 1.1em;
+                     }
+                }
+        
+                &>div:nth-child(2) {
+                    border-bottom: main.$border;
+                }
+        
+                &>div {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+            
+                    h1 {
+                        font-size: .9em;
+                        font-weight: 200;
+                        color: main.$gray;
+                    }
+            
+                    p {
+                        font-size: .85em;
+                        font-weight: bold;
+                    }
+        
+                    .reload {
+                        display: flex;
+                        font-weight: 700;
+                        color: rgb(136, 7, 7);
+                        cursor: pointer;
+                        align-items: center;
+                        gap: 5px;
+        
+                        &>div:first-child {  
+                            font-size: 1.3em;
+                            display: flex;
+                            align-items: center;
+                        }
+                    }
+            
+                    .shipping-info {
+                        font-weight: bold;
+                        font-size: 0.85em;
+                    }
+                }
+
+                .calculate-next {
+                    font-size: .75em;
+                    color: main.$gray;
+                }
+            }
+        
+        }
+
+        .route-protection-wrapper {
+            margin-top: 30px;
+    
+            &>p {
+                color: main.$black;
+                padding-bottom: 0;
+                max-width: 500px;
+                font-size: .78em;
             }
     
-            p {
-                font-size: .85em;
-                font-weight: bold;
-            }
-    
-            .shipping-info {
-                color: main.$gray;
-                font-size: .7em;
-                font-weight: 100;
+            &>div {
+                display: flex;
+                justify-content: space-between;
+        
+                .route-protection {
+                    flex-basis: 70%;
+        
+                    span {
+                        font-weight: bold;
+                        font-size: .9em;
+                        margin-left: 5px;
+                    }
+        
+                    p {
+                        font-size: .65em;
+                        font-weight: 700;
+                        color: main.$gray
+                    }
+                }
+        
+                .toggle, .deselect {
+                    cursor: pointer;
+                    
+                    &>div {
+                        width: 40px;
+                        position: relative;
+                        transition: all .6s ease-in-out;
+                        height: 20px;
+                        padding: 0 5px;
+                        background: main.$black;
+                        border-radius: 20px;
+        
+                        .thumb {
+                            width: 12px;
+                            position: absolute;
+                            top: 50%;
+                            transition: all .3s ease-in-out;
+                            left: 60%;
+                            transform: translateY(-50%);
+                            height: 12px;
+                            border-radius: 50%;
+                            background: main.$white;
+                        }
+                    }
+                }
+        
+                .deselect {
+        
+                    &>div {
+                        background: main.$light-gray;
+                        justify-content: flex-start;
+        
+                        .thumb {
+                            left: 10%;
+                        }
+                    }
+                }
             }
         }
     }
 
-    .route-protection-wrapper {
-
-        margin-top: 30px;
-
-        &>p {
-            color: main.$black;
-            padding-bottom: 0;
-            font-size: .78em;
-        }
-
-        &>div {
-            display: flex;
-            justify-content: space-between;
-    
-            .route-protection {
-                flex-basis: 70%;
-    
-                span {
-                    font-weight: bold;
-                    font-size: .9em;
-                    margin-left: 5px;
-                }
-    
-                p {
-                    font-size: .65em;
-                    font-weight: 700;
-                    color: main.$gray
-                }
-            }
-    
-            .toggle, .deselect {
-                cursor: pointer;
-                
-                &>div {
-                    width: 40px;
-                    position: relative;
-                    transition: all .6s ease-in-out;
-                    height: 20px;
-                    padding: 0 5px;
-                    background: main.$black;
-                    border-radius: 20px;
-    
-                    .thumb {
-                        width: 12px;
-                        position: absolute;
-                        top: 50%;
-                        transition: all .3s ease-in-out;
-                        left: 60%;
-                        transform: translateY(-50%);
-                        height: 12px;
-                        border-radius: 50%;
-                        background: main.$white;
-                    }
-                }
-            }
-    
-            .deselect {
-    
-                &>div {
-                    background: main.$light-gray;
-                    justify-content: flex-start;
-    
-                    .thumb {
-                        left: 10%;
-                    }
-                }
-            }
-        }
+    .show-cart {
+        grid-template-rows: 1fr;
     }
 }
 
@@ -220,6 +274,8 @@
 
     &>div:first-child {
         display: flex;
+        color: main.$black;
+        gap: 5px;
         align-items: center;
         font-size: .89em;
 
@@ -261,33 +317,51 @@
         font-size: 16px;
       }
    }
+
+   button:disabled {
+    opacity: .6;
+   }
 }
 
 
-@media (max-width: 920px) {
+@media (max-width: 767px) {
+
     .precart {
-        padding: 25px;
-
+        border-left: none;
+        
         .precart-wrapper {
-            overflow: hidden;
-            height: 0;
-        }
+            border-top: 1px solid main.$dark-green;
+            padding: 25px;
+        
+            &>div:first-child {
+                overflow: hidden;
 
-        .precart-outer {
-            padding-top: 10px;
-        }
+                .precart-outer {
+                    padding-top: 10px;
+                }
+            }
 
-        &>div {
-            margin: 0;
-        }
-
-        .route-protection-wrapper {
-            margin-top: 0;
-
-            &> p {
-                margin-bottom: 0;
+            .route-protection-wrapper {
+                margin-top: 10px;
+    
+                &> p {
+                    margin-bottom: 0;
+                }
             }
         }
     }
 }
 
+
+@media (max-width: 414px) {
+    
+    .buttons {
+        flex-direction: column-reverse;
+        gap: 20px;
+
+        button  {
+            width: 100%;
+            justify-content: center;
+        }
+    } 
+}

@@ -1,17 +1,22 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { useQuery } from 'react-query'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { Spinner, Error} from '../preloader/preloader'
+import ProductPreloader from './productPreloader'
 import { Link } from 'react-router-dom';
 import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { get } from '../../utils';
 import './product.scss';
+import '../preloader/preloader.scss'
 
 
 const Product = () => {
     
     const [current, setCurrent] = useState([])
-    const [products, setProducts] = useState([])
     const param = useParams()
+    window.scrollTo(0, 0)
 
 
     useEffect(() => {
@@ -23,25 +28,34 @@ const Product = () => {
 
     }, [])
 
+    document.title = `${current.product_name} | Nene's Delicacy `;
 
 
-    useEffect(() => {
-        document.title = `${current.product_name} | Nene's Delicacy `;
+    const { isError, isLoading, data} = useQuery({
+        queryKey: ['products'],
+        queryFn: () => get('products'),
+        select: useCallback(
+            (data) => data.filter(product => product.product_type.id === current.id)
+        )
+    }, )
 
-        get('products').then(res => {
-            const result = res.filter(product => product.product_type.id === current.id)
-            setProducts(result)
+
+    if (isLoading) {
+        return <ProductPreloader />
+    }
+
+    if (isError) {
+        return <Error />
+    }
+
     
-        })
-
-    }, [current])
-
     return (
-        <section className='product'>
+        <>
+         <section className='product'>
             <div>
                 <div>
                     <ul className="links">
-                        <li><a href="">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
                         <li>{current.product_name}</li>
                     </ul>
@@ -50,18 +64,24 @@ const Product = () => {
                         <div>{current.banner_text}</div>
                     </div>
                 </div>
-                <div><img src={current.banner_image} alt="colorful cake" srcSet="" /></div>
+                <div><img src={current.banner_image} alt="colorful cake" srcSet="" loading='lazy'/></div>
             </div>
 
             <div className="products">
-                {products.map(product => (
+                {data.map(product => (
                     <Link to={product.name} key={product.id}>
                         <div>
                             <div className='image-wrapper'>
-                                <img src={product.image} alt="" />
+                                <LazyLoadImage
+                                height='100%'
+                                width='100%'
+                                src={product.image} 
+                                effect='blur'
+                                alt={product.name}
+                                placeholderSrc={product.lazyImage}/>
                             </div>
 
-                            <div>
+                            <div> 
                                 <p>{product.name}</p>
                                 <p>{product.description}</p>
                                 <div>
@@ -76,6 +96,7 @@ const Product = () => {
                 ))}
             </div>
         </section>
+    </>   
     );
 }
 

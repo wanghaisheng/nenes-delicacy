@@ -2,11 +2,12 @@
 
 .main-footer {
     padding-top: 20px;
+    font-size: .9em;
     width: 100%;
     height: 100%;
 
     .news-letter {
-        background: url('images/Group_906.webp');
+        background: url('/images/Group_906.webp');
         color: main.$black;
         background-position: center;
         padding: 50px 20px;
@@ -22,11 +23,10 @@
                 font-weight: 600;
                 margin: 0;
                 font-family: 'dancing script';
-                font-size: 3.3em;
+                font-size: 2.8em;
             }
 
             p {
-                font-size: 1.11em;
                 margin-bottom: 2em;
             }
 
@@ -85,13 +85,13 @@
     }
 
     &>div:nth-child(2) {
-
         background: main.$green;
+        color: main.$black;
 
         &>div:last-child {
             text-align: center;
-            margin-top: 60px;
-            padding: 10px;
+            margin-top: 50px;
+            padding: 10px 20px;
             font-weight: 700;
             font-size: .65em;
     
@@ -112,8 +112,9 @@
 
     .footer {
         display: flex;
+        flex-wrap: wrap;
         color: main.$black;
-        padding: 5px 40px 0;
+        padding: 20px 20px 0;
         justify-content: space-between;
         gap: 30px;
 
@@ -142,7 +143,7 @@
         }
 
         &>div:first-child {
-            flex-basis: 35%;
+            flex-basis: 30%;
 
             ul {
                 display: flex;
@@ -163,42 +164,15 @@
 
 @media (max-width: 767px) {
     .main-footer {
+        font-size: .75em;
+        
+        .footer > div:first-child {
+            flex-basis: 100%;
 
-        .news-letter > div {
-            font-size: .7em;
-        }
-
-        .footer {
-            padding: 5px 15px 0;
-
-            &>div:nth-last-child(-n+3) {
-                display: none;
-            }
-    
-            flex-direction: column;
-            align-items: center;
-           
-            gap:10px;
-            text-align: center;
-    
-            ul {
-                justify-content: center;
+            &>div {
+                    max-width: 500px;
             }
         }
-
-        &>div:nth-child(2) {
-            font-size: .8em;
-
-            &>div:last-child {
-                margin-top: 30px;
-            }
-        }
-    }
+    } 
 }
 
-@media (max-width: 320px) {
-    .main-footer .news-letter > div {
-        font-size: .57em;
-    }
-
-}

@@ -1,8 +1,15 @@
 @use '../../main.scss';
 
+body {
+    overflow-x: hidden;
+}
+
 .app {
     position: relative;
+    overflow-x: hidden;
+    background: main.$white;
 }
+
 
 .app::before, .show::before{
     content: "";
@@ -18,4 +25,44 @@
 
 .show::before {
     display: block;
+}
+
+.skeleton-loading {
+    background: main.$gray;
+    min-height: 100vh;
+
+    header {
+        background: main.$light-gray;
+        height: 50px;
+
+        &>div {
+            display: flex;
+            padding: 0 20px;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .skeletal-user-info{
+            display: flex;
+            gap: 20px;
+           
+            div {
+                width: 30px;
+                background: main.$gray;
+                border-radius: 15px;
+                height: 30px;
+            }
+        }
+    }
+
+    .SVGicon {
+        width: 500px;
+    }
+}
+
+@media (max-width: 320px) {
+    .app {
+        font-size: .8em;
+    }
 }

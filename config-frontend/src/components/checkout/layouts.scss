@@ -1,50 +1,25 @@
-@use '../../main.scss';
+@use '../../main.scss'; 
 
-.mobile-logo {
-    width: 235px;
-    padding: 10px;
-
-    img {
-        width: 100%
-    }
-}
-
-
-.layout-wrap {
+.checkout-layout {
     display: flex;
-    justify-content: space-between;
-
-    .order-summary {
-        display: flex;
-        justify-content: space-between;
-        background: rgba(202, 202, 202, 0.196);
-        border-top: 1px solid rgba(216, 216, 216, 0.95);;
-        padding: 20px 10px;
-
-        div:first-child {
-            display: flex;
-            gap: 5px;
-
-            div:last-child {
-                display: flex;
-                align-items: center;
-            }
-        }
-
-        div:last-child span:first-child {
-            font-size: .9em;
-            opacity: .75;
-        }
-    }
+    min-height: 100vh;
 
     &>div:first-child {
         flex-basis: 65%;
+        justify-content: space-between;
+        gap: 80px;
         display: flex;
         flex-direction: column;
         position: relative;
     }
 
-    header {
+    &>div:last-child {
+        flex-basis: 45%;
+    }
+}
+
+ 
+.layout-wrap header {
         padding: 30px 25px;
 
         .navigation ul {
@@ -68,6 +43,10 @@
                 }
             }
 
+            li {
+                color: main.$black;
+            }
+
             .disabled {
                 color: main.$light-gray;
 
@@ -77,165 +56,44 @@
                 }
             }
         }
-
-    }
-
-    .layout-footer {
-        
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: flex-end;
-        margin-top: 65px;
-        justify-content: center;
-        
-        ul{
-            display: flex;
-            justify-content: center;
-            width: 70%;
-            border-top: 1px solid rgba(0, 0, 0, 0.406);
-            font-weight: 900;
-            font-size: .7em;
-            padding: 15px 0;
-            margin: 0;
-            color: main.$gray;
-            gap: 20px;
-
-            a {
-                text-decoration: none;
-            }
-    
-            li {
-                list-style: none;
-                color: main.$black;
-            }
-        }
-    }
 }
 
 .active {
     font-weight: bolder;
-  }
-     
+}
 
-// shipping component scss styling
+.mobile-logo {
+    width: 230px;
+    padding: 10px 0;
 
-section.shipping {
-    width: 83%;
-    margin: 30px auto 0;
-
-    .preview {
-        border: .09em solid main.$faint-black;
-        border-radius: 5px;
-
-        &>ul:not(ul:last-child) {
-            border-bottom: 1px solid main.$faint-black;
-        }
-
-        &>ul {
-            display: flex;
-            padding: 16px 0;
-            margin: 0 25px;
-            justify-content: space-between;
-        
-            li {
-                list-style: none;
-            }
-
-            &>li:first-child {
-                font-weight: bold;
-                font-size: .85em;
-                color: main.$gray
-            }
-
-            &>li:last-child {
-                text-align: right;
-                font-size: .7em;
-            }
-
-            &>li:last-child:hover {
-                cursor:pointer;
-            }
-
-            li:first-child, li:last-child {
-                flex-basis: 30%;
-            }
-
-            li:nth-child(2), ul:nth-child(2) {
-                flex-basis: 100%;
-                font-size: .9em;
-                padding-left: 0;
-            }
-        }
-
-    }
-
-    .calender {
-        margin: 80px 0 50px;
-    
-        h1 {
-          text-align: center;
-          width: 40%;
-          margin: 0 auto;
-        }
-        
-        .rdp-months {
-          justify-content: center;
-        }
-  
-        .rdp-caption {
-          background: main.$green;
-  
-          .rdp-caption_label {
-            font-weight: normal;
-            font-size: .95em;
-          }
-        }
-  
-        .rdp-nav_button {
-          width: 1.5em;
-          border-radius:0;
-          transition: all .3s ease-in-out;
-  
-          svg {
-            width: 12px;
-          }
-        }
-  
-        .rdp-button {
-          transition: all .2s ease-in-out;
-          width: 32px;
-          height: 32px;
-        }
-  
-        .rdp-button:not([disabled]):hover:not(.rdp-day_selected):not(.rdp-nav_button) {
-          cursor: pointer;
-          background: rgba(0, 0, 0, 0.103);
-          color: main.$black; 
-        }
-  
-        .rdp-nav_button:not([disabled]):hover {
-          background: main.$black;
-          color: main.$green
-        } 
-  
-        .rdp-day_today:not(.rdp-day_outside) {
-          font-weight: normal;
-        }
-  
-        .rdp-day_selected {
-          background: main.$black;
-          color: main.$white;
-        }
+    img {
+        width: 100%
     }
 }
 
 
-@media (max-width: 1023px) {
+
+
+@media (max-width: 767px) {
     .layout-wrap {
         flex-direction:column-reverse;
         position: sticky;
         top: 0;
+
+        &>div:first-child {
+            min-height: 75vh;
+        }
+
+        header {
+
+            .navigation ul {
+                font-size: .8em
+            }
+
+            .mobile-logo {
+                display: none;
+            }
+        }
 
         .layout-footer {
             position: static;
@@ -245,32 +103,5 @@ section.shipping {
             }
         }
     }
-
-    section.shipping {
-
-        .calender {
-
-            .rdp {
-                margin: 0;
-            }
-
-            h1 {
-                width: 100%;
-            }
-        }
-    }
 }
 
-
-@media (max-width: 767px) {
-    .layout-wrap header {
-
-        .mobile-logo {
-            display: none;
-        }
-
-        .navigation ul {
-            font-size: .8em
-        }
-    }
-}
