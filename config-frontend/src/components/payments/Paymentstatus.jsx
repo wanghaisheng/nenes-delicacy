@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { get, getCookie } from '../../utils';
-import Cookie from 'universal-cookie';    
+import { useSelector } from 'react-redux';
 import Precart from '../precart/precart';
 import { LayoutFooter } from '../checkout/checkoutNav';
 import { loadStripe } from "@stripe/stripe-js";
@@ -12,9 +12,8 @@ import '../checkout/layouts.scss'
 
 const Pay = () => {
   const stripe = useStripe();
-  const cookie = new Cookie()
   const navigate = useNavigate()
-  const preview = JSON.parse(window.sessionStorage.getItem('shipping'))
+  const shipping = useSelector((state) => state.getShipping);
   const [intent, setIntent] = useState({status: ''})
 
 
@@ -42,10 +41,11 @@ const Pay = () => {
 
   const {data, isLoading, isError} = useQuery({
     queryKey: ['order', intent.status],
-    queryFn: () => get(`cart/createOrder?sessionid=${getCookie()}&email=${preview.email}`),
+    queryFn: () => get(`cart/createOrder?sessionid=${getCookie()}&id=${intent.id}`),
     retry: 1,
     enabled: intent.status === 'succeeded'
 })
+
 
 
 // if (data) {
@@ -58,53 +58,20 @@ const getStatus = () => {
     switch (intent.status) {
         case 'succeeded':
           return (
-            <div className='payment-successful checkout-layout  '>
-              <div>
-                <div className='mobile-logo'>
-                  <img src="images/mobile-view-logo.jpg" alt="" />
-                </div>
-
-                <div className='order-details'>
+              <div className='order-details'>
                   <div>
-
+                    <div><ion-icon name="checkmark-circle-outline"></ion-icon></div>
                     <div>
-                      <div><ion-icon name="checkmark-circle-outline"></ion-icon></div>
-                      <div>
-                        <h1>Thank you {preview.firstName}!</h1>
-                      </div>
+                      <h1>Thank you {shipping.firstName}!</h1>
                     </div>
-                    
-                    <div className='confirmation'>
-                      <h1>Your order is confirmed</h1>
-                      <span>You'll recieve a confirmation email with your order number shortly</span>
-                    </div>
-   
-                    <div className='order-info'>
-                      <h1>Customer Information</h1>
-                      <ul>
-                        <li>
-                          <h2>Contact Information</h2>
-                          <li>{preview.email}</li>
-                          <li>{preview.phone}</li>
-                        </li>
-                        <li>
-                          <h2>Shipping address</h2>
-                          <li>{preview.firstName} {preview.lastName}</li>
-                          <li>{preview.address}</li>
-                          <li>{preview.lga}, {preview.state}</li>
-                        </li>
-                      </ul>
-                    </div>
-
                   </div>
-                </div>
-
-                <LayoutFooter/>
+                    
+                  <div className='confirmation'>
+                    <h1>Your order is confirmed</h1>
+                    <span>You'll recieve a confirmation email with your order number shortly</span>
+                  </div>
               </div>
-
-              <Precart />
-            </div>
-          )
+            )
 
         case 'processing':
           return (
@@ -131,8 +98,7 @@ const getStatus = () => {
               <div></div>
           )
       }
-}
-
+  }
 
     return (
       <section data-payment-status>

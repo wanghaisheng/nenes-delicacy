@@ -7,14 +7,12 @@ const Preview = () => {
 
     const shippingInfo = useSelector((state) => state.getShipping)
     const [shipping, setShipping] = useState(placeHolder)
-    console.log(shippingInfo, shipping)
+
 
     useEffect(() => {
-
         if (shippingInfo) {
             setShipping(shippingInfo)
         }
-
     }, [shippingInfo])
 
 

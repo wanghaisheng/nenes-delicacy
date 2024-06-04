@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,28 +7,203 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style type="text/css">
+
+        .email-body {
+            font-family: 'helvetica';
+            font-size: 13px;
+            margin: 0 auto;
+            width: 70%;
+        }
+
+        .email-body > div {
+            margin-top: 20px;
+        }
+
+        header {
+            padding: 15px;
+            text-align: center;
+            background: #bae8d4;
+        }
+
+        .naira {
+            width: 9px;
+            height: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 15px;
+        }
+
+        .cart-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+
+        td {
+            padding: 10px 0;
+        }
+
+        .price-wrap {
+            font-size: 0;
+        }
+
+        .price-wrap > * {
+            vertical-align: middle;
+        }
+
+        .align-right {
+            text-align: right;
+            vertical-align: top;
+        }
+
+        span {
+            font-size: 13px;
+        }
+        
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        li {
+            margin: 0;
+            font-size: 13px;
+        }
+
+        h1, h2, h3, h4 {
+            margin:0;
+        }
+
+        h4, h2 {
+            margin-bottom: 5px;
+        }
+
+        .top-margin {
+            vertical-align: top;
+            display: inline-block;
+        }
+
+        .confirmation {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 540px) {
+            .email-body {
+                width: 100%;
+            }
+
+            .confirmation {
+                max-width: 300px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <div class="email-body" style="background: red;">
-        <img class="logo" src="{% static 'images/mobile-view-logo.jpg' %}" alt="" style="width: 100px; height: 64px">
-        <h1>Thank you for your purchase!</h1>
-        <p>Your order is confirmed and our team is getting ready to ship your items to you. You can find your order details below.</p>
-        {% for item in order%}
-            <div>
-                <div>
-                    <div class="item-image"><img style="width: 100px;" src="media/{{item.item.image}}" alt=""></div>
-                    <div>Qty:{{item.quantity}}</div>
-                </div>
-                <div>{% widthratio item.item.unit_price item.quantity 1 %}</div>
+    <div class="email-body">
+        <header>
+            <h1>Nenee's Delicacy</h1>
+        </header>
+
+        <div style="text-align: center;">
+            <h2>Thank you for your purchase!</h2>
+            <div style="margin: 10px 0;">Order #{{id}}</div>
+            <div class='confirmation'>
+                Your order is confirmed and our team is getting ready to ship your items to you. You can find your order details below.
             </div>
-        {%endfor%}
-        <div>
-            <div>Subtotal:</div>
-            <div>Shipping: </div>
-            <div>Total:</div>
         </div>
+
+        <div>
+            <h4>Order summary</h4>
+            <table>
+                {% for item in order%}
+                <tr style="border-bottom: 1px solid #00000025">
+                    <td style="display: flex">
+                        <div><img class='cart-image' src="https://res.cloudinary.com/dqdtnitie/image/upload/v1712137804/Sprinkle-Funfetti-Cake-1200x1414_iw6qx9.jpg" alt=""></div>
+                        <span style="margin-left: 10px">
+                            {{item.item.name}} x {{item.quantity}}
+                            <div class="price-wrap">
+                                <img class="naira" src="https://res.cloudinary.com/dqdtnitie/image/upload/v1712305309/naira-sign-solid_fxcbdh.png" alt="">
+                                <span>{{item.price|intcomma}}</span>
+                            </div>
+                        </span>
+                    </td>
+                       
+                    <td class="align-right price-wrap">
+                        <img class="naira" src="https://res.cloudinary.com/dqdtnitie/image/upload/v1712305309/naira-sign-solid_fxcbdh.png" alt="">
+                        <span>{{item.item.unit_price|intcomma}}</span>
+                    </td>
+                </tr>
+                {%endfor%}
+                <tr>
+                    <td>Subtotal</td>
+                    <td class="align-right price-wrap">
+                        <img class="naira" src="https://res.cloudinary.com/dqdtnitie/image/upload/v1712305309/naira-sign-solid_fxcbdh.png" alt="">
+                        <span>{{total|intcomma}}</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Shipping</td>
+                    <td class="align-right price-wrap">
+                        <img class="naira" src="https://res.cloudinary.com/dqdtnitie/image/upload/v1712305309/naira-sign-solid_fxcbdh.png" alt="">
+                        <span>{{shipping.price|intcomma}}</span>
+                    </td>
+                </tr>
+
+                <tr style="border-top: 1px solid #00000025">
+                    <td>
+                        <span style="font-weight: bold;">Total</span>
+                    </td>
+
+                    <td class="align-right price-wrap">
+                        <img class="naira" src="https://res.cloudinary.com/dqdtnitie/image/upload/v1712305309/naira-sign-solid_fxcbdh.png" alt="">
+                        <span>{{ total|add:shipping.price|intcomma}}</span>
+                    </td>
+                </tr>
+            </table>
+
+        
+        <div style="margin-top: 35px;">
+            <div class="top-margin">
+                <h4>Customer Information</h4>
+                <ul>
+                    <li>{{shipping.firstName}} {{shipping.lastName}}</li>
+                    <li style="color: #1d1d1e">{{shipping.email}}</li>
+                    <li>{{shipping.phone}}</li>
+                </ul>
+            </div>
+
+            <div class="top-margin" style="margin-left: 50px">
+                <h4>Shipping Address </h4>
+                <ul>
+                    <li>{{shipping.address}},</li>
+                    <li>{{shipping.state}}, {{shipping.lga}}.</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <h4>Expected delivery</h4>
+                <ul>
+                    <li>{{shipping.deliveryDate}}</li>
+                </ul>
+            </div>
+        </div>
+
+        <p style="text-align: center; margin-top: 55px;">
+            If you need to contact us, reply to this email or reach out to us at neneesdelicacy@gmail.com on WhatsApp at 09054521389.
+        </p>
     </div>
+
 </body>
 </html>
 

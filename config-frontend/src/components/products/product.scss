@@ -11,7 +11,7 @@ section.product {
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding: 80px 40px 15px 20px;
+            padding: 20px;
             color: main.$black;
             background: main.$green;
 
@@ -69,7 +69,7 @@ section.product {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 15px;
-        padding: 40px;
+        padding: 20px;
 
         &>a {
 
@@ -128,6 +128,7 @@ section.product {
     }
 }
 
+
 @media (max-width: 912px) {
 
     section.product .products {
@@ -141,10 +142,6 @@ section.product {
             &>div:first-child {
                 display: none
             }
-
-            .products {
-                padding: 100px 20px 0;   
-            } 
         }
     }
 
@@ -160,7 +157,6 @@ section.product {
 
         .products {
             grid-template-columns: repeat(1, 1fr);
-            padding: 100px 20px 0;
     
             &>a>div {
                 display: flex;

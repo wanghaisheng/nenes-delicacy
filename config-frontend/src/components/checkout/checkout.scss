@@ -8,6 +8,32 @@ section.checkout {
     display: flex;
     justify-content: center;
 
+    .shipping-error {
+      background: main.$light-red;
+      border: 2px solid main.$red;
+      text-align: center;
+      font-weight: bold;
+      position: relative;
+      padding: 20px;
+      border-radius: 5px;
+      color: main.$red;
+
+      button {
+        position: absolute;
+        border: none;
+        padding: 5px;
+        color: main.$red;
+        background: transparent;
+        right: 0;
+        top: 0;
+
+        ion-icon {
+          font-size: 25px;
+          font-weight: bolder;
+        }
+      }
+    }
+
     .address {
       width: 100%;
       max-width: 700px;

@@ -11,6 +11,18 @@ import './navbar.scss';
 const Cart= lazy(() => import("../cart/cart"));
 
 
+const ShippingNav = () => {
+    return (
+        <div className='shipping-info'>
+            <h2>Shipping Information</h2>
+            <p> We do not dispatch products today or within the next two days,
+                to ensure that we consistently deliver fresh items to our customers.
+            </p>
+        </div>
+    )
+}
+
+
 const Navbar = () => {
                           
     const dispatch = useDispatch()
@@ -66,16 +78,19 @@ const Navbar = () => {
                                         <li><ion-icon name='chevron-up-outline'></ion-icon></li>
                                     </ul>
                                     <div className='accordian-body'>
-                                        <div className="map-container" />
+                                        <div>
+                                            <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1965.1700446014268!2d8.88234653822753!3d9.905606997548775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwNTQnMjAuMiJOIDjCsDUzJzAxLjEiRQ!5e0!3m2!1sen!2sng!4v1711917978711!5m2!1sen!2sng" style={{width:'100%', height: 300, border: 0}}></iframe>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div className='accordian' onClick={showAccordian}>
                                     <ul>
                                         <li>SHIPPING</li>
                                         <li><ion-icon name='chevron-up-outline'></ion-icon></li>
                                     </ul>
                                     <div className='accordian-body'>
-                                        <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero obcaecati, deleniti quas ipsam ipsum ab neque. Nesciunt sit quod quam.</div>
+                                        <ShippingNav />
                                     </div>
                                 </div>
                                 <div>
@@ -98,10 +113,14 @@ const Navbar = () => {
                      <div className="desktop-menu">
                         <div>
                             <div>Visit us</div>
-                                <div>
-                                    <ion-icon name='chevron-up-outline'></ion-icon>
+                            <div>
+                                <ion-icon name='chevron-up-outline'></ion-icon>
+                            </div>
+                            <div className='dropdown'>
+                                <div className='map-wrapper'>
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1965.1700446014268!2d8.88234653822753!3d9.905606997548775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwNTQnMjAuMiJOIDjCsDUzJzAxLjEiRQ!5e0!3m2!1sen!2sng!4v1711917978711!5m2!1sen!2sng" style={{width:'100%', height: 380, border: 0}}></iframe>
                                 </div>
-                                <div className='dropdown'></div>
+                            </div>
                         </div>
 
                         <div>
@@ -109,7 +128,9 @@ const Navbar = () => {
                             <div>
                                 <ion-icon name='chevron-up-outline'></ion-icon>
                             </div>
-                            <div className='dropdown'></div>
+                            <div className='dropdown'>
+                                <ShippingNav />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,7 +149,7 @@ const Navbar = () => {
 
                     <div onClick={() => {dispatch(Blur());}}>
                         <ion-icon name="bag"></ion-icon>
-                        <div className='cart-number'>{cart.length===0? "": cart.length}</div>
+                        <div className='cart-number'>{cart.cartitems.length===0? "": cart.cartitems.length}</div>
                     </div>
                 </div>
             </div>

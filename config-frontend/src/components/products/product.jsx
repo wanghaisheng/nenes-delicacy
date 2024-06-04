@@ -2,8 +2,9 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState, useCallback } from 'react';
 import { useQuery } from 'react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { Spinner, Error} from '../preloader/preloader'
+import { Error } from '../preloader/preloader'
 import ProductPreloader from './productPreloader'
+import NotFound from '../404/404';
 import { Link } from 'react-router-dom';
 import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,24 +15,23 @@ import '../preloader/preloader.scss'
 
 const Product = () => {
     
-    const [current, setCurrent] = useState([])
+    const [current, setCurrent] = useState({product_name: '404 Not Found', id: null})
     const param = useParams()
     window.scrollTo(0, 0)
 
 
     useEffect(() => {
-    
         get('categories').then(res => {
             const result = res.find(type => type.parameter === param.type)
-            setCurrent(result)
+            if (result) setCurrent(result)
         })
-
     }, [])
+
 
     document.title = `${current.product_name} | Nene's Delicacy `;
 
 
-    const { isError, isLoading, data} = useQuery({
+    const { isError, isLoading, data } = useQuery({
         queryKey: ['products'],
         queryFn: () => get('products'),
         select: useCallback(
@@ -40,6 +40,10 @@ const Product = () => {
     }, )
 
 
+    if (!current.id) {
+        return <NotFound />
+    }
+    
     if (isLoading) {
         return <ProductPreloader />
     }

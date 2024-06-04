@@ -18,20 +18,17 @@ const Preview = lazy(() => import("../preview/preview"))
 const Payment = () => {
 
   const queryClient = useQueryClient()
-  const price = useSelector((state) => state.getPayment);
-  const preview = JSON.parse(window.sessionStorage.getItem('shipping'))
-  const shipping = queryClient.getQueryData(['distance'], preview)
- 
+  const shipping = useSelector((state) => state.getShipping);
+  const cart = queryClient.getQueryData(['carts'])
+
   
   const {isLoading, isError, data, refetch} = useQuery({
-    queryKey: ['payment', price],
+    queryKey: ['payment'],
     queryFn: () => primaryURL.post('payment', {
-      amount: price * 100, 
-      email: preview.email,  
-      shipping: {amount: shipping}
+      amount: Math.ceil((Number(shipping.price) + Number(cart.total)) * 100), 
     }),
     retry: 1,
-    enabled: price > 0,
+    enabled: !!shipping,
   })
   
 
@@ -39,21 +36,26 @@ const Payment = () => {
 
   if (isError) return <Error refetch={refetch}/>
 
-  
-  const options = {  
-    clientSecret: data? data.data: '',  
-    appearance: {
-        theme: 'flat',
-        variables: { colorPrimaryText: '#262626' }
+
+  if (data) {
+
+    const options = {  
+      clientSecret: data? data.data: undefined,  
+      appearance: {
+          theme: 'flat',
+          variables: { colorPrimaryText: '#262626' }
+      }
     }
+  
+    return (
+      <Elements key={uuid4()} stripe={stripe} options={options}>
+        <CheckoutPage />
+      </Elements>
+    )
   }
 
-  return (
-    <Elements key={uuid4()} stripe={stripe} options={options}>
-      <CheckoutPage />
-    </Elements>
-  )
 };
+
 
 
 const CheckoutPage = () => {

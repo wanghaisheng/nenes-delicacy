@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faNairaSign } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect, useRef, useMemo} from "react";
-import { payment, Details, shipping } from '../../actions';
-import { routeProtection, get, getCookie } from '../../utils';
+import { useState, useEffect, useRef } from "react";
+import {  Details, shipping } from '../../actions';
+import { routeProtection, get, getCookie, placeHolder } from '../../utils';
 import { useLocation } from 'react-router-dom';
 import { useQueryClient, useQuery} from 'react-query'
 import { useMediaQuery } from 'react-responsive'
@@ -31,6 +31,7 @@ const Precart = () => {
     const {data, isLoading, isError} = useQuery({
         queryKey: ['shipping'],
         queryFn: () => get(`shipping/get_shipping?sessionID=${getCookie()}`),
+        placeholderData: placeHolder
     })  
     
 
@@ -54,25 +55,12 @@ const Precart = () => {
     }
 
 
-    const {total, price} = useMemo(() => { 
-        let price = carts.reduce(
-            (acc, cart) => acc + Number(cart.item.unit_price * cart.quantity), 0
-        )
-        const total =  Math.ceil(price + (data? Number(data.price) : 0));
-        return { total, price }
-
-    }, [carts,  data])
-
-
-
     //dispatches the grandtotal and shipping information to the redux store
     useEffect(() => {
         if (data) {
             dispatch(shipping(data))
         }
-
-        dispatch(payment(total))
-    }, [total, data])
+    }, [data])
 
    
     //returns JSX element based on a satisfied condition
@@ -87,7 +75,7 @@ const Precart = () => {
             return (
             <div>
                 <FontAwesomeIcon icon={faNairaSign } />
-                {Intl.NumberFormat("en-US").format(Math.ceil(data? data.price: 0 ))} 
+                {Intl.NumberFormat("en-US").format(Number(data.price))} 
             </div>)
         }
     }
@@ -109,7 +97,7 @@ const Precart = () => {
                         <div>
                             <span><FontAwesomeIcon icon={faNairaSign} /></span>
                             <span>
-                                {Intl.NumberFormat("en-US").format(total)}
+                                {Intl.NumberFormat("en-US").format(cart.total)}
                             </span>
                         </div>
                     </div>
@@ -120,11 +108,11 @@ const Precart = () => {
             <div ref={precart} className="precart-wrapper">
                 <div>
                     <div className="precart-outer">
-                    {carts.map(cart => (
+                    {carts.cartitems.map(cart => (
                         <div key={cart.id}>
                             <div className="precart-image">
                                 <div>{cart.quantity}</div>
-                                <img src={cart.item.image} alt="" />
+                                <img src={`${import.meta.env.VITE_SERVER_URL + cart.item.image}`} alt="" />
                             </div>
                             <div className="precart-info">
                                 <h1>{cart.item.name}</h1>
@@ -133,7 +121,7 @@ const Precart = () => {
                             <div className="precart-price">
                                 <div>
                                     <span><FontAwesomeIcon icon={faNairaSign} /></span>
-                                    <span>{Intl.NumberFormat("en-US").format(cart.item.unit_price * cart.quantity)}</span>
+                                    <span>{Intl.NumberFormat("en-US").format(cart.price)}</span>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +133,7 @@ const Precart = () => {
                         <h1>Subtotal</h1>
                         <p>
                             <FontAwesomeIcon icon={faNairaSign } />
-                            {Intl.NumberFormat("en-US").format(price)}
+                            {Intl.NumberFormat("en-US").format(carts.total)}
                         </p>
                     </div>
                     <div>
@@ -158,7 +146,9 @@ const Precart = () => {
                         <span>Total</span>
                         <p>
                             <FontAwesomeIcon icon={faNairaSign} />
-                            {Intl.NumberFormat("en-US").format(total)}
+                            {Intl.NumberFormat("en-US").format(
+                                isCheckout? cart.total : Number(cart.total) + Number(data? data.price: 0)
+                                )}
                         </p>
                     </div>
                     </div>

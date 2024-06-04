@@ -2,7 +2,7 @@
 
 section.item {
 
-    padding: 120px 30px;
+    padding: 20px;
     
     &>div:first-child {
         gap: 5px;
@@ -149,7 +149,7 @@ section.item {
 @media(max-width: 650px) {
 
     section.item {
-        padding: 60px 0;
+        padding: 0;
 
         &>div:nth-child(2) {
             margin: 0 auto;

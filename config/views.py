@@ -1,4 +1,5 @@
 import json
+import math
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from rest_framework import viewsets
@@ -21,15 +22,6 @@ CACHE_TTL = 60 * 60
 stripe.api_key = env('STRIPE_TEST_API_KEY')
 
 
-def email(request):
-    cart = Cart.objects.get(session_id='499a29c8-4614-4952-958d-775eadeed8b0', ordered=False)
-    cartitems = Cartitem.objects.filter(cart=cart)
-
-    context={'order': cartitems}
-    return render(request, 'email-templates.html', context)
-
-
-
 def get_distance(state, lga):   
 
     geolocator = Nominatim(user_agent="nene", timeout=5)
@@ -46,7 +38,7 @@ def get_distance(state, lga):
    
     # Calculate distance
     distance = geodesic((shop_lat, shop_lon), (client_lat, client_lon)).km
-    return distance * 15
+    return math.ceil(distance * 15)
 
   
 @api_view(['POST'])
@@ -54,14 +46,12 @@ def payment(request):
  
     intent = stripe.PaymentIntent.create(
         amount=request.data['amount'],
-        receipt_email=request.data['email'],
-        shipping=request.data['shipping'],
         currency='ngn',
         payment_method_types = ["card"]
-    )
+    )  
     return HttpResponse(intent.client_secret)
     
-
+ 
 class ProductView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Products.objects.all()
@@ -93,15 +83,18 @@ class CartView(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def getCart(self, request):
         sessionid = self.request.query_params['sessionid']
-        cart = Cart.objects.get(session_id=sessionid, ordered=False)
+        [cart, created] = Cart.objects.get_or_create(session_id=sessionid, ordered=False)
         query = Cartitem.objects.filter(cart=cart)
 
-        total = sum([item.item.unit_price * item.quantity for item in query])
+        total = sum([float(item.price) for item in query])
+        cartitems = [CartItemSerializer(item).data for item in query]
+    
         return HttpResponse(
-            {
-                'cartitems': json.dumps(CartItemSerializer(query).data),
-                'total': total
+            json.dumps({
+                'cartitems': cartitems,
+                'total': str(math.ceil(total))
             })
+        )
 
 
     @action(detail=False, methods=['get'])
@@ -161,19 +154,24 @@ class CartView(viewsets.ModelViewSet):
         sessionid = self.request.query_params['sessionid']
         cart = Cart.objects.get(session_id=sessionid, ordered=False)
         cartitems = Cartitem.objects.filter(cart=cart)
+        total = sum([int(item.price) for item in cartitems])
         cart.ordered = True
 
-        html_body = render_to_string("email-templates.html", {'order': cartitems})
+        shipping = ShippingAddress.objects.get(session_id=sessionid)
+        html_body = render_to_string("email-templates.html", {'order': cartitems, 
+                                                              'shipping': shipping,
+                                                              'total': total,
+                                                              'id': self.request.query_params['id']})
         message = EmailMultiAlternatives(
         subject='Your Order Confirmation',
         body="",
-        to=[self.request.query_params['email']]  
+        to=[shipping.email]  
         )
 
         message.attach_alternative(html_body, "text/html")
         message.send(fail_silently=False)
 
-        return HttpResponse('order confirmed')
+        return HttpResponse('order created')
     
 
 class ShippingView(viewsets.ModelViewSet):
@@ -187,8 +185,12 @@ class ShippingView(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def get_shipping(self, request):
         sessionID = self.request.query_params.get('sessionID')
-        address = ShippingAddress.objects.get(session_id=sessionID)
-        serializer = ShippingSerializer(address).data
+
+        try:
+            address = ShippingAddress.objects.get(session_id=sessionID)
+            serializer = ShippingSerializer(address).data
+        except:
+            return None
         return HttpResponse(json.dumps(serializer))
 
 
@@ -199,6 +201,10 @@ class ShippingView(viewsets.ModelViewSet):
         
         shipping.__dict__.update(request.data)
         distance = get_distance(request.data['lga'], request.data['state'])
+        
+        if not distance:
+            return HttpResponse('Bad Internet connection', status=500)
+        
         shipping.price = distance
         shipping.save()
         return HttpResponse('updated')
@@ -212,7 +218,6 @@ class ShippingView(viewsets.ModelViewSet):
         shipping.save()
         return HttpResponse('date updated')
 
-    
     
 class ToppingView(viewsets.ModelViewSet):
     queryset = Topping.objects.all()

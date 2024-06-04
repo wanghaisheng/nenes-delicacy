@@ -1,3 +1,4 @@
+import { placeHolder } from "../utils";
 const initialState = true;
 
 const getBlurred = (state = false, action) => {
@@ -54,7 +55,7 @@ const getPayment = (state = 0, action) => {
 }
 
 
-const getShipping = (state = null, action) => {
+const getShipping = (state = placeHolder, action) => {
     switch(action.type) {
         case "SHIPPING":
             return action.payload

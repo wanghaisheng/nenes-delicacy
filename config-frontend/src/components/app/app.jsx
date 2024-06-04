@@ -36,17 +36,15 @@ const App = () => {
         } else {
             document.body.style.overflow = 'hidden';
         }
-
     }, [state, menuState])
  
+  
     const getCart = useQuery({
         queryKey: ['carts'],
         queryFn: () =>  get(`cart/getCart?sessionid=${getCookie()}`), 
         staleTime: Infinity,
         retry: 1
     }, )
-
-    console.log(getCart.data)
 
     
     if (getCart.isLoading) {
@@ -63,8 +61,8 @@ const App = () => {
             <Router>
                 <Routes>
                     <Route element={<Layout />}>
-                             <Route path="/" element={<Index />} />
-                             <Route path="/:type" element={
+                            <Route path="/" element={<Index />} />
+                            <Route path="/:type" element={
                                 <Suspense fallback={<ProductPreloader />}>
                                     <Product />
                                 </Suspense>

@@ -27,11 +27,11 @@ const Item = () => {
             return postItem
     
         }, onSuccess: (res) => {
-            res.data.item.image = 'http://127.0.0.1:8000' + res.data.item.image
-            queryclient.setQueryData(['carts'], (old) => {
-                old = old.filter(item => item.id != res.data.id)
-                const carts = [...old, res.data]
-                return carts
+            queryclient.setQueryData(['carts'], (cart) => {
+                const filtered_cart = cart.cartitems.filter(item => item.id != res.data.id)
+                cart.cartitems = [...filtered_cart, res.data]
+                cart.total = cart.total + res.data.price
+                return cart
             })
         }
     })

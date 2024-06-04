@@ -19,9 +19,7 @@ router.register(r'size', views.SizeView, basename='size')
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # path('distance', views.get_distance, name='distance'),
-    path('payment', views.payment, name='payment'),
-    path('email', views.email, name='email')
+    path('payment', views.payment, name='payment')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -73,11 +73,12 @@ const backgroundImages = [
 ]
 
 const placeHolder = {
+    id: null,
     address: '',
     firstName: '',  
     lastName: '',
     phone: '',
-    price: '',
+    price: 0,
     state: '',
     lga: '',
     email: '',

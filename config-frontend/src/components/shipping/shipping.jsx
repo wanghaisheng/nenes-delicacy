@@ -2,6 +2,7 @@ import './shipping.scss'
 import { useState, useEffect } from 'react'
 import { useQuery } from 'react-query'
 import axios from '../../axios'
+import { useQueryClient } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux' 
 import { useNavigate } from 'react-router-dom'
 import 'react-day-picker/dist/style.css'
@@ -15,30 +16,31 @@ const Shipping = () => {
     const date = new Date()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const shipping = useSelector((state) => state.getShipping)
+    const queryClient = useQueryClient()
     const [selected, setSelected] = useState()
     const [day, month, year]  = [date.getDate(), date.getMonth(), date.getFullYear()]
-    const nextMonth = new Date(year, month + 1 )
-    console.log(selected)
+    const nextMonth = new Date(year, month + 1)
+    const shipping = useSelector((state) => state.getShipping)
 
+    queryClient.refetchQueries({queryKey: ['shipping'], exact: true})
+    
 
-    const { data, refetch } = useQuery({
+    const { data, refetch} = useQuery({
         queryKey: ['shipping', selected],
         queryFn: () => axios.put(`shipping/update_shipping/?sessionID=${getCookie()}`, {selected}),
         enabled: false
     })
 
 
-
-    useEffect(() => {
+    useEffect(() => { 
         if (data) navigate('/payment')
         
-        const deliveryDate = shipping? shipping['deliveryDate'] : ''
+        const deliveryDate = shipping? new Date(shipping['deliveryDate']) : ''
         if (deliveryDate) {
             setSelected(deliveryDate)
         }
+    }, [data, shipping])
 
-    }, [data])
 
     return ( 
         <section className="shipping">  
@@ -54,7 +56,7 @@ const Shipping = () => {
                     selected={selected}
                     onSelect={setSelected}
                     toMonth={nextMonth}
-                    disabled={{from: new Date(year, month, 1), 
+                     disabled={{from: new Date(year, month, 1), 
                                to: new Date(year, month, day + 2)}
                             }
                     />
