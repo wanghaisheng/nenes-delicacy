@@ -1,0 +1,11 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: nenesDelicacy
+    src: ./
+    engine: python3.9
+    primary: true
+    run: uvicorn nenesDelicacy.asgi:application
+    dev: uvicorn nenesDelicacy.asgi:application --reload
+    public_routes:
+      - "/*"

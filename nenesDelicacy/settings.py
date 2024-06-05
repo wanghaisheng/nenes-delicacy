@@ -164,6 +164,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 ALLOWED_HOSTS = [
+    "nenesdelicacy-1-p4770134.deta.app",
     "127.0.0.1", 
     "localhost"
 ]
