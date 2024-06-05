@@ -3,3 +3,4 @@ media
 redis-stable
 node_modules
 .env
+.space
