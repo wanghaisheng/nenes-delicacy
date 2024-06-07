@@ -9,7 +9,7 @@ const date = new Date();
 
 const get = async (url) => {
 
-    const response = await axios.get(url, { withCredentials: true, })
+    const response = await axios.get(url, { withCredentials: true })
     return response.data
 }
 
@@ -31,7 +31,7 @@ const getCookie = () => {
             path: '/'}
         );
 
-        get(`cart/createCart?sessionid=${sessionid}`)
+        get(`cart/createCart?sessionid=${sessionid}/`)
     }
     return sessionid
 }
