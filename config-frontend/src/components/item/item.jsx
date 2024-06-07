@@ -39,7 +39,7 @@ const Item = () => {
 
     const { isError, isLoading, data} = useQuery({
         queryKey: ['products'],
-        queryFn: () => get('products'),
+        queryFn: () => get('products/'),
         select: useCallback(
             (data) => data.find(item => item.name === param.name)
         )
