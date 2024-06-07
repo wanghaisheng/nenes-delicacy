@@ -31,7 +31,7 @@ const getCookie = () => {
             path: '/'}
         );
 
-        get(`cart/createCart?sessionid=${sessionid}/`)
+        get(`cart/createCart/?sessionid=${sessionid}`)
     }
     return sessionid
 }
