@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: 'http://127.0.0.1:8000/api'
+    baseURL: `${import.meta.env.VITE_SERVER_URL}/api`
 });
 
 
 export const primaryURL = axios.create({
-    baseURL: 'http://127.0.0.1:8000/'
+    baseURL:`${import.meta.env.VITE_SERVER_URL}`
 });
