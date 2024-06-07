@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 import environ
 from corsheaders.defaults import default_headers
 
@@ -97,6 +98,14 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#         'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgres://nenees_delicacy_user:IkxfXCQHvTlW5ptOkh8IlU4xSDdhiitX@dpg-cpgvs5cf7o1s738n3p60-a/nenees_delicacy',
+#         conn_max_age=600
+#     )
+# }
 
 
 # Password validation
