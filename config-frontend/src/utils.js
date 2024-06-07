@@ -9,7 +9,7 @@ const date = new Date();
 
 const get = async (url) => {
 
-    const response = await axios.get(url, { withCredentials: true })
+    const response = await axios.get(url, { withCredentials: true, })
     return response.data
 }
 
