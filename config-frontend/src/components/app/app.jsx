@@ -41,7 +41,7 @@ const App = () => {
   
     const getCart = useQuery({
         queryKey: ['carts'],
-        queryFn: () =>  get(`cart/getCart?sessionid=${getCookie()}`), 
+        queryFn: () =>  get(`cart/getCart/?sessionid=${getCookie()}`), 
         staleTime: Infinity,
         retry: 1
     }, )

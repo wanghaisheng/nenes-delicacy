@@ -27,7 +27,7 @@ const Index = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0)
-        get('categories').then(res => {
+        get('categories/').then(res => {
             setProducts(res)
         })
 

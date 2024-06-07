@@ -35,7 +35,7 @@ const Cart = () => {
     const deleteCartItem = useMutation({
         mutationFn: async (cartitem) => {
             const prevCart = carts
-            axios.delete(`cart/deleteCartItem?itemId=${cartitem.id}`)
+            axios.delete(`cart/deleteCartItem/?itemId=${cartitem.id}`)
             carts.splice(carts.indexOf(cartitem), 1)
             return { prevCart }
              
