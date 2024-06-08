@@ -175,6 +175,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 ALLOWED_HOSTS = [
+    'nutritious-marsupial-neneesdelicacy-b6b563a5.koyeb.app',
     "127.0.0.1", 
     "localhost"
 ]
