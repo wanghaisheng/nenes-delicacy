@@ -92,20 +92,23 @@ WSGI_APPLICATION = 'nenesDelicacy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': str(BASE_DIR / 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'koyebdb',
+        'USER': 'koyeb-adm',
+        'PASSWORD': '4uK9jUaOiHqI',
+        'HOST': 'ep-broad-voice-a2x3g498.eu-central-1.pg.koyeb.app',
+        'OPTIONS': {'sslmode': 'require'},
     }
 }
-
-# DATABASES = {
-#         'default': dj_database_url.config(
-#         # Replace this value with your local database's connection string.
-#         default='postgres://nenees_delicacy_user:IkxfXCQHvTlW5ptOkh8IlU4xSDdhiitX@dpg-cpgvs5cf7o1s738n3p60-a/nenees_delicacy',
-#         conn_max_age=600
-#     )
-# }
 
 
 # Password validation
