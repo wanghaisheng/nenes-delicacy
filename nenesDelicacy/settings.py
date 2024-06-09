@@ -24,7 +24,7 @@ environ.Env.read_env()
 
 
 #configures email settings
-EMAIL_HOST_USER = 'catabong89@gmail.com'
+EMAIL_HOST_USER = env('HOST_EMAIL')
 EMAIL_HOST_PASSWORD = env('HOST_PASSWORD')
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
@@ -133,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://default:989DLdoZcJJb0w7RUfRb4JWQh69fcSQb@redis-18160.c6.eu-west-1-1.ec2.redns.redis-cloud.com:18160",
+        "LOCATION": env('REDIS_URL'),
         # "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
