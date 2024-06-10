@@ -169,7 +169,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = str(BASE_DIR/'media/')
+MEDIA_ROOT = str(BASE_DIR/'media')
 MEDIA_URL = '/media/'
 
 
