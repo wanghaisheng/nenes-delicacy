@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import cloudinary
 import environ
-from corsheaders.defaults import default_headers
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,8 +41,14 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = True
 
 
-# Application definition
+cloudinary.config(
+cloud_name = env('CLOUD_NAME'),
+api_key = env('API_KEY'),
+api_secret = env('API_SECRET')
+)
 
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -53,7 +60,8 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'rest_framework',
     'corsheaders',
-    'config'
+    'config',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [

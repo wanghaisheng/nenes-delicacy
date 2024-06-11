@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -45,7 +46,7 @@ class Icing(models.Model):
 class ProductType(models.Model):
     product_name = models.CharField(max_length=100)
     banner_text = models.TextField()
-    banner_image = models.ImageField(upload_to='images')
+    banner_image = models.CloudinaryField(blank=True)
     image = models.ImageField(upload_to='images', blank=True)
     parameter = models.CharField(max_length=100)
 
