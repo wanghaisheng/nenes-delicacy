@@ -46,7 +46,7 @@ class Icing(models.Model):
 class ProductType(models.Model):
     product_name = models.CharField(max_length=100)
     banner_text = models.TextField()
-    banner_image = models.CloudinaryField(blank=True)
+    banner_image = CloudinaryField(blank=True)
     image = models.ImageField(upload_to='images', blank=True)
     parameter = models.CharField(max_length=100)
 
