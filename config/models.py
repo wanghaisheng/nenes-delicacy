@@ -47,7 +47,7 @@ class ProductType(models.Model):
     product_name = models.CharField(max_length=100)
     banner_text = models.TextField()
     banner_image = CloudinaryField(blank=True)
-    image = models.ImageField(upload_to='images', blank=True)
+    image = CloudinaryField(blank=True)
     parameter = models.CharField(max_length=100)
 
     def __str__(self):
@@ -56,8 +56,8 @@ class ProductType(models.Model):
 
 class Products(models.Model):
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='images', blank=True)
-    lazyImage= models.ImageField(upload_to='images', default='images/placeholder-1-1.webp', blank=True, null=True)
+    image = CloudinaryField(blank=True)
+    lazyImage= CloudinaryField(default='images/placeholder-1-1.webp', blank=True, null=True)
     description = models.TextField(blank=True)  
     unit_price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, blank=True)

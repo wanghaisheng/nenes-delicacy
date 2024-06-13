@@ -39,10 +39,9 @@ const Product = () => {
         )
     }, )
 
-
-    if (!current.id) {
-        return <NotFound />
-    }
+    // if (!current.id) {
+    //     return <NotFound />
+    // }
     
     if (isLoading) {
         return <ProductPreloader />
