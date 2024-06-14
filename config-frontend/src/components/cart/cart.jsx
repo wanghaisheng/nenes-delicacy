@@ -83,7 +83,7 @@ const Cart = () => {
                                     <LazyLoadImage
                                         height='100%'
                                         width='100%'
-                                        src={`${import.meta.env.VITE_SERVER_URL + cartitem.item.image}`}
+                                        src={`${import.meta.env.VITE_CLOUD_URL + cartitem.item.image}`}
                                         effect='blur'
                                         alt={cartitem.item.name}
                                         placeholderSrc={cartitem.item.Lazyimage}
