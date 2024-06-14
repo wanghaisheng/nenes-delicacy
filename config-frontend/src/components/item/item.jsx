@@ -71,7 +71,7 @@ const Item = () => {
                 <div>
                     <div className="image">
                         <LazyLoadImage
-                            src={data.image}
+                            src={import.meta.env.CLOUD_NAME/data.image}
                             alt={data.name}
                             effect='blur'
                             width='100%'

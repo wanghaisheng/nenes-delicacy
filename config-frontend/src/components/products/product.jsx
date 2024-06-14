@@ -67,7 +67,7 @@ const Product = () => {
                         <div>{current.banner_text}</div>
                     </div>
                 </div>
-                <div><img src={current.banner_image} alt="colorful cake" srcSet="" loading='lazy'/></div>
+                <div><img src={import.meta.env.CLOUD_NAME/current.banner_image} alt="colorful cake" srcSet="" loading='lazy'/></div>
             </div>
 
             <div className="products">
@@ -78,7 +78,7 @@ const Product = () => {
                                 <LazyLoadImage
                                 height='100%'
                                 width='100%'
-                                src={product.image} 
+                                src={import.meta.env.CLOUD_NAME/product.image} 
                                 effect='blur'
                                 alt={product.name}
                                 placeholderSrc={product.lazyImage}/>

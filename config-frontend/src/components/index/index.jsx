@@ -78,7 +78,7 @@ const Index = () => {
                                     <LazyLoadImage
                                     width='100%'
                                     height='100%'
-                                    src={product.image}
+                                    src={import.meta.env.CLOUD_NAME/product.image}
                                     effect='blur'
                                     alt={product.title}
                                     placeholderSrc={'images/small-chops.jpg'}
