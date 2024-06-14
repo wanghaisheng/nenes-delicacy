@@ -1,4 +1,4 @@
-///limport './index.scss';
+import './index.scss';
 import { useEffect, useRef, useState} from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { backgroundImages } from '../../utils';
