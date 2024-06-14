@@ -7,6 +7,7 @@ import { get } from '../../utils';
 import { Link } from 'react-router-dom';
 
 
+
 const Index = () => {
     const slider = useRef()
     const [products, setProducts] = useState([]);
@@ -78,7 +79,7 @@ const Index = () => {
                                     <LazyLoadImage
                                     width='100%'
                                     height='100%'
-                                    src={import.meta.env.CLOUD_NAME/product.image}
+                                    src={import.meta.env.VITE_CLOUD_URL/product.image}
                                     effect='blur'
                                     alt={product.title}
                                     placeholderSrc={'images/small-chops.jpg'}
