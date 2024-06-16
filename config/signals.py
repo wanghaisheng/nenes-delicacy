@@ -1,9 +1,9 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image
 from .models import Products
 
-@receiver(pre_save, sender=Products)
+@receiver(post_save, sender=Products)
 def create_placeholder(sender, instance, **kwargs):
     print('called')
     if instance.image:  
