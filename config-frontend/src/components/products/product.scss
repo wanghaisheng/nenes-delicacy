@@ -54,6 +54,7 @@ section.product {
 
     &>div:nth-child(2) {
         flex-basis: 50%;
+        background: main.$green;
         height: 100%;
 
         img {

@@ -7,6 +7,7 @@ import { get } from '../../utils';
 import { Link } from 'react-router-dom';
 
 
+
 const Index = () => {
     const slider = useRef()
     const [products, setProducts] = useState([]);
@@ -81,7 +82,7 @@ const Index = () => {
                                     src={import.meta.env.VITE_CLOUD_URL + product.image}
                                     effect='blur'
                                     alt={product.title}
-                                    placeholderSrc={'images/small-chops.jpg'}
+                                    // placeholderSrc={'images/small-chops.jpg'}
                                     />
                                     <div><p>{product.product_name}</p></div>
                                 </div>

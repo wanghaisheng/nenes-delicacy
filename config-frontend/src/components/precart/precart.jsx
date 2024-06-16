@@ -112,7 +112,7 @@ const Precart = () => {
                         <div key={cart.id}>
                             <div className="precart-image">
                                 <div>{cart.quantity}</div>
-                                <img src={`${import.meta.env.VITE_SERVER_URL + cart.item.image}`} alt="" />
+                                <img src={`${import.meta.env.VITE_CLOUD_URL + cart.item.image}`} alt="" />
                             </div>
                             <div className="precart-info">
                                 <h1>{cart.item.name}</h1>
