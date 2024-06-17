@@ -11,7 +11,7 @@ import os
 def create_placeholder(sender, instance, **kwargs):
 
     response = requests.get(instance.image.url)
-    file_path = f'media/{instance.name}_placeholder.jpg'
+    file_path = f'{instance.name}_placeholder.jpg'
     if os.path.exists(file_path):
         return
      
@@ -23,7 +23,8 @@ def create_placeholder(sender, instance, **kwargs):
         # Save placeholder image
         image.save(file_path)
         placeholder = cloudinary.uploader.upload(file_path)
+        print(placeholder)
 
         # Update model instance
-        instance.lazyImage = file_path
-        instance.save() 
+        instance.lazyImage = f"v{placeholder['version']}/{placeholder['public_id']}.jpg"
+        instance.save()
