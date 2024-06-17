@@ -25,5 +25,5 @@ def create_placeholder(sender, instance, **kwargs):
         placeholder = cloudinary.uploader.upload(file_path)
 
         # Update model instance
-        instance.lazyImage = placeholder['secure_url']
+        instance.lazyImage = file_path
         instance.save() 
