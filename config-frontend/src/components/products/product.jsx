@@ -81,7 +81,7 @@ const Product = () => {
                                 src={import.meta.env.VITE_CLOUD_URL+product.image} 
                                 effect='blur'
                                 alt={product.name}
-                                placeholderSrc={product.lazyImage}/>
+                                placeholderSrc={import.meta.env.VITE_CLOUD_URL+product.lazyImage}/>
                             </div>
 
                             <div> 
