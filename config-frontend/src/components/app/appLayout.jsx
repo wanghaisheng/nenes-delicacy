@@ -1,13 +1,15 @@
-import Navbar from '../navbar/navbar';
-import Footer from '../footer/footer'
+import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
+
+const Navbar = lazy(() => import( '../navbar/navbar'));
+const Footer = lazy(() => import('../footer/footer'));
 
 function Layout() {
     return ( 
         <>
-        <Navbar />
+        <Suspense><Navbar /></Suspense>
         <Outlet />
-        <Footer />
+        <Suspense><Footer/></Suspense>
         </>
      );
 }

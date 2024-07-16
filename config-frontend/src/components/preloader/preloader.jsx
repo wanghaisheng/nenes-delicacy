@@ -22,8 +22,7 @@ const SmallLoader = () => {
 const Error = (props) => {
     return (
         <div className='error'>
-        <div>
-
+        <pre>
             <div className='no-network'>
                 <img src="images/no-signal.png" alt="" loading='lazy'/>
             </div>
@@ -31,8 +30,10 @@ const Error = (props) => {
             <h1>Ooops!</h1>
             <span>No internet connection found</span>
             <span>Check your connection</span>
-            <button onClick={() => props.refetch()}>Try again</button>
-        </div>
+            <button onClick={() => props.refetch()}>
+                <pre>Try again</pre>
+            </button>
+        </pre>
     </div>
     )
 }

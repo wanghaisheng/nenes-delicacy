@@ -1,17 +1,13 @@
 import './payment.scss'
-import { primaryURL } from '../../axios'
-import { useState } from 'react';
-import {loadStripe} from "@stripe/stripe-js";
-import { SmallLoader } from '../preloader/preloader';
+import { useEffect, useState } from 'react';
+import { get, getCookie } from '../../utils';
+import { PaystackButton } from 'react-paystack'
 import { useSelector } from 'react-redux';
-import { v4 as uuid4 } from "uuid"; 
 import { useQuery, useQueryClient } from 'react-query';
 import { lazy } from "react";
-import { useStripe, Elements, PaymentElement, useElements} from "@stripe/react-stripe-js";
-import { Error, Spinner } from '../preloader/preloader';
+import { useNavigate } from 'react-router-dom';
 
 
-const stripe = loadStripe(import.meta.env.VITE_SECRET_PAYMENT_INTENT);
 const Preview = lazy(() => import("../preview/preview"))
 
 
@@ -19,88 +15,61 @@ const Payment = () => {
 
   const queryClient = useQueryClient()
   const shipping = useSelector((state) => state.getShipping);
-  const cart = queryClient.getQueryData(['carts'])
+  const cart = queryClient.getQueryData(['pre-cart'])
+  const [success, setSuccess] = useState(false)
+  const publicKey = import.meta.env.VITE_PUBLIC_KEY
+  const navigate = useNavigate()
+  const total = Number(cart.total) + Number(shipping.price)
+  const amount = shipping.routeProtection? total + 1000 : total
 
-  
-  const {isLoading, isError, data, refetch} = useQuery({
-    queryKey: ['payment'],
-    queryFn: () => primaryURL.post('payment', {
-      amount: Math.ceil((Number(shipping.price) + Number(cart.total)) * 100), 
-    }),
-    retry: 1,
-    enabled: !!shipping,
+  console.log(shipping)
+
+
+  useQuery({
+    queryKey: ['order', success],
+    queryFn: () => get(`cart/createOrder?sessionid=${getCookie()}`),
+    enabled: success
   })
-  
-
-  if (isLoading) return <Spinner text='loading'/>
-
-  if (isError) return <Error refetch={refetch}/>
 
 
-  if (data) {
+const handleSubmit = () => {
+  setSuccess(true)
+  navigate('/')
+}
 
-    const options = {  
-      clientSecret: data? data.data: undefined,  
-      appearance: {
-          theme: 'flat',
-          variables: { colorPrimaryText: '#262626' }
-      }
-    }
-  
-    return (
-      <Elements key={uuid4()} stripe={stripe} options={options}>
-        <CheckoutPage />
-      </Elements>
-    )
+  const componentProps = {
+    email: shipping.email,
+    amount: amount * 100,
+    metadata: {
+      phone: shipping.phone,
+    },
+    publicKey,
+    text: `Pay NGN${Intl.NumberFormat("en-US").format(amount)}`,
+    onSuccess: () => handleSubmit(),
+    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   }
-
-};
-
-
-
-const CheckoutPage = () => {
-
-  const stripe = useStripe();
-  const elements = useElements();
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false)
-
-
-  const handleSubmit = async (event) => {
-
-    event.preventDefault();
-
-    const {error} = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: 'http://localhost:5173/payment-status',
-      },
-    });
-
-    if (error) {
-      setErrorMessage(error.message);
-    } else {}
-
-    setLoading(false)
-  };
-
 
     return ( 
         <div className="payment-wrapper">
             <div>
               <Preview/>
-              {errorMessage?
-               <div className="error-message">
-                  <div><ion-icon name="alert-circle-outline"></ion-icon></div>
-                  {errorMessage && <div>{errorMessage}</div>}
-                </div> : ""
-              }
-              <form onSubmit={handleSubmit}>
-                  <PaymentElement />
-                  <button className={loading? 'opaque': ''} disabled={!stripe} onClick={() => setLoading(true)} type="submit">
-                    {loading? <SmallLoader/>:'Submit'}
-                  </button>
-              </form>
+              <section className='shipping-method'>
+                <h4>Shipping method</h4>
+                <div>
+                  <span>
+                    <input type="radio" name='priority-overnigt' id='priority'/>
+                    <span className="custom-radio"></span>
+                  </span>
+                  <label htmlFor="priority"> 
+                    <div>Priority Overnight - Saturday Delivery</div>
+                    <div className='shipping-method_desc'>We bake fresh and overnight ship your items based on your chosen delivery date.</div>
+                  </label>
+                  <span>FREE</span>
+                </div>
+
+                <p>Our products are baked fresh and packed safely to ensute the best quality. Priority overnight shipping ensures your deserts arrive on your desired delivery date.</p>
+              </section>
+              <PaystackButton className='paystack-button' {...componentProps}/>
             </div>
         </div>
      );

@@ -25,36 +25,6 @@ const getMenu = (state = false, action) => {
 }
 
 
-const getOrderDetails = (state = initialState, action) =>{
-    switch(action.type) {
-        case "DETAILS":
-            return !state
-        case "RESET":
-            return initialState
-        default: 
-            return state
-    }
-}
-
-const getRouteProtection = (state = "", action) => {
-    switch(action.type) {
-        case "ROUTE":
-            return action.payload
-        default:
-            return state
-    }
-}
- 
-const getPayment = (state = 0, action) => {
-    switch(action.type) {
-        case "PAYMENT":
-            return action.payload
-        default:
-            return state
-    }
-}
-
-
 const getShipping = (state = placeHolder, action) => {
     switch(action.type) {
         case "SHIPPING":
@@ -64,12 +34,8 @@ const getShipping = (state = placeHolder, action) => {
     }
 }
 
-
 export { 
     getBlurred, 
     getMenu,
-    getOrderDetails, 
-    getRouteProtection, 
-    getPayment,
-    getShipping
+    getShipping,
 }

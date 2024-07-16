@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { useQuery } from 'react-query';
+import { get, getCookie } from '../../utils';
 import { useMediaQuery } from 'react-responsive'
-import { useQueryClient } from 'react-query'
 import { lazy, Suspense, useEffect, useState, useRef} from 'react';
 import { Blur, Menu, menuReset } from '../../actions';
 import './navbar.scss';
@@ -27,13 +28,28 @@ const Navbar = () => {
                           
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const queryClient = useQueryClient()
-    const cart = queryClient.getQueryData(['carts'])
+    const cartIcon = useRef()
     const [prevElement, setPrevElement] = useState()
     const cartState = useSelector(state => state.getBlurred)
     const menuState = useSelector(state => state.getMenu)
     const isMobile = useMediaQuery({query: '(max-width: 912px)'}); 
-    const isDesktop = useMediaQuery({query: '(min-width: 767px)'}); 
+    const isDesktop = useMediaQuery({query: '(min-width: 767px)'});
+
+
+    const { data } = useQuery({
+        queryKey: ['carts'],
+        queryFn: () =>  get(`cart/getCart/?sessionid=${getCookie()}`), 
+        staleTime: Infinity,
+        retry: 1
+    }, )
+
+
+    useEffect(() => {
+        if (cartState || isDesktop) {
+            dispatch(menuReset(false));
+        }
+    }, [cartState, isDesktop])
+
 
 
     const handleClick = (e) => {
@@ -53,15 +69,8 @@ const Navbar = () => {
         setPrevElement(currElement);
     }
 
-    
-    useEffect(() => {
-        if (cartState || isDesktop) {
-            dispatch(menuReset(false));
-        }
-    }, [cartState, isDesktop])
 
-
-    return ( 
+    return (
         <header className='index'>            
             <div>
                 <div className='nav-info'>
@@ -147,13 +156,15 @@ const Navbar = () => {
                         <ion-icon name="person"></ion-icon>
                     </div>
 
-                    <div onClick={() => {dispatch(Blur());}}>
+                    <div onClick={() => {dispatch(Blur());}} ref={cartIcon}>
                         <ion-icon name="bag"></ion-icon>
-                        <div className='cart-number'>{cart.cartitems.length===0? "": cart.cartitems.length}</div>
+                        <div className='cart-number'>{
+                        data?.cartitems.length===0? "": data?.cartitems.length
+                        }</div>
                     </div>
                 </div>
             </div>
-            <Suspense><Cart/></Suspense>
+            <Suspense><Cart data={data}/></Suspense>
         </header>
      );
 }

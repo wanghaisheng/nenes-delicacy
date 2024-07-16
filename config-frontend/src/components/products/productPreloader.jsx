@@ -1,7 +1,7 @@
 import './productPreloader.scss'
 
 
-function ProductPreloader() {
+const ProductPreloader = () => {
 
     window.scrollTo(0,0)
     
@@ -13,50 +13,22 @@ function ProductPreloader() {
             </div>
 
         <div className="skeleton-products">
-            <div>
-                <div></div>
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-
-            <div>
-                <div></div>
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-
-            <div>
-                <div></div>
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-
-            <div>
-                <div></div>
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-
-            <div>
-                <div></div>
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
+            {[...Array(5)].map(x => (
+                <div key={x}>
+                    <div></div>
+                    <div>
+                        <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        </ul>
+                    </div>
+                </div>
+            ))}
         </div>
     </section>
      );

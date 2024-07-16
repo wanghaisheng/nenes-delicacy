@@ -2,6 +2,7 @@
 
 .precart {
     background: main.$green;
+    font-size: .8em;
     color: main.$black;
     border-left: 2px solid main.$dark-green;
     flex-basis: 43%;
@@ -28,7 +29,6 @@
             }
     
             div:last-child span:first-child {
-                font-size: .9em;
                 opacity: .75;
             }
         }
@@ -54,7 +54,6 @@
             
                         &>div:first-child {
                             position: absolute;
-                            font-size: 12px;
                             font-weight: bold;
                             display: flex;
                             align-items: center;
@@ -78,18 +77,16 @@
                     }
             
                     .precart-info {
-                        font-size: 12px;
                         flex-basis: 60%;
             
-                        h1 {
+                        h4 {
                             margin: 0 0 5px;
-                            font-size: 1em;
+                            font-weight: 600;
                         }
             
                         span {
                             overflow: hidden;
                             text-overflow: ellipsis;
-                            font-size: .9em ;
                             display: -webkit-box;
                             -webkit-line-clamp: 2;
                             line-clamp: 2;
@@ -107,14 +104,7 @@
         
                         span:first-child {
                             width: 100%;
-                            font-size: 13px;
-                        }
-        
-                        span:last-child {
-                            font-weight: bold;
-                            font-size: .8em;
-                        }
-                    
+                        }                  
                 }
             }
 
@@ -126,10 +116,6 @@
                    
                      span {
                         font-weight: bold;
-                     }
-        
-                     p, span {
-                        font-size: 1.1em;
                      }
                 }
         
@@ -143,16 +129,10 @@
                     justify-content: space-between;
             
                     h1 {
-                        font-size: .9em;
-                        font-weight: 200;
+                        font-weight: 400;
                         color: main.$gray;
                     }
-            
-                    p {
-                        font-size: .85em;
-                        font-weight: bold;
-                    }
-        
+
                     .reload {
                         display: flex;
                         font-weight: 700;
@@ -162,20 +142,13 @@
                         gap: 5px;
         
                         &>div:first-child {  
-                            font-size: 1.3em;
                             display: flex;
                             align-items: center;
                         }
                     }
-            
-                    .shipping-info {
-                        font-weight: bold;
-                        font-size: 0.85em;
-                    }
                 }
 
                 .calculate-next {
-                    font-size: .75em;
                     color: main.$gray;
                 }
             }
@@ -187,9 +160,11 @@
     
             &>p {
                 color: main.$black;
+                font-style: italic;
                 padding-bottom: 0;
+                font-size: .8em;
+                margin-top: 0;
                 max-width: 500px;
-                font-size: .78em;
             }
     
             &>div {
@@ -201,13 +176,11 @@
         
                     span {
                         font-weight: bold;
-                        font-size: .9em;
                         margin-left: 5px;
                     }
         
                     p {
-                        font-size: .65em;
-                        font-weight: 700;
+                        font-weight: 600;
                         color: main.$gray
                     }
                 }
@@ -264,10 +237,6 @@
     align-items: center;
     justify-content: space-between;
 
-    ion-icon {
-        font-size: 18px;
-    }
-
     button {
       display: flex;
       max-width: 180px;
@@ -275,7 +244,6 @@
       cursor: pointer;
       gap: 8px;
       justify-content: center;
-      font-weight: bold;
       align-items: center;
     }
 
@@ -284,7 +252,6 @@
         color: main.$black;
         gap: 8px;
         align-items: center;
-        font-size: .89em;
 
       a {
         position: relative;
@@ -314,11 +281,10 @@
 
     button {
       border-radius: 5px;
-      font-size: .73em;
       background: main.$black;
       color: main.$white;
       border: 0;
-      padding: 18px 15px;
+      padding: 15px 0;
    }
 
    button:disabled {
@@ -328,7 +294,6 @@
 
 
 @media (max-width: 767px) {
-
     .precart {
         border-left: none;
         
@@ -357,7 +322,6 @@
 
 
 @media (max-width: 414px) {
-    
     .buttons {
         flex-direction: column-reverse;
         gap: 20px;

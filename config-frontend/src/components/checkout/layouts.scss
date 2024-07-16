@@ -3,32 +3,14 @@
 .checkout-layout {
     display: flex;
     min-height: 100vh;
-
-    &>div:first-child {
-        flex-basis: 65%;
-        justify-content: space-between;
-        gap: 80px;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-    }
-
-    &>div:last-child {
-        flex-basis: 45%;
-    }
-}
-
- 
-.layout-wrap header {
-        padding: 30px 25px;
+    
+    header {
 
         .navigation ul {
             display: flex;
             gap: 10px;
             align-items: center;
             font-size: .8em;
-            margin: 0;
-            padding: 0;
 
 
             li, .disabled {
@@ -56,26 +38,68 @@
                 }
             }
         }
+    }
+
+    &>div:first-child {
+        flex-basis: 65%;
+        padding: 20px 20px 0;
+        justify-content: space-between;
+        gap: 80px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .layout-footer {
+
+        ul {
+            display: flex;
+            justify-content: center;
+            border-top: main.$border;
+            font-size: .7em;
+            padding: 15px 0;
+            margin: 0 auto;
+            color: main.$gray;
+            gap: 20px;
+    
+            a {
+                text-decoration: none;
+            }
+    
+            li {
+                list-style: none;
+                color: main.$black;
+            }
+        }
+    }
+
+    .mobile-logo {
+        max-width: 200px;
+        padding: 10px;
+    
+        a {
+            display: block;
+        }
+    
+        img {
+            width: 100%;
+        }
+    }
+
+    &>div:last-child {
+        flex-basis: 45%;
+    }
 }
 
+ 
 .active {
     font-weight: bolder;
 }
 
-.mobile-logo {
-    width: 230px;
-    padding: 10px 0;
-
-    img {
-        width: 100%
-    }
-}
-
-
 
 
 @media (max-width: 767px) {
-    .layout-wrap {
+    .checkout-layout {
         flex-direction:column-reverse;
         position: sticky;
         top: 0;
@@ -84,23 +108,8 @@
             min-height: 75vh;
         }
 
-        header {
-
-            .navigation ul {
-                font-size: .8em
-            }
-
-            .mobile-logo {
-                display: none;
-            }
-        }
-
-        .layout-footer {
-            position: static;
-
-            ul {
-                width: 90%;
-            }
+        header .mobile-logo {
+            display: none;
         }
     }
 }

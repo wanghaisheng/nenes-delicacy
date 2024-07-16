@@ -2,7 +2,8 @@
 
 section.shipping {
     width: 83%;
-    margin: 30px auto 0;
+    font-size: .9em;
+    margin: 0 auto;
 
     .calender {
         margin: 80px 0 50px;
@@ -11,6 +12,7 @@ section.shipping {
         h1 {
           text-align: center;
           width: 45%;
+          font-weight: 600;
           margin: 0 auto;
         }
         

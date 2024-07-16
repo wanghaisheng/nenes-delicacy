@@ -1,61 +1,69 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faNairaSign } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect, useRef } from "react";
-import {  Details, shipping } from '../../actions';
-import { routeProtection, get, getCookie, placeHolder } from '../../utils';
+import { useEffect, useRef, useState } from "react";
+import { shipping } from '../../actions';
+import { get, getCookie, placeHolder,routeProtection } from '../../utils';
+import axios from '../../axios';
 import { useLocation } from 'react-router-dom';
-import { useQueryClient, useQuery} from 'react-query'
+import { useQueryClient, useQuery, useMutation} from 'react-query'
 import { useMediaQuery } from 'react-responsive'
-import { useDispatch, useSelector } from "react-redux";
-import Cookie from 'universal-cookie';     
+import { useDispatch } from "react-redux";  
 import route from '/icons/route.svg'
-import { v4 as uuid4 } from "uuid"; 
 import './precart.scss'  
 
 
-const Precart = () => {
+const Precart = () => { 
     const dispatch = useDispatch()
-    const cookie = new Cookie()
-    const queryClient = useQueryClient()
     const cursor = useRef()
+    const queryclient = useQueryClient()
     const location = useLocation()
     const precart = useRef(null)
-    const cart = queryClient.getQueryData(['carts'])
-    const [protection, setProtection] = useState(cookie.get('route-protection'))
+    const [hidden, setHidden] = useState(false)
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
-    const [carts, setCart] = useState(protection? [routeProtection, ...cart] : cart)  
-    const hidden = useSelector((state) => state.getOrderDetails)
     const isCheckout = location.pathname == '/checkout'
-   
 
-    const {data, isLoading, isError} = useQuery({
+
+    const { data } = useQuery({
         queryKey: ['shipping'],
         queryFn: () => get(`shipping/get_shipping?sessionID=${getCookie()}`),
         placeholderData: placeHolder
     })  
     
 
-    const handleChange = () => { 
-        cursor.current.style.cursor = 'wait'
+    const preCart = useQuery({
+        queryKey: ['pre-cart'],
+        queryFn: () =>  get(`cart/getCart/?sessionid=${getCookie()}`), 
+        staleTime: Infinity,
+        placeholderData: {cartitems: [], total: 0},
+        select: (cart) => {
+            if (data.routeProtection) {
+                return {
+                    cartitems: [routeProtection, ...cart.cartitems],
+                    total: Number(cart.total) + routeProtection.price
+                }
+            } return cart
+        }
+    })
 
-        setTimeout(() => {
+
+    const updateProtection = useMutation({
+        mutationFn: async (data) => {
+            const route = await axios.put('shipping/route_protection/', data)
+            return route
     
-            if (carts[0] !== routeProtection) {
-                cookie.set('route-protection', uuid4())
-                setCart([routeProtection, ...cart])
+        }, onSuccess: (res) => {
+            const protection = JSON.parse(res.data.toLowerCase())
 
-            } else {
-                cookie.remove('route-protection', {path: '/'})
-                setCart(cart)
-            }
-
-            setProtection(cookie.get('route-protection')) 
-            cursor.current.style.cursor = 'pointer'
-        }, 700)  
-    }
+            queryclient.setQueryData(['shipping'], (shippingData) => {
+                shippingData.routeProtection = protection
+                dispatch(shipping(Object.create(shippingData)))
+                return shippingData
+            })
+        }
+    })
 
 
-    //dispatches the grandtotal and shipping information to the redux store
+    // dispatches the shipping information to the redux store
     useEffect(() => {
         if (data) {
             dispatch(shipping(data))
@@ -68,25 +76,25 @@ const Precart = () => {
 
         if (isCheckout) {
             return (
-            <div className='calculate-next'>Calculated at next step </div>
-        )}
+                <div className='calculate-next'>
+                    Calculated at next step 
+                </div> )}
 
-        else {
+        else { 
             return (
-            <div>
-                <FontAwesomeIcon icon={faNairaSign } />
-                {Intl.NumberFormat("en-US").format(Number(data.price))} 
-            </div>)
-        }
-    }
+                <div>
+                    <FontAwesomeIcon icon={faNairaSign } />
+                    {Intl.NumberFormat("en-US").format(Number(data.price))} 
+                </div>
+            )}}
      
 
     return (  
         <section className="precart">
-             {isMobile? 
+             { isMobile? 
                 <div className="order-summary">
                     <div onClick={() => {
-                                        dispatch(Details());
+                                        setHidden(!hidden);
                                         precart.current.classList.toggle('show-cart')
                                     }}>
                         <div>
@@ -97,25 +105,25 @@ const Precart = () => {
                         <div>
                             <span><FontAwesomeIcon icon={faNairaSign} /></span>
                             <span>
-                                {Intl.NumberFormat("en-US").format(cart.total)}
+                                {Intl.NumberFormat("en-US").format(
+                                    Number(preCart.data.total) + (isCheckout? 0 : Number(data.price))
+                                )}
                             </span>
                         </div>
                     </div>
-                </div>
-                : ''
-            }
+                </div> : null }
             
             <div ref={precart} className="precart-wrapper">
                 <div>
                     <div className="precart-outer">
-                    {carts.cartitems.map(cart => (
+                    {preCart.data.cartitems.map(cart => (
                         <div key={cart.id}>
                             <div className="precart-image">
                                 <div>{cart.quantity}</div>
                                 <img src={`${import.meta.env.VITE_CLOUD_URL + cart.item.image}`} alt="" />
                             </div>
                             <div className="precart-info">
-                                <h1>{cart.item.name}</h1>
+                                <h4>{cart.item.name}</h4>
                                 <span>{cart.item.description}</span>
                             </div>
                             <div className="precart-price">
@@ -133,7 +141,7 @@ const Precart = () => {
                         <h1>Subtotal</h1>
                         <p>
                             <FontAwesomeIcon icon={faNairaSign } />
-                            {Intl.NumberFormat("en-US").format(carts.total)}
+                            {Intl.NumberFormat("en-US").format(preCart.data.total)}
                         </p>
                     </div>
                     <div>
@@ -143,11 +151,11 @@ const Precart = () => {
                         </div>
                     </div>
                     <div className="total">
-                        <span>Total</span>
+                        <h1>Total</h1>
                         <p>
                             <FontAwesomeIcon icon={faNairaSign} />
                             {Intl.NumberFormat("en-US").format(
-                                isCheckout? cart.total : Number(cart.total) + Number(data? data.price: 0)
+                                isCheckout? Number(preCart.data.total) : Number(preCart.data.total) + Number(data? data.price: 0)
                                 )}
                         </p>
                     </div>
@@ -162,7 +170,11 @@ const Precart = () => {
                             <p>Against loss, theft or damage in transit and instant resolution</p>
                         </div>
 
-                        <div ref={cursor} className={protection? "toggle":"deselect"} onClick={(el) => {handleChange(el); }}>
+                        <div ref={cursor} 
+                            className={data.routeProtection? "toggle":"deselect"} 
+                            onClick={() => new updateProtection.mutate({
+                                'sessionID': getCookie()})
+                                }>
                             <div>
                                 <div className="thumb"></div>
                             </div>

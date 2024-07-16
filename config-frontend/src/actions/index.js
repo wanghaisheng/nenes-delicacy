@@ -6,26 +6,11 @@ const Blur = () => {
 }
 
 
-const Details = () => {
-    return {
-        type: "DETAILS",
-    }
-}
-
-
 const Menu = () => {
     return {
         type: "MENU"
     }
 }
-
-
-const Reset = () => {
-    return {
-        type: "RESET",
-    }
-}
-
 
 const cartReset = () => {
     return {
@@ -41,22 +26,6 @@ const menuReset = () => {
 }
 
 
-const routeProtection = (price) => {
-    return {
-        type: "ROUTE",
-        payload: price
-    }
-}
-
-
-const payment = (paymentPrice) => {
-    return {
-        type: "PAYMENT",
-        payload: paymentPrice
-    }
-}
-
-
 const shipping = (shippingInfo) => {
     return {
         type: "SHIPPING",
@@ -66,12 +35,8 @@ const shipping = (shippingInfo) => {
 
 export { 
         Blur, 
-        Details, 
-        routeProtection, 
-        Reset, 
-        payment, 
         cartReset,
         menuReset,
         Menu,
-        shipping
+        shipping,
     }

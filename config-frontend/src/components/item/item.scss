@@ -1,8 +1,8 @@
 @use '../../main.scss';
 
 section.item {
-
     padding: 20px;
+    font-size: .9em;
     
     &>div:first-child {
         gap: 5px;
@@ -50,6 +50,7 @@ section.item {
                 img {
                     width: 100%;
                     border-radius: 5px;
+                    background: main.$light-gray;
                     aspect-ratio: 16/14;
                     height: 100%;
                     object-fit: cover;
@@ -65,18 +66,13 @@ section.item {
         padding: 0 20px;
 
         p:first-child {
-            font-size: 2.1em;
+            font-size: 2em;
             margin: 0;
-        }
-
-        p:nth-of-type(2) {
-            font-weight: 500;
         }
 
         &>div:nth-child(2) {
             margin-top: .25em;
-            font-weight: 600;
-            font-size: 1.6em;
+            font-size: 1.5em;
 
             span {
                 font-size: .9em;
@@ -86,13 +82,13 @@ section.item {
 
     .add-to-cart {
         margin-top: 2.5em;
-        gap: 50px;
+        gap: 35px;
         display: flex;
 
         &>div:first-child {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 25px;
 
             button {
                 border: none;
@@ -100,9 +96,14 @@ section.item {
                 padding: 0;
 
                 ion-icon {
-                    font-size: 2em;
+                    font-size: 2.1em;
+                    transition: all .3s ease-in-out;
                     color: main.$dark-pink;
                     cursor: pointer;
+                }
+
+                ion-icon:hover {
+                    color: main.$pink;
                 }
             }
 
@@ -112,41 +113,65 @@ section.item {
         
         }
         
-        &>div:nth-child(2) {
+        &>button {
             position: relative;
+            background: transparent;
+            max-width: 190px;
+            border:0;
+            padding:0;
+
 
             svg {
                 fill: main.$dark-pink;
-                max-width: 200px;
-                height: 60px;
+                transition: all .3s ease-in-out;
             }
 
-            div {
+            div:nth-child(2) {
                 display: flex;
                 width: 100%;
                 left: 0;
                 top:0;
                 height: 100%;
+                color: main.$pink;
                 cursor: pointer;
                 position: absolute;
                 justify-content: center;
                 align-items: center;
 
-                button {
-                    border: 0;
-                    background: main.$dark-pink;
-                    background: inherit;
-                    color: main.$pink;
-                    font-weight: 600;
+                span {
+                    font-size: .8em;
                 }
             }
+        }
+
+        &>button:hover {
+
+            svg {
+                fill: main.$darker-pink;
+            }
+        }
+
+        .add-to-cart__error {
+            background: main.$light-red;
+            border-radius: 5px;
+            position: absolute;
+            font-size: .9em;
+            padding: 10px 5px;
+            color: main.$red;
         }
     }
 }
 
 
+.spinner {
+    width: 12%;
+    position: absolute;
+    left: 10px;
+    animation: loader 1.3s infinite linear;
+  }
+  
 
-@media(max-width: 650px) {
+@media(max-width: 712px) {
 
     section.item {
         padding: 0;
@@ -178,3 +203,14 @@ section.item {
         }
     }
 }
+
+@keyframes loader {
+    0% {
+      transform: rotate(0deg);
+    }
+  
+    100% {
+      transform: rotate(360deg)
+    }
+  }
+

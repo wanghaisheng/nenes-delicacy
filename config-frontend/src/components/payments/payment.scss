@@ -3,12 +3,13 @@
 
 .payment-wrapper {
     display: flex;
+    font-size: .9em;
     justify-content:center;
 
     &>div {
         width: 100%;
         max-width: 700px;
-        padding: 0 20px;
+        padding: 0 50px;
     }
 
     .error-message {
@@ -27,85 +28,77 @@
         }
     }
 
-    form {
+    .shipping-method {
+        color: main.$black;
         margin-top: 50px;
-
-        button {
-            width: 100%;
-            padding: 18px;
-            display: flex;
-            justify-content: center;
-            font-size: 1.1em;
-            border: none;
-            margin-top: 50px;
-            background: main.$black;
-            border-radius: 5px;
-            font-weight: 700;
-        }
-
-        .opaque {
-            opacity: .8;
-        }
-    }
-}
-
-section[data-payment-status] {
-    color: main.$gray;
-
-    .payment-successful > div {
-    
-        .order-details {
-                margin: 0 auto;
-
-                &>div {
-                    padding: 0 20px;
-                    max-width: 800px;
         
-                    ion-icon {
-                        font-size: 2.5em;
-                        color: main.$dark-blue;
-                    }
-
-                    &>div:first-child {
-                        display: flex;
-                        font-size: 1.5em;
-                        align-items: center;
-                    }
-                }
+        h4 {
+            margin-top: 0;
         }
 
-        h1 {
-            margin: 0 0 8px;
-            color: main.$black;
-            font-size: 1.2em;
+        p {
+            font-size: .8em;
+            font-style: italic;
+            color: main.$gray;
         }
 
-        .confirmation, .order-info {
-            border: 2px solid rgba(0, 0, 0, 0.1);
+        &>div {
+            display: flex;
+            padding: 20px 10px;
+            border: main.$border;
             border-radius: 5px;
-            padding: 15px;
+            gap: 12px;
 
-            ul {
-                padding: 0;
-                margin: 0;
-
-                &>li {
-                    list-style: none;
-                    margin-top: 30px;
-                }
+            input[type='radio'] {
+                display: none;
             }
 
-            h2 {
-                font-size: 1em;
-                color: main.$black;
-                margin: 0 0 10px;
+            .custom-radio {
+                display: inline-block;
+                width: 18px;
+                position: relative;
+                height: 18px;
+                border: 7px solid main.$black;
+                background: main.$white;
+                border-radius: 50%;
+                position: relative;
+                cursor: pointer;
+            }
+
+            span:last-child {
+                font-weight: 600;
+                color: main.$gray;
             }
         }
 
-        .order-info {
-            margin-top: 35px;
+        .shipping-method_desc {
+            margin-top: 15px;
         }
     }
-}
-    
 
+    .paystack-button {
+        cursor: pointer;
+        text-align: center;
+        letter-spacing: 0.1rem;
+        text-transform: uppercase;
+        background-color: main.$black;
+        font-weight: bold;
+        color: main.$white;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        padding: 15px;
+        margin-top: 40px;
+      }
+}
+
+
+@media (max-width: 767px) {
+    .payment-wrapper {
+        font-size: .8em;
+        
+        &> div {
+            padding: 0 20px;
+        }
+    } 
+}

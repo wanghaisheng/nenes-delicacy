@@ -7,7 +7,6 @@
     border-radius: 5px;
 
     &>ul:not(ul:last-child) {
-        font-family: 'montserrat';
         border-bottom: main.$border;
     }
 
@@ -23,7 +22,7 @@
 
         li:first-child {
             flex-basis: 25%;
-            font-weight: 600;
+            font-weight: 500;
             color: main.$gray
         }
 

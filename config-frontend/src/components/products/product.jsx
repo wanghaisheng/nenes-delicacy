@@ -4,7 +4,6 @@ import { useQuery } from 'react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Error } from '../preloader/preloader'
 import ProductPreloader from './productPreloader'
-import NotFound from '../404/404';
 import { Link } from 'react-router-dom';
 import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,40 +14,29 @@ import '../preloader/preloader.scss'
 
 const Product = () => {
     
-    const [current, setCurrent] = useState({product_name: '404 Not Found', id: null})
-    const param = useParams()
-    window.scrollTo(0, 0)
-
-
-    useEffect(() => {
-        get('categories').then(res => {
-            const result = res.find(type => type.parameter === param.type)
-            if (result) setCurrent(result)
-        })
-    }, [])
-
-
-    document.title = `${current.product_name} | Nene's Delicacy `;
-
-
-    const { isError, isLoading, data } = useQuery({
+    const pathname = window.location.pathname.replace(/\//g,'')
+   
+    const { isError, isLoading, data, refetch, error } = useQuery({
         queryKey: ['products'],
         queryFn: () => get('products'),
         select: useCallback(
-            (data) => data.filter(product => product.product_type.id === current.id)
+            (data) => data.filter(product => {
+                return product.product_type.parameter === pathname
+            }),
         )
     }, )
 
-    // if (!current.id) {
-    //     return <NotFound />
-    // }
-    
+
+    const current = data? data[0].product_type: ''
+    document.title = `${current.name} | Nene's Delicacy `;
+
+
     if (isLoading) {
         return <ProductPreloader />
     }
 
     if (isError) {
-        return <Error />
+        return <Error refetch={refetch} error={error}/>
     }
 
     
@@ -60,14 +48,14 @@ const Product = () => {
                     <ul className="links">
                         <li><a href="/">Home</a></li>
                         <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
-                        <li>{current.product_name}</li>
+                        <li>{current.name}</li>
                     </ul>
                     <div className='banner-text'>
-                        <h1>{current.product_name}</h1>
-                        <div>{current.banner_text}</div>
+                        <h1>{current.name}</h1>
+                        <div>{current.bannerText}</div>
                     </div>
                 </div>
-                <div><img src={import.meta.env.VITE_CLOUD_URL+current.banner_image} alt="colorful cake" srcSet="" loading='lazy'/></div>
+                <div><img src={import.meta.env.VITE_CLOUD_URL+current.bannerImage} alt="colorful cake" srcSet="" loading='lazy'/></div>
             </div>
 
             <div className="products">
@@ -76,8 +64,6 @@ const Product = () => {
                         <div>
                             <div className='image-wrapper'>
                                 <LazyLoadImage
-                                height='100%'
-                                width='100%'
                                 src={import.meta.env.VITE_CLOUD_URL+product.image} 
                                 effect='blur'
                                 alt={product.name}

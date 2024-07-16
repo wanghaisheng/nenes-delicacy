@@ -1,5 +1,6 @@
 import './index.scss';
-import { useEffect, useRef, useState} from 'react';
+import { useRef } from 'react';
+import { useQuery } from 'react-query';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { backgroundImages } from '../../utils';
 import { useMediaQuery } from 'react-responsive'
@@ -10,7 +11,6 @@ import { Link } from 'react-router-dom';
 
 const Index = () => {
     const slider = useRef()
-    const [products, setProducts] = useState([]);
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
 
 
@@ -26,13 +26,11 @@ const Index = () => {
     }
 
 
-    useEffect(() => {
-        window.scrollTo(0, 0)
-        get('categories/').then(res => {
-            setProducts(res)
-        })
-
-    }, [])
+    const { isError, isLoading, data} = useQuery({
+        queryKey: ['categories'],
+        queryFn: () => get('categories/'),
+        placeholderData: []
+    })
 
 
     return ( 
@@ -73,7 +71,7 @@ const Index = () => {
                             <li onClick={(el) => slide(el)}><ion-icon name="chevron-forward-circle-sharp"></ion-icon></li>
                         </ul>               
                         <div ref={slider} className="products">
-                            {products.map(product => (
+                            {data.map(product => (
                             <Link to={product.parameter} key={product.id}>
                                 <div>
                                     <LazyLoadImage
@@ -84,7 +82,7 @@ const Index = () => {
                                     alt={product.title}
                                     placeholderSrc={product.lazyImage}
                                     />
-                                    <div><p>{product.product_name}</p></div>
+                                    <div><p>{product.name}</p></div>
                                 </div>
                             </Link>
                             ))}
@@ -92,7 +90,6 @@ const Index = () => {
                     </div>
                 </div>
             </section>
-    
      );
 }
 

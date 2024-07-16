@@ -50,10 +50,6 @@ const Checkout = () => {
 
     }, [data, shipping, Shipping])
 
-    console.log(data)
-    console.log(shipping)
-
-
 
     useEffect(() => {
         if (refetch && formData) {
@@ -87,9 +83,6 @@ const Checkout = () => {
                     
                     <div className={Shipping.isError? 'shipping-error': 'hide'}>
                         Network Error: Check your internet connection
-                        {/* <button>
-                            <ion-icon name="close-circle-outline"></ion-icon>
-                        </button> */}
                     </div>
                     
                     <div>

@@ -1,20 +1,9 @@
 import './preview.scss';
 import { useSelector } from 'react-redux';
-import { placeHolder } from '../../utils';
-import { useEffect, useState} from 'react';
 
 const Preview = () => {
 
-    const shippingInfo = useSelector((state) => state.getShipping)
-    const [shipping, setShipping] = useState(placeHolder)
-
-
-    useEffect(() => {
-        if (shippingInfo) {
-            setShipping(shippingInfo)
-        }
-    }, [shippingInfo])
-
+    const shipping = useSelector((state) => state.getShipping)
 
     return ( 
         <div className='preview'>
@@ -25,16 +14,18 @@ const Preview = () => {
                         </ul>
                         <li>Change</li>
                     </ul>
+                    
                     <ul>
                         <ul>
-                            <li>Contacts:</li>
+                            <li>Contact:</li>
                             <li>{shipping.email} <br/>{shipping.phone}</li>
                         </ul>
                         <li>Change</li>
                     </ul>
+
                     <ul>
                         <ul>
-                            <li>Ship to: </li>
+                            <li>Ship to:</li>
                             <li>{shipping.address}</li>
                         </ul>
                         <li>Change</li>

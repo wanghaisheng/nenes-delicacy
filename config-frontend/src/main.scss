@@ -1,19 +1,20 @@
 $white: #fbfbfb;
 $black: #252525;
 $faint-black: #616161d4;
-$pink: rgba(251,219,232,255);
+$pink: #f7c0c3;
 $dark-pink: #581b28;
+$darker-pink: #3e0e18;
 $red:  rgb(239, 51, 51);
 $light-red: rgba(255, 196, 196, 0.322);
 $gray: rgb(86, 86, 86);
-$light-gray: rgb(179, 179, 179);
+$light-gray: rgb(154, 154, 154);
 $lighter-gray: rgb(206, 206, 206);
 $green: #bae8d4;
 $light-green: #4BB543;
 $dark-green: #98dbbe;
 $dark-blue: #0c07a7;
-$box-shadow: 0 4px 4px rgba(0, 0, 0,.2);
-$border: 1px solid rgba(0,0,0,0.2);
+$box-shadow: 0 4px 4px $lighter-gray;
+$border: 1px solid $light-gray;
 
 
 :root {
@@ -52,6 +53,14 @@ $border: 1px solid rgba(0,0,0,0.2);
   background: rgba(167, 167, 167, 0.26)
 }
 
+input,
+textarea,
+button,
+select,
+div,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
 
 * {
   box-sizing: border-box;
