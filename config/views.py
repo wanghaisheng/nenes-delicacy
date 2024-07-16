@@ -5,21 +5,20 @@ from geopy.distance import geodesic
 from rest_framework import viewsets
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
-from django.core.mail import EmailMultiAlternatives
+from django.core import mail
+from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from rest_framework.decorators import action
 from rest_framework.decorators import api_view
-from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 from .models import *
 import environ
 from .serializers import *  
-import stripe
 
 env = environ.Env()
+environ.Env.read_env()
 
 CACHE_TTL = 60 * 60
-stripe.api_key = env('STRIPE_TEST_API_KEY')
 
 
 def get_distance(state, lga):   
@@ -88,7 +87,7 @@ class CartView(viewsets.ModelViewSet):
 
         total = sum([float(item.price) for item in query])
         cartitems = [CartItemSerializer(item).data for item in query]
-    
+
         return HttpResponse(
             json.dumps({
                 'cartitems': cartitems,
@@ -161,17 +160,14 @@ class CartView(viewsets.ModelViewSet):
         html_body = render_to_string("email-templates.html", {'order': cartitems, 
                                                               'shipping': shipping,
                                                               'total': total,
-                                                              'id': self.request.query_params['id']})
-        message = EmailMultiAlternatives(
-        subject='Your Order Confirmation',
-        body="",
-        to=[shipping.email]  
-        )
-
-        message.attach_alternative(html_body, "text/html")
-        message.send(fail_silently=False)
-
-        return HttpResponse('order created')
+                                                            'id': 'uioy'})
+        message = strip_tags(html_body)
+        subject=f"{shipping.firstName}'s Order Confirmation"
+        from_email = 'catabong89@gmail.com'
+        to = 'catabong89@gmail.com'
+       
+        mail.send_mail(subject, message, from_email, [to], html_message=html_body)
+        return HttpResponse('Success')
     
 
 class ShippingView(viewsets.ModelViewSet):
@@ -217,6 +213,14 @@ class ShippingView(viewsets.ModelViewSet):
         shipping.deliveryDate = request.data['selected']
         shipping.save()
         return HttpResponse('date updated')
+    
+    @action(detail=False, methods=['put'])
+    def route_protection(self, request):
+        sessionID = self.request.data['sessionID']
+        shipping = ShippingAddress.objects.get(session_id=sessionID)
+        shipping.routeProtection = not(shipping.routeProtection)
+        shipping.save()
+        return HttpResponse(shipping.routeProtection)
 
     
 class ToppingView(viewsets.ModelViewSet):
