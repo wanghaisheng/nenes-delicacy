@@ -1,11 +1,10 @@
 import { placeHolder } from "../utils";
-const initialState = true;
 
 const getBlurred = (state = false, action) => {
     switch(action.type) {
         case "BLUR":
             return !state
-        case "CART-RESET":
+        case "MENU":
             return false
         default: 
             return state
@@ -17,7 +16,7 @@ const getMenu = (state = false, action) => {
     switch(action.type) {
         case "MENU":
             return !state
-        case "MENU-RESET":
+        case "BLUR":
             return false
         default: 
             return state

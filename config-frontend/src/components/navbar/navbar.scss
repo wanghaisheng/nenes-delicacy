@@ -110,11 +110,11 @@ header.index {
             [data-menu] {
                 position: absolute;
                 transition:all .3s ease-in-out;
-                box-shadow: main.$box-shadow;
                 padding: 100px 20px 30px;
                 transform: translateX(-100vw);
                 height: 100vh;
                 max-width: 420px;
+                visibility: hidden;
                 left: 0;
                 top: 0;
                 z-index: -2;
@@ -223,6 +223,7 @@ header.index {
 
             [data-menu=active] {
                 transform: translateX(0);
+                visibility: visible;
             }
         }
 
@@ -292,7 +293,6 @@ header.index {
         }
     }
 }
-
 
 
 @media (max-width: '912px') {

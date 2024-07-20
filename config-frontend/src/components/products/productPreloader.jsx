@@ -13,18 +13,15 @@ const ProductPreloader = () => {
             </div>
 
         <div className="skeleton-products">
-            {[...Array(5)].map(x => (
-                <div key={x}>
+            {[...Array(5)].map((x, index) => (
+                <div key={index}>
                     <div></div>
                     <div>
                         <ul>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
                         </ul>
                     </div>
                 </div>

@@ -91,6 +91,25 @@
     }
 }
 
+.checkout__preloader {
+    width: 100vw;
+    display: flex;
+    color: main.$black;
+    justify-content: center;
+    align-items: center;
+    background: main.$white;
+    height: 100vh;
+
+    &>div {
+        text-align: center;
+    }
+
+    img {
+        max-width: 50px;
+        margin: 0 auto;
+    }
+}
+
  
 .active {
     font-weight: bolder;

@@ -12,11 +12,11 @@ router.register(r'shipping', views.ShippingView, basename='shipping')
 router.register(r'icings', views.IcingView, basename='icings')
 router.register(r'toppings', views.ToppingView, basename='toppings')
 router.register(r'size', views.SizeView, basename='size')
+router.register(r'email', views.EmailsView, basename='email')
 
 
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('payment', views.payment, name='payment')
 ]
 

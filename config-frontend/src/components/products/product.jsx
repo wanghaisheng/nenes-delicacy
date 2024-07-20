@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useQuery } from 'react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Error } from '../preloader/preloader'
@@ -16,9 +15,9 @@ const Product = () => {
     
     const pathname = window.location.pathname.replace(/\//g,'')
    
-    const { isError, isLoading, data, refetch, error } = useQuery({
+    const { isError, isLoading, data, refetch} = useQuery({
         queryKey: ['products'],
-        queryFn: () => get('products'),
+        queryFn: () => get('products/'),
         select: useCallback(
             (data) => data.filter(product => {
                 return product.product_type.parameter === pathname
@@ -36,7 +35,7 @@ const Product = () => {
     }
 
     if (isError) {
-        return <Error refetch={refetch} error={error}/>
+        return <Error refetch={refetch} message={`An error occured, while fetching ${current.name}`} />
     }
 
     

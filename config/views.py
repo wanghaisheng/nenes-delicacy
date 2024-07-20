@@ -9,7 +9,6 @@ from django.core import mail
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from rest_framework.decorators import action
-from rest_framework.decorators import api_view
 from django.views.decorators.cache import cache_page
 from .models import *
 import environ
@@ -39,17 +38,7 @@ def get_distance(state, lga):
     distance = geodesic((shop_lat, shop_lon), (client_lat, client_lon)).km
     return math.ceil(distance * 15)
 
-  
-@api_view(['POST'])
-def payment(request):
- 
-    intent = stripe.PaymentIntent.create(
-        amount=request.data['amount'],
-        currency='ngn',
-        payment_method_types = ["card"]
-    )  
-    return HttpResponse(intent.client_secret)
-    
+
  
 class ProductView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
@@ -221,6 +210,30 @@ class ShippingView(viewsets.ModelViewSet):
         shipping.routeProtection = not(shipping.routeProtection)
         shipping.save()
         return HttpResponse(shipping.routeProtection)
+    
+
+class EmailsView(viewsets.ModelViewSet):
+    queryset = CustomerEmail.objects.all()
+    serializer_class = EmailSerializer
+
+    def dispatch(self, *args, **kwargs):
+        return super(EmailsView, self).dispatch(*args, **kwargs)
+    
+    @action(detail=False, methods=['post'])
+    def add_email(self, request):
+        print(request.data)
+        try: 
+            CustomerEmail.objects.get(email=request.data['email'])
+            return HttpResponse("You're already subscribed to our newsletter.")
+
+        except CustomerEmail.DoesNotExist:
+            email = CustomerEmail.objects.create(
+                email=request.data['email']
+            )
+
+            email.save()
+
+        return HttpResponse('Thank you for subscribing to our newsletter!')
 
     
 class ToppingView(viewsets.ModelViewSet):

@@ -21,8 +21,8 @@ const ItemPreloader = () => {
 
                 <div className='skeleton-item-info'>
                     <div>
-                        {[...Array(15)].map(x => (
-                            <div></div>
+                        {[...Array(5)].map((x, index) => (
+                            <div key={index}></div>
                         ))}
                     </div>
                 </div>  

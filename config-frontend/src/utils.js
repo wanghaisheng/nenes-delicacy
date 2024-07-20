@@ -40,7 +40,7 @@ const getCookie = () => {
 const routeProtection = {
     id: uuid4(), 
     quantity: 1, 
-    item: { image: `image/upload/v1719052341/route-package-protection-logo_small_t3snia.avif`,
+    item: { image: '/media/route-package-protection-logo_small.avif',
             name: 'Route package protection',
             description: 'Against loss, theft or damage in transit and instant resolution'
         },

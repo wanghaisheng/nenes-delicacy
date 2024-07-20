@@ -28,6 +28,7 @@ const Precart = () => {
         queryFn: () => get(`shipping/get_shipping?sessionID=${getCookie()}`),
         placeholderData: placeHolder
     })  
+
     
 
     const preCart = useQuery({
@@ -91,7 +92,7 @@ const Precart = () => {
 
     return (  
         <section className="precart">
-             { isMobile? 
+             {isMobile? 
                 <div className="order-summary">
                     <div onClick={() => {
                                         setHidden(!hidden);
@@ -115,26 +116,44 @@ const Precart = () => {
             
             <div ref={precart} className="precart-wrapper">
                 <div>
-                    <div className="precart-outer">
-                    {preCart.data.cartitems.map(cart => (
-                        <div key={cart.id}>
-                            <div className="precart-image">
-                                <div>{cart.quantity}</div>
-                                <img src={`${import.meta.env.VITE_CLOUD_URL + cart.item.image}`} alt="" />
-                            </div>
-                            <div className="precart-info">
-                                <h4>{cart.item.name}</h4>
-                                <span>{cart.item.description}</span>
-                            </div>
-                            <div className="precart-price">
+                    {preCart.isLoading || preCart.isPlaceholderData? 
+                        <div className='precart__loader'>
+                        {[...Array(4)].map((x, index)=> (
+                            <div key={index}>
+                                <div></div>
+                                
                                 <div>
-                                    <span><FontAwesomeIcon icon={faNairaSign} /></span>
-                                    <span>{Intl.NumberFormat("en-US").format(cart.price)}</span>
+                                    <ul>
+                                        <li></li>
+                                        <li></li>
+                                        <li></li>
+                                    </ul>
                                 </div>
                             </div>
+                        ))}
+                        </div>  
+                    : 
+                        <div className="precart-outer">
+                            {preCart.data.cartitems.map(cart => (
+                                <div key={cart.id}>
+                                    <div className="precart-image">
+                                        <div>{cart.quantity}</div>
+                                        <img src={`${import.meta.env.VITE_SERVER_URL + cart.item.image}`} alt="" />
+                                    </div>
+                                    <div className="precart-info">
+                                        <h4>{cart.item.name}</h4>
+                                        <span>{cart.item.description}</span>
+                                    </div>
+                                    <div className="precart-price">
+                                        <div>
+                                            <span><FontAwesomeIcon icon={faNairaSign} /></span>
+                                            <span>{Intl.NumberFormat("en-US").format(cart.price)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    ))}
-                    </div>
+                    }
 
                     <div className="pricing">
                     <div>

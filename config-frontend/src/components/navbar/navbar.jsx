@@ -3,26 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { useQuery } from 'react-query';
 import { get, getCookie } from '../../utils';
+import CartPreloader from '../cart/cartPreloader';
 import { useMediaQuery } from 'react-responsive'
 import { lazy, Suspense, useEffect, useState, useRef} from 'react';
-import { Blur, Menu, menuReset } from '../../actions';
+import { Blur, Menu } from '../../actions';
 import './navbar.scss';
 
 
 const Cart= lazy(() => import("../cart/cart"));
-
-
-const ShippingNav = () => {
-    return (
-        <div className='shipping-info'>
-            <h2>Shipping Information</h2>
-            <p> We do not dispatch products today or within the next two days,
-                to ensure that we consistently deliver fresh items to our customers.
-            </p>
-        </div>
-    )
-}
-
 
 const Navbar = () => {
                           
@@ -36,7 +24,7 @@ const Navbar = () => {
     const isDesktop = useMediaQuery({query: '(min-width: 767px)'});
 
 
-    const { data } = useQuery({
+    const getCart = useQuery({
         queryKey: ['carts'],
         queryFn: () =>  get(`cart/getCart/?sessionid=${getCookie()}`), 
         staleTime: Infinity,
@@ -44,17 +32,21 @@ const Navbar = () => {
     }, )
 
 
-    useEffect(() => {
-        if (cartState || isDesktop) {
-            dispatch(menuReset(false));
-        }
-    }, [cartState, isDesktop])
-
-
-
     const handleClick = (e) => {
         navigate('/')
         e.preventDefault()
+    }
+
+
+    const shippingInfo = () => {
+        return (
+            <div className='shipping-info'>
+                <h2>Shipping Information</h2>
+                <p> We do not dispatch products today or within the next two days,
+                    to ensure that we consistently deliver fresh items to our customers.
+                </p>
+            </div>
+        )
     }
 
 
@@ -99,7 +91,7 @@ const Navbar = () => {
                                         <li><ion-icon name='chevron-up-outline'></ion-icon></li>
                                     </ul>
                                     <div className='accordian-body'>
-                                        <ShippingNav />
+                                        {shippingInfo()}
                                     </div>
                                 </div>
                                 <div>
@@ -138,7 +130,7 @@ const Navbar = () => {
                                 <ion-icon name='chevron-up-outline'></ion-icon>
                             </div>
                             <div className='dropdown'>
-                                <ShippingNav />
+                                {shippingInfo()}
                             </div>
                         </div>
                     </div>
@@ -146,8 +138,11 @@ const Navbar = () => {
 
                 <div className='logo'>
                     <div href="" onClick={handleClick}>
-                        <img src={isMobile? "/images/mobile-view-logo.jpg"
-                            : "/images/logo.png"} alt="logo of Nenee's delicacy" />
+                        <img src={
+                            isMobile? 
+                            "https://res.cloudinary.com/dqdtnitie/image/upload/v1721255425/mobile-logo_udgqxl.jpg" : 
+                            'https://res.cloudinary.com/dqdtnitie/image/upload/v1721251245/Untitled_x0uxvn.png'} 
+                            alt="logo of Nenee's delicacy"/>
                     </div>
                 </div>  
 
@@ -156,15 +151,17 @@ const Navbar = () => {
                         <ion-icon name="person"></ion-icon>
                     </div>
 
-                    <div onClick={() => {dispatch(Blur());}} ref={cartIcon}>
+                    <div onClick={() => {dispatch(Blur())}} ref={cartIcon}>
                         <ion-icon name="bag"></ion-icon>
                         <div className='cart-number'>{
-                        data?.cartitems.length===0? "": data?.cartitems.length
+                        getCart.data?.cartitems.length===0? "": getCart.data?.cartitems.length
                         }</div>
                     </div>
                 </div>
             </div>
-            <Suspense><Cart data={data}/></Suspense>
+            <Suspense fallback={<CartPreloader/>}>
+                <Cart getCart={getCart}/>
+            </Suspense>
         </header>
      );
 }

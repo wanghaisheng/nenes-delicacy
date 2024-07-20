@@ -1,43 +1,45 @@
+import { useSelector } from 'react-redux'
 import './preloader.scss'
+import '../cart/cart.scss'
+
 
 const Spinner = (props) => {
     return (
         <div className='loading'>
             <div>
-                {props.text? <span> {props.text}, please wait...</span> : ''}
-                <div className='loader'></div>
+                <div className='image-holder'>
+                    <img src="/icons/spinner-trans-bg.gif" alt="" />
+                </div>
+                <pre>{props.message}</pre>
             </div>
-        </div>
+        </div> 
     )
 }
 
-const SmallLoader = () => {
-    return (
-        <div className="small-loading">
-            <div></div>
-        </div>
-    )
-}
 
 const Error = (props) => {
     return (
-        <div className='error'>
-        <pre>
-            <div className='no-network'>
-                <img src="images/no-signal.png" alt="" loading='lazy'/>
-            </div>
+        <div className="error">
+            <pre>
+                <div>
+                    <ion-icon name="alert-circle-outline"></ion-icon>
+                </div>
 
-            <h1>Ooops!</h1>
-            <span>No internet connection found</span>
-            <span>Check your connection</span>
-            <button onClick={() => props.refetch()}>
-                <pre>Try again</pre>
-            </button>
-        </pre>
-    </div>
+                <div>
+                    {props.message}<br />
+                    Please try again
+                </div>
+
+                <div>
+                    <button onClick={() => props.refetch()}>
+                        <pre>Try again</pre>
+                    </button>
+                </div>
+
+            </pre>
+        </div>
     )
 }
 
 
-
-export { Spinner, Error, SmallLoader };
+export { Spinner, Error };

@@ -26,7 +26,7 @@ const Index = () => {
     }
 
 
-    const { isError, isLoading, data} = useQuery({
+    const { isError, isLoading, data, isPlaceholderData} = useQuery({
         queryKey: ['categories'],
         queryFn: () => get('categories/'),
         placeholderData: []
@@ -47,7 +47,7 @@ const Index = () => {
                                     <p>{item.paragraph}</p>
 
                                     <div className='tab-view'>
-                                        <img src={item.lineBreak} alt="line break" srcSet="" loading='lazy' placeholder='/images/placeholder-1-1.webp' />
+                                        <img src='https://res.cloudinary.com/dqdtnitie/image/upload/v1697689063/noun-decorative-line-4253413-cropped_jgf417.png' alt="line break" srcSet="" loading='lazy' />
                                         <p>{item.lineBreakText}</p>
                                     </div>
                                 </div>
@@ -71,21 +71,31 @@ const Index = () => {
                             <li onClick={(el) => slide(el)}><ion-icon name="chevron-forward-circle-sharp"></ion-icon></li>
                         </ul>               
                         <div ref={slider} className="products">
-                            {data.map(product => (
-                            <Link to={product.parameter} key={product.id}>
-                                <div>
-                                    <LazyLoadImage
-                                    width='100%'
-                                    height='100%'
-                                    src={import.meta.env.VITE_CLOUD_URL + product.image}
-                                    effect='blur'
-                                    alt={product.title}
-                                    placeholderSrc={product.lazyImage}
-                                    />
-                                    <div><p>{product.name}</p></div>
-                                </div>
-                            </Link>
-                            ))}
+                            {isLoading || isPlaceholderData? 
+                                <>
+                                    {[...Array(5)].map((x, index) => (
+                                        <div className='product-preloader' key={index}></div>
+                                    ))}
+                                </>
+                                : 
+                                <>
+                                {data.map(product => (
+                                <Link to={product.parameter} key={product.id}>
+                                    <div>
+                                        <LazyLoadImage
+                                        width='100%'
+                                        height='100%'
+                                        src={import.meta.env.VITE_CLOUD_URL + product.image}
+                                        effect='blur'
+                                        alt={product.title}
+                                        placeholderSrc={product.lazyImage}
+                                        />
+                                        <div><p>{product.name}</p></div>
+                                    </div>
+                                </Link>
+                                ))}
+                                </>
+                             }
                         </div>
                     </div>
                 </div>

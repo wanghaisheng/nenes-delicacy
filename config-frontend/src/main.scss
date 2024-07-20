@@ -8,7 +8,8 @@ $red:  rgb(239, 51, 51);
 $light-red: rgba(255, 196, 196, 0.322);
 $gray: rgb(86, 86, 86);
 $light-gray: rgb(154, 154, 154);
-$lighter-gray: rgb(206, 206, 206);
+$lighter-gray: rgb(179, 179, 179);
+$deep-purple: #43234c;
 $green: #bae8d4;
 $light-green: #4BB543;
 $dark-green: #98dbbe;
@@ -18,7 +19,7 @@ $border: 1px solid $light-gray;
 
 
 :root {
-  font-family: 'Montserrat Alternates';
+  font-family: 'Montserrat';
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -75,4 +76,21 @@ body {
 
 .hide {
   display: none;
+}
+
+.lazy-load-image-background {
+  background-size: cover !important;
+  background-position: center;
+}
+
+@keyframes splash {
+
+  from {
+      background: $light-gray;
+  }
+
+  to {
+      background: $lighter-gray;
+  }
+  
 }

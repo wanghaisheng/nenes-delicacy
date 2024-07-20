@@ -22,9 +22,7 @@ const Payment = () => {
   const total = Number(cart.total) + Number(shipping.price)
   const amount = shipping.routeProtection? total + 1000 : total
 
-  console.log(shipping)
-
-
+  
   useQuery({
     queryKey: ['order', success],
     queryFn: () => get(`cart/createOrder?sessionid=${getCookie()}`),

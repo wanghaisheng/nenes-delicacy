@@ -12,19 +12,6 @@ const Menu = () => {
     }
 }
 
-const cartReset = () => {
-    return {
-        type: "CART-RESET",
-    }
-}
-
-
-const menuReset = () => {
-    return {
-        type: "MENU-RESET",
-    }
-}
-
 
 const shipping = (shippingInfo) => {
     return {
@@ -34,9 +21,7 @@ const shipping = (shippingInfo) => {
 }
 
 export { 
-        Blur, 
-        cartReset,
-        menuReset,
+        Blur,
         Menu,
         shipping,
     }

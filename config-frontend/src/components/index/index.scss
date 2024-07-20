@@ -133,7 +133,7 @@ section.index {
                 text-align: center;
                 overflow: hidden;
                 position: relative;
-                border-radius: 10px;
+                border-radius: 5px;
                 cursor: pointer;
                 aspect-ratio: 15/12;
     
@@ -160,6 +160,11 @@ section.index {
                         font-size: 1.4em;
                     }
                 }
+            }
+
+            .product_preloader {
+                background: main.$light-gray;
+                animation: splash 1s linear infinite alternate;
             }
 
             a>div::after {

@@ -4,6 +4,7 @@ import {
     Route } from "react-router-dom";
 import { useSelector } from 'react-redux'
 import { lazy, Suspense, useEffect } from "react";
+import { CheckoutPreloader } from "../checkout/checkoutLayout";
 import ProductPreloader from '../products/productPreloader';
 import ItemPreloader from '../item/itemPreloader';
 import { useMediaQuery } from 'react-responsive'
@@ -16,7 +17,9 @@ const Item = lazy(() => import("../item/item"))
 const Payment = lazy(() => import("../payments/payment"))
 const Shipping = lazy(() => import("../shipping/shipping"))
 const Checkout = lazy(() => import("../checkout/checkout"))
-const CheckoutLayout = lazy(() => import('../checkout/checkoutLayout'));
+const CheckoutLayout = lazy(() => import('../checkout/checkoutLayout').then(
+    module => ({default: module.CheckoutLayout})
+));
 
 
 const App = () => {
@@ -55,7 +58,7 @@ const App = () => {
                     </Route>
                             
                     <Route element={
-                        <Suspense>
+                        <Suspense fallback={<CheckoutPreloader/>}>
                             <CheckoutLayout />
                         </Suspense>}> 
                         <Route path="/checkout" element={<Checkout/>}/>

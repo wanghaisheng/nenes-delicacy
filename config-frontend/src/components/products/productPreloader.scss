@@ -6,12 +6,12 @@
         height: 300px;
         padding: 20px;
         display: flex;
-        gap: 5px;
+        gap: 10px;
 
         div {
             flex-basis: 50%;
             border-radius: 10px;
-            animation: animate 1s linear infinite alternate;
+            animation: splash 1s linear infinite alternate;
             background: main.$lighter-gray;
         }
     }
@@ -19,7 +19,7 @@
     .skeleton-products {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 5px;
+        gap: 10px;
         padding: 20px;
 
         &>div {
@@ -27,7 +27,7 @@
             div:first-child {
                 aspect-ratio: 11/9;
                 border-radius: 5px;
-                animation: animate 1s linear infinite alternate;
+                animation: splash 1s linear infinite alternate;
                 background: main.$lighter-gray;
             }
 
@@ -46,35 +46,33 @@
 
             li {
                 background: main.$lighter-gray;
-                animation: animate 1s linear infinite alternate;
+                animation: splash 1s linear infinite alternate;
                 list-style: none;
                 margin-bottom: 5px;
                 width: 100%;
-                height: 4px;
-                border-radius: 50px;
+                height: 15px;
+                border-radius: 5px;
             }
 
             li:first-child {
-                width: 35%;
+                width: 50%;
             }
         }
     }
 }
 
 
-@media (max-width: 912px) {
-
-    .skeleton-product .skeleton-products {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-
 @media (max-width: 767px) {
-        .skeleton-product > div:first-child {
+        .skeleton-product {
+
+            .skeleton-products {
+                grid-template-columns: repeat(3, 1fr);
+            } 
+
+            &> div:first-child {
                 display: none
+            }
         }
-        
     }
 
 
@@ -98,16 +96,3 @@
         }
     }
 }
-
-
-@keyframes animate {
-
-    from {
-        background: main.$light-gray;
-    }
-  
-    to {
-        background: main.$lighter-gray;
-    }
-    
-  }

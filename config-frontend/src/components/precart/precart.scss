@@ -43,6 +43,45 @@
 
         &>div:first-child {
 
+            .precart__loader > div {
+                display: grid;
+                margin-bottom: 15px;
+                grid-template-columns: auto 1fr;
+                gap: 10px;
+            
+                &>div:first-child {
+                    width: 70px;
+                    animation: splash 1s linear infinite alternate;
+                    border-radius: 5px;
+                    background: main.$light-gray;
+                    aspect-ratio: 16/14;
+                }
+            
+                &>div:nth-child(2) {
+                    max-width: 400px;
+
+                    ul {
+                        padding: 0;
+                        margin: 0;
+ 
+                        li {
+                            background: main.$light-gray;
+                            animation: splash 1s linear infinite alternate;
+                            list-style: none;
+                            margin-bottom: 5px;
+                            height: 8px;
+                            width: 100%;
+                            border-radius: 5px;
+                        }
+
+                        li:first-child {
+                            width: 50%;
+                        }
+                    }
+                }
+            }
+            
+
             .precart-outer > div {
                     display: flex;
                     gap: 10px;

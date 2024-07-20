@@ -135,16 +135,13 @@ section.product {
 }
 
 
-@media (max-width: 912px) {
-
-    section.product .products {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
 
 @media (max-width: 767px) {
         section.product {
+
+            .products {
+                grid-template-columns: repeat(3, 1fr);
+            }
 
             &>div:first-child {
                 display: none

@@ -8,6 +8,19 @@ import './layouts.scss'
 const Precart = lazy(() => import('../precart/precart'))
 
 
+const CheckoutPreloader = () => {
+
+    return (
+        <section className='checkout__preloader'>
+            <div>
+                <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1721250342/spinner-trans-bg_r89iew.gif" alt="preloader" />
+                <pre>Loading, please wait</pre>
+            </div>
+        </section>
+    )
+}
+
+
 function CheckoutLayout() {
 
     const mobile = useMediaQuery({query: '(max-width: 767px)'});
@@ -60,7 +73,7 @@ function CheckoutLayout() {
 
     return ( 
         <section className="checkout-layout">
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<CheckoutPreloader />}>
                 <div className='layout-wrapper'>
                     <header>
                     <div className="mobile-logo">
@@ -102,7 +115,7 @@ function CheckoutLayout() {
                     <div>
                         <div className="mobile-logo">
                             <a href="/">
-                                <img src='/images/mobile-view-logo.jpg'/>
+                                <img src='https://res.cloudinary.com/dqdtnitie/image/upload/v1721255425/mobile-logo_udgqxl.jpg'/>
                             </a>
                         </div>
                     </div> : null
@@ -112,4 +125,4 @@ function CheckoutLayout() {
      );
 }
 
-export default CheckoutLayout;
+export { CheckoutLayout, CheckoutPreloader};

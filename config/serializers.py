@@ -32,6 +32,16 @@ class ShippingSerializer(serializers.ModelSerializer):
         fields =  '__all__'
 
 
+class EmailSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = CustomerEmail
+        fields = '__all__'
+        depth = 1
+
+
+
+
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sizes

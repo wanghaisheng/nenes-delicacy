@@ -4,11 +4,11 @@
     background: main.$white;
     color: main.$black;
     max-width: 400px;
+    transition: all .3s ease-in-out;
     width: 100%;
     top: 0;
     font-size: .9em;
     z-index: 3;
-    box-shadow: main.$box-shadow;
     position: fixed;
     height: 100%;
     right: 0;
@@ -21,7 +21,7 @@
         flex-direction: column;
         gap: 10px;
 
-        &>div {
+        &>div.cartitem {
             display: flex;
             justify-content: space-between;
             gap: 10px;
@@ -193,50 +193,80 @@
         }
     }
 
-    .error, .loading {
+    .error {
         position: absolute;
-        top: 50%;
-        font-size: 1.1em;
         width: 100%;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-
-        pre {
-            margin: 0;
-
-            &>div:last-child {
-                margin-top: 15px;
-            }
-
-            ion-icon {
-                font-size: 30px;
-            }
-        }
-
-        .image-holder {
-            width: 50px;
-            padding-bottom: 10px;
-            margin: 0 auto;
-
-            img {
-                width: 100%;
-            }
-        }
+        height: 100%;
     }
 }
+
+
+.open-cart, .cart {
+
+    .checkout__preloader {
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        div {
+            width: 200px;
+            animation: splash 1s linear infinite alternate;
+            background: main.$light-gray;
+            height: 50px;
+            border-radius: 30px;
+        }
+    }
+
+    .cartitems__preloader > div {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 5px;
+
+            &>div:first-child {
+                width: 110px;
+                animation: splash 1s linear infinite alternate;
+                aspect-ratio: 11/8;
+                border-radius: 3px;
+                background: main.$light-gray;
+            }
+
+            &>div:nth-child(2) ul {
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                border-radius: 3px;
+                gap: 3px;
+                margin: 0;
+
+                li {
+                    height: 8px;
+                    background: main.$light-gray;
+                    animation: splash 1s linear infinite alternate;
+                    border-radius: 2px;
+                    list-style: none;
+                    width: 100%;
+                }
+            }
+
+            &>div:nth-child(3) {
+                background: main.$light-gray;
+                height: 10px;
+                width: 100%;
+            }
+    }
+}
+
 
 .noscroll {
     overflow: hidden;
 }
 
 .open-cart {
-    transition:all .3s ease-in-out;
-    transform: translateX(0);
+    transform: translateX(0vw);
 }
 
 .cart {
-    transition:all .3s ease-in-out;
     transform: translateX(100vw);
     visibility: hidden;
 }

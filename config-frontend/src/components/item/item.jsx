@@ -67,7 +67,7 @@ const Item = () => {
     }
 
     if (isError) {
-        return <Error refetch={refetch}/> 
+        return <Error refetch={refetch} message="An error occurred"/> 
     }
 
 
@@ -78,7 +78,7 @@ const Item = () => {
                 <a href="/">Home</a>
                 <div><ion-icon name="chevron-forward"></ion-icon></div>
                 <a href={`/${data.product_type.parameter}`}>
-                    {data.product_type.product_name}
+                    {data.product_type.name}
                 </a>
                 <div><ion-icon name="chevron-forward"></ion-icon></div>
                 <a href="" onClick={(e) => e.preventDefault()}>{data.name}</a>

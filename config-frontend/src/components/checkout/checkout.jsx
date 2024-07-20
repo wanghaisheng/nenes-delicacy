@@ -41,7 +41,6 @@ const Checkout = () => {
         if (data && shipping.id) {
             const result = data.filter(
                 state => state.state === shipping.state)[0]
-            console.log(result)
             setState(result)
             
             const filtered_lga = result? result.lga.filter(

@@ -3,16 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  useDispatch, useSelector } from 'react-redux'
 import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
+import CartPreloader from './cartPreloader';
+import { Error } from '../preloader/preloader';
 import { Blur } from '../../actions';
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { useMutation,  useQueryClient} from 'react-query'
-import { useRef } from 'react';
 import axios from '../../axios';
 
 
-const Cart = (data) => {
+const Cart = ({ getCart }) => {
     
-    const cart = useRef()
     const dispatch = useDispatch()
     const queryclient = useQueryClient()
     const carts = queryclient.getQueryData(['carts'])
@@ -75,33 +75,18 @@ const Cart = (data) => {
 
 
     const handleJSX = () => {
-        if (data.isLoading) {
+        if (getCart.isLoading) {
             return (
-                <div className='loading'>
-                    <div>
-                        <div className='image-holder'>
-                            <img src="/icons/spinner-trans-bg.gif" alt="" />
-                        </div>
-                        <pre>Fetching your cart, please wait</pre>
-                    </div>
-                </div> 
+                <CartPreloader/>
             )
         }
-
-        if (data.isError || !data?.data) {
+        
+        if (getCart.isError) {
             return (
-                <div className="error">
-                    <pre>
-                        <div>
-                            Unable to retrieve your cart at the moment <br />
-                            Please try again
-                        </div>
-
-                        <div>
-                            <ion-icon name="alert-circle-outline"></ion-icon>
-                        </div>
-                    </pre>
-                </div>
+                <Error 
+                message='An error occured while fetching cart'
+                refetch={getCart.refetch}
+                />
             )
         }
 
@@ -130,7 +115,7 @@ const Cart = (data) => {
                 </div>
                 <div className="cartitems">
                 {carts?.cartitems.map(((cartitem, index) => (
-                    <div key={cartitem.id}>
+                    <div key={cartitem.id} className='cartitem'>
                         <div>
                             <div className='cart-image'>
                                 <LazyLoadImage
@@ -189,7 +174,7 @@ const Cart = (data) => {
     }
 
     return ( 
-        <section ref={cart} className={state? "open-cart": "cart"}>
+        <section className={state? "open-cart": "cart"}>
             {handleJSX()}             
         </section>
      );
