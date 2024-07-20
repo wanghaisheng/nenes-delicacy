@@ -26,21 +26,18 @@ def create_placeholder(sender, instance, **kwargs):
     # instance.lazyImage = file_path
     # instance.save()
 
-    response = requests.get(instance.image)
     file_path = f'{instance.name}_placeholder.jpg'
     if os.path.exists(file_path):
         return
      
-    if response.status_code == 200:
-        print("request successful")
-        image = Image.open(BytesIO(response.content)).convert('RGB')
+    image = Image.open(instance.image).convert('RGB')
 
-        image.thumbnail((150, 150))
+    image.thumbnail((150, 150))
 
-        # Save placeholder image and add blur filter
-        image.filter(ImageFilter.BLUR).save(file_path)
-        placeholder = cloudinary.uploader.upload(file_path)
+    # Save placeholder image and add blur filter
+    image.filter(ImageFilter.BLUR).save(file_path)
+    placeholder = cloudinary.uploader.upload(file_path)
 
-        # Update model instance
-        instance.lazyImage = f"v{placeholder['version']}/{placeholder['public_id']}.jpg"
-        instance.save()
+    # Update model instance
+    instance.lazyImage = f"v{placeholder['version']}/{placeholder['public_id']}.jpg"
+    instance.save()
