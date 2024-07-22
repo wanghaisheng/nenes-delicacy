@@ -119,10 +119,10 @@ const Cart = ({ getCart }) => {
                         <div>
                             <div className='cart-image'>
                                 <LazyLoadImage
-                                    src={`${import.meta.env.VITE_CLOUD_URL + cartitem.item.image}`}
+                                    src={import.meta.env.VITE_CLOUD_URL + cartitem.item.image}
                                     effect='blur'
                                     alt={cartitem.item.name}
-                                    placeholderSrc={cartitem.item.Lazyimage}
+                                    placeholderSrc={import.meta.env.VITE_CLOUD_URL + cartitem.item.Lazyimage}
                                 />
                             </div>
                 
