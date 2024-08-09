@@ -3,12 +3,13 @@ import math
 from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from rest_framework import viewsets
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.core import mail
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from rest_framework.decorators import action
+from django.core import serializers as serializer
 from django.views.decorators.cache import cache_page
 from .models import *
 import environ
@@ -175,7 +176,7 @@ class ShippingView(viewsets.ModelViewSet):
             address = ShippingAddress.objects.get(session_id=sessionID)
             serializer = ShippingSerializer(address).data
         except:
-            return None
+            return HttpResponse('none')
         return HttpResponse(json.dumps(serializer))
 
 
@@ -192,7 +193,8 @@ class ShippingView(viewsets.ModelViewSet):
         
         shipping.price = distance
         shipping.save()
-        return HttpResponse('updated')
+        serializer = ShippingSerializer(shipping).data
+        return HttpResponse(json.dumps(serializer))
     
     
     @action(detail=False, methods=['put'])
@@ -234,26 +236,27 @@ class EmailsView(viewsets.ModelViewSet):
             email.save()
 
         return HttpResponse('Thank you for subscribing to our newsletter!')
-
     
-class ToppingView(viewsets.ModelViewSet):
-    queryset = Topping.objects.all()
-    serializer_class = ToppingSerializer
 
+class ProductVariationView(viewsets.ModelViewSet):
+    queryset = ProductVariation.objects.all()
+    serializer_class = ProductVariationSerializer
 
-class SizeView(viewsets.ModelViewSet):
-    queryset = Sizes.objects.all()
-    serializer_class = ToppingSerializer
-
-    @method_decorator(cache_page(CACHE_TTL))
+    # @method_decorator(cache_page(CACHE_TTL))
     def dispatch(self, *args, **kwargs):
-        return super(SizeView, self).dispatch(*args, **kwargs)
+        return super(ProductVariationView, self).dispatch(*args, **kwargs)
+    
 
-
-class IcingView(viewsets.ModelViewSet):
-    queryset = Icing.objects.all()
-    serializer_class = ToppingSerializer
-
+    @action(detail=False, methods=['get'])
+    def get_variation(self, request):
+        product_id = self.request.query_params.get('productID')
+        product = Products.objects.get(id=product_id)
+        variations = ProductVariation.objects.filter(product=product).values()
+        for variation in variations:
+            print(variation.keys())
+        print('yes')
+        return HttpResponse('yes')
+    
 
 class StatesView(viewsets.ModelViewSet):
     queryset = States.objects.all()

@@ -5,39 +5,14 @@ section.checkout {
     width: 100%;
     display: flex;
     justify-content: center;
-
-    .shipping-error {
-      background: main.$light-red;
-      text-align: center;
-      font-weight: bold;
-      position: relative;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      color: main.$red;
-
-      button {
-        position: absolute;
-        border: none;
-        padding: 5px;
-        color: main.$red;
-        background: transparent;
-        right: 0;
-        top: 0;
-
-        ion-icon {
-          font-size: 25px;
-          font-weight: bolder;
-        }
-      }
-    }
+    
 
     .address {
       width: 100%;
-      max-width: 700px;
+      max-width: 550px;
 
       .buttons {
-        margin-top: 40px;
+        margin-top: 50px;
 
         button:disabled {
           opacity: 0.5;
@@ -51,6 +26,10 @@ section.checkout {
     font-weight: 600;
     color: main.$black;
     margin-top: 0;
+   }
+
+   form {
+    margin: 0 auto;
    }
 
    input:focus,

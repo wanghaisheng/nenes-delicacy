@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { get, getCookie } from '../../utils';
 import { PaystackButton } from 'react-paystack'
 import { useSelector } from 'react-redux';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { lazy } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 
 const Preview = lazy(() => import("../preview/preview"))
@@ -13,14 +13,12 @@ const Preview = lazy(() => import("../preview/preview"))
 
 const Payment = () => {
 
-  const queryClient = useQueryClient()
+  const { preCart } = useOutletContext()
   const shipping = useSelector((state) => state.getShipping);
-  const cart = queryClient.getQueryData(['pre-cart'])
   const [success, setSuccess] = useState(false)
   const publicKey = import.meta.env.VITE_PUBLIC_KEY
   const navigate = useNavigate()
-  const total = Number(cart.total) + Number(shipping.price)
-  const amount = shipping.routeProtection? total + 1000 : total
+  const amount = Number(preCart?.data?.total) + Number(shipping.price)
 
   
   useQuery({
@@ -28,6 +26,20 @@ const Payment = () => {
     queryFn: () => get(`cart/createOrder?sessionid=${getCookie()}`),
     enabled: success
   })
+
+
+  useEffect(() => {
+
+    if (shipping === 'none') {
+      navigate('/checkout', { 
+          state: { data: "Cannot start a payment session without adding an address"}
+      }
+    )} else if (!shipping.deliveryDate)
+      navigate('/shipping', { 
+        state: { data: "Kindly set a delivery date before proceeding to payment"}
+    })
+  }, [shipping])
+
 
 
 const handleSubmit = () => {
@@ -47,7 +59,8 @@ const handleSubmit = () => {
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   }
 
-    return ( 
+
+  return ( 
         <div className="payment-wrapper">
             <div>
               <Preview/>
@@ -59,15 +72,15 @@ const handleSubmit = () => {
                     <span className="custom-radio"></span>
                   </span>
                   <label htmlFor="priority"> 
-                    <div>Priority Overnight - Saturday Delivery</div>
+                    <div>Priority Overnight - {new Date(shipping.deliveryDate).toLocaleDateString('en-US', { weekday: 'long' })} Delivery</div>
                     <div className='shipping-method_desc'>We bake fresh and overnight ship your items based on your chosen delivery date.</div>
                   </label>
                   <span>FREE</span>
                 </div>
 
                 <p>Our products are baked fresh and packed safely to ensute the best quality. Priority overnight shipping ensures your deserts arrive on your desired delivery date.</p>
+                <PaystackButton className='paystack-button' {...componentProps}/>
               </section>
-              <PaystackButton className='paystack-button' {...componentProps}/>
             </div>
         </div>
      );

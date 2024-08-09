@@ -231,9 +231,9 @@ header.index {
             position: absolute;
             width: 130px;
             cursor: pointer;
-            left: 50%;
+            left: calc(50% + 65px);
             top: 0;
-            transform: translate(-50%);
+            transform: translate(-54%);
             z-index: 2;
             height: 150px;
 

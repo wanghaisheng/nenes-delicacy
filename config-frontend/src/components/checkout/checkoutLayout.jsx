@@ -1,9 +1,18 @@
-import { Outlet } from 'react-router-dom';
+import { useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { lazy, Suspense  } from 'react';
-import { useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
+import { shipping } from '../../actions';
+import { useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive'
 import './layouts.scss'
+import { placeHolder, 
+        getCookie,
+        routeProtection, 
+        get } from '../../utils';
+
+
+
 
 const Precart = lazy(() => import('../precart/precart'))
 
@@ -24,8 +33,16 @@ const CheckoutPreloader = () => {
 function CheckoutLayout() {
 
     const mobile = useMediaQuery({query: '(max-width: 767px)'});
-    const navigation = useRef()
+    const [ref, setRef] = useState(null);
     const location = useLocation()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const onRefSet = useCallback(ref => {
+        setRef(ref);
+        ref?.current;
+    })
+    
 
     const links = [
         {
@@ -50,9 +67,48 @@ function CheckoutLayout() {
         }, 
     ]
 
-    useEffect(() => {
 
-        navigation.current?.childNodes.forEach(node => { 
+    const { data } = useQuery({
+        queryKey: ['shipping'],
+        queryFn: () => get(`shipping/get_shipping?sessionID=${getCookie()}`),
+        placeholderData: placeHolder
+    })
+    
+
+    const preCart = useQuery({
+        queryKey: ['pre-cart'],
+        queryFn: () =>  get(`cart/getCart/?sessionid=${getCookie()}`), 
+        staleTime: Infinity,
+        placeholderData: { cartitems: [''], total: 0 },
+        select: (cart) => {
+            
+            if (data?.routeProtection && cart.cartitems.length != 0) {
+                return {
+                    cartitems: [routeProtection, ...cart.cartitems],
+                    total: Number(cart.total) + routeProtection.price,
+                }
+            } return cart
+        }
+    })
+    console.log(preCart.data)
+
+
+     // dispatches the shipping information to the redux store
+     useEffect(() => {
+
+        if (preCart.data?.cartitems.length === 0) {
+            navigate('/')
+        }
+
+        if (data) {
+            dispatch(shipping(data))
+
+        }}, [data, preCart.data])
+
+
+
+    useEffect(() => {
+        ref?.childNodes.forEach(node => { 
             if (node.firstChild.href === window.location.href) {
                 node.classList.add('active')
                 node.classList.remove('disabled')
@@ -67,8 +123,8 @@ function CheckoutLayout() {
             }
         })
 
-    }, [location])
-
+    }, [location.pathname, ref])
+    
  
 
     return ( 
@@ -76,26 +132,27 @@ function CheckoutLayout() {
             <Suspense fallback={<CheckoutPreloader />}>
                 <div className='layout-wrapper'>
                     <header>
-                    <div className="mobile-logo">
-                        <a href="/">
-                            <img src='/images/mobile-view-logo.jpg'/>
-                        </a>
-                    </div>
-                    <div className="navigation">
-                            <ul ref={navigation}>
-                                {links.map(link => (
-                                    <li key={link.id} onClick={(e) => {
-                                        e.target.parentElement.classList.contains('disabled')?
-                                        e.preventDefault() : ''
-                                    }}>
-                                        <a href={link.ref}>{link.title}</a>
-                                        {link.hasNextSibling? <ion-icon name="chevron-forward-outline"></ion-icon> : ''}
-                                    </li> 
-                                ))}
-                            </ul>
-                    </div>
+                        <div className="mobile-logo">
+                            <a href="/">
+                                <img src='/images/mobile-view-logo.jpg'/>
+                            </a>
+                        </div>
+                        
+                        <div className="navigation">
+                                <ul ref={onRefSet}>
+                                    {links.map(link => (
+                                        <li key={link.id} onClick={(e) => {
+                                            e.target.parentElement.classList.contains('disabled')?
+                                            e.preventDefault() : ''
+                                        }}>
+                                            <a href={link.ref}>{link.title}</a>
+                                            {link.hasNextSibling? <ion-icon name="chevron-forward-outline"></ion-icon> : ''}
+                                        </li> 
+                                    ))}
+                                </ul>
+                        </div>
                     </header>
-                    <Outlet/>
+                    <Outlet context={{ preCart }}/>
                     <footer className='layout-footer'>
                         <ul>
                             <a href="">
@@ -110,7 +167,7 @@ function CheckoutLayout() {
                         </ul>
                     </footer>
                 </div>
-                <Precart/>  
+                <Precart preCart={preCart}/>  
                 {mobile? 
                     <div>
                         <div className="mobile-logo">

@@ -2,21 +2,26 @@ import './checkout.scss';
 import { Blur } from '../../actions';
 import { get, post, getCookie, placeHolder } from '../../utils'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { shipping } from '../../actions';
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { useQuery } from 'react-query'
-import { useEffect, useState } from 'react'; 
+import { useEffect, useState, useRef } from 'react'; 
 
 
 const Checkout = () => {
 
     const dispatch = useDispatch();
+    const location = useLocation();
+    const visibility = useRef();
     const navigate = useNavigate();
-    const shipping = useSelector((state) => state.getShipping)
+    const {preCart} = useOutletContext()
+    const shippingData = useSelector((state) => state.getShipping)
     const [state, setState] = useState({state:'', lga: []})
     const [refetch, setRefetch] = useState(false)
     const [lga, setLGA] = useState(undefined)
     const [formData, setFormData] = useState(undefined)
 
+    
     const { data } = useQuery({
         queryKey: ['states'],
         queryFn: () => get('states')
@@ -35,27 +40,38 @@ const Checkout = () => {
     useEffect(() => {
 
         if (Shipping.isFetched && Shipping.isSuccess) {
+            dispatch(shipping(Shipping.data.data))
             navigate('/shipping')
         }
 
-        if (data && shipping.id) {
+        if (data && shippingData.id) {
             const result = data.filter(
-                state => state.state === shipping.state)[0]
+                state => state.state === shippingData.state)[0]
             setState(result)
             
             const filtered_lga = result? result.lga.filter(
-                lga => lga === shipping.lga)[0] : ''
+                lga => lga === shippingData.lga)[0] : ''
             setLGA(filtered_lga)}
 
-    }, [data, shipping, Shipping])
+    }, [data, shippingData, Shipping])
 
 
     useEffect(() => {
         if (refetch && formData) {
             Shipping.refetch()
         }
-    }, [refetch, formData])
 
+        if (Shipping.isError || location.state) {
+            setTimeout(() => (
+                visibility.current.classList.add('not-visible')
+            ), 8000 )
+            
+        }}, [
+        refetch, 
+        formData,
+        Shipping.isError,
+        location.state
+    ])
 
 
     const handleChange = (e) => {
@@ -79,17 +95,17 @@ const Checkout = () => {
     return ( 
             <section className='checkout'>
                 <div className="address"> 
-                    
-                    <div className={Shipping.isError? 'shipping-error': 'hide'}>
-                        Network Error: Check your internet connection
-                    </div>
-                    
                     <div>
+                        <div ref={visibility} className={Shipping.isError || location.state? 'visible': 'not-visible'}>
+                            {Shipping.isError? 'Network Error: Check your internet connection' :
+                            location.state?.data}
+                        </div>
+
                         <h1>Shipping Adddress</h1>
                         <form onSubmit={handleSubmit} method='post'>
                             <div className='customer'>
-                                <input type="text" name='firstName' placeholder='First name' defaultValue={shipping.firstName} required/>
-                                <input type="text" name='lastName' placeholder='Last name' defaultValue={shipping.lastName} required/>
+                                <input type="text" name='firstName' placeholder='First name' defaultValue={shippingData.firstName} required/>
+                                <input type="text" name='lastName' placeholder='Last name' defaultValue={shippingData.lastName} required/>
                             </div>
                             <div className="state">
                                 <select required onChange={handleChange} value={state?.state}>
@@ -106,16 +122,17 @@ const Checkout = () => {
                                 </select>
                             </div>
                         
-                            <input type="text" name='address' placeholder='Address' defaultValue={shipping.address}required/>
-                            <input type="text" name='email' placeholder='Email' defaultValue={shipping.email} required/>
-                            <input type="text" name='phone' placeholder='Phone' defaultValue={shipping.phone} required/>
+                            <input type="text" name='address' placeholder='Address' defaultValue={shippingData.address}required/>
+                            <input type="text" name='email' placeholder='Email' defaultValue={shippingData.email} required/>
+                            <input type="text" name='phone' placeholder='Phone' defaultValue={shippingData.phone} required/>
                             <div className="buttons">
                                 <div>
                                     <ion-icon name="arrow-back-sharp"/>
                                     <a href='/' onClick={() => dispatch(Blur())}>Back to home</a>
                                 </div>
                         
-                                <button type='submit' disabled={Shipping.isFetching}>
+                                <button type='submit' 
+                                        disabled={Shipping.isFetching || preCart.status !== 'success'}>
                                     {Shipping.isFetching?
                                         <><span>Loading...</span></> :
                                         <>

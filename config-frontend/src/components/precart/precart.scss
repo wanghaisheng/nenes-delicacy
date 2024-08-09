@@ -2,10 +2,39 @@
 
 .precart {
     background: main.$green;
-    font-size: .8em;
+    position: relative;
     color: main.$black;
     border-left: 2px solid main.$dark-green;
     flex-basis: 43%;
+
+    * {
+        font-size: .95em;
+    }
+
+    .error {
+        text-align: center;
+        padding: 20px;
+        height: 100%;
+        display: grid;
+        align-items: center;
+        vertical-align: middle;
+
+        ion-icon {
+            font-size: 2em;
+        }
+
+        button {
+            border: 0;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            background: main.$black;
+
+            pre {
+                margin: 0;
+            }
+        }
+    }
 
 
     .order-summary {
@@ -20,7 +49,7 @@
             div:first-child {
                 display: flex;
                 gap: 5px;
-                
+                cursor: pointer;
     
                 div:last-child {
                     display: flex;
@@ -36,10 +65,11 @@
     
 
     .precart-wrapper {
-        padding:60px 25px;
+        padding: 30px 15px;
         display: grid;
         transition: all .3s ease-in-out;
         grid-template-rows: 0fr;
+
 
         &>div:first-child {
 
@@ -90,6 +120,9 @@
             
                     .precart-image {
                         position: relative;
+                        aspect-ratio: 11/9;
+                        border-radius: 5px;
+                        width: 80px;
             
                         &>div:first-child {
                             position: absolute;
@@ -106,11 +139,19 @@
                             width: 20px;
                             border-radius: 10px;
                         }
+
+                        span {
+                            width: 100%;
+                            background: main.$light-gray;
+                            height: 100%;
+                            border-radius: inherit;
+                        }
                        
                         img {
-                            width: 70px;
+                            width: 100%;
+                            height: 100%;
+                            border-radius: inherit;
                             border-radius: 5px;
-                            aspect-ratio: 16/14;
                             object-fit: cover;
                         }
                     }
@@ -207,12 +248,8 @@
             }
     
             &>div {
-                display: flex;
-                justify-content: space-between;
-        
+
                 .route-protection {
-                    flex-basis: 70%;
-        
                     span {
                         font-weight: bold;
                         margin-left: 5px;
@@ -223,46 +260,56 @@
                         color: main.$gray
                     }
                 }
+            }
+
+            .select-wrapper {
+                float: right;
+            }
         
-                .toggle, .deselect {
-                    cursor: pointer;
-                    
-                    &>div {
-                        width: 40px;
-                        position: relative;
-                        transition: all .6s ease-in-out;
-                        height: 20px;
-                        padding: 0 5px;
-                        background: main.$black;
-                        border-radius: 20px;
-        
-                        .thumb {
-                            width: 12px;
-                            position: absolute;
-                            top: 50%;
-                            transition: all .3s ease-in-out;
-                            left: 60%;
-                            transform: translateY(-50%);
-                            height: 12px;
-                            border-radius: 50%;
-                            background: main.$white;
-                        }
+            .toggle, .deselect {
+                cursor: pointer;
+                
+                &>div {
+                    width: 40px;
+                    position: relative;
+                    transition: all .6s ease-in-out;
+                    height: 20px;
+                    padding: 0 5px;
+                    background: main.$black;
+                    border-radius: 20px;
+    
+                    .thumb {
+                        width: 12px;
+                        position: absolute;
+                        top: 50%;
+                        transition: all .3s ease-in-out;
+                        left: 60%;
+                        transform: translateY(-50%);
+                        height: 12px;
+                        border-radius: 50%;
+                        background: main.$white;
                     }
                 }
-        
-                .deselect {
-        
-                    &>div {
-                        background: main.$light-gray;
-                        justify-content: flex-start;
-        
-                        .thumb {
-                            left: 10%;
-                        }
+
+                &>div:after {
+                    content: "";
+                    
+                }
+            }
+    
+            .deselect {
+    
+                &>div {
+                    background: main.$light-gray;
+                    justify-content: flex-start;
+    
+                    .thumb {
+                        left: 10%;
                     }
                 }
             }
-        }
+            }
+        
     }
 
     .show-cart {
@@ -329,6 +376,15 @@
    button:disabled {
     opacity: .6;
    }
+}
+
+
+.updating_route {
+    cursor: not-allowed;
+    
+    &>div {
+        pointer-events: none;
+    }
 }
 
 

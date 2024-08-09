@@ -4,19 +4,17 @@ from .models import *
 
 
 class ProductSerializer(serializers.ModelSerializer):
-   
     class Meta:
         model = Products
         fields = '__all__'
         depth = 1
 
 
-
-class ToppingSerializer(serializers.ModelSerializer):
-
+class ProductVariationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Topping
-        fields =  '__all__'
+        model = ProductVariation
+        fields = '__all__'
+
 
 class CartItemSerializer(serializers.ModelSerializer):
     item = ProductSerializer(many=False)
@@ -39,21 +37,6 @@ class EmailSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 1
 
-
-
-
-class SizeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Sizes
-        fields = '__all__'
-        
-
-
-class IcingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Icing
-        fields = '__all__'
-        
 
 class ProductTypeSerializer(serializers.ModelSerializer):
    

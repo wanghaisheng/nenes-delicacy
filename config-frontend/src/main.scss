@@ -7,8 +7,8 @@ $darker-pink: #3e0e18;
 $red:  rgb(239, 51, 51);
 $light-red: rgba(255, 196, 196, 0.322);
 $gray: rgb(86, 86, 86);
-$light-gray: rgb(154, 154, 154);
-$lighter-gray: rgb(179, 179, 179);
+$light-gray: rgb(178, 178, 178);
+$lighter-gray: rgb(211, 211, 211);
 $deep-purple: #43234c;
 $green: #bae8d4;
 $light-green: #4BB543;
@@ -73,6 +73,26 @@ body {
   background: $white;
   overflow-x: hidden;
 }
+
+.visible {
+  background: $light-red;
+  text-align: center;
+  font-weight: 500;
+  position: relative;
+  opacity: 1;
+  transition: opacity .3s ease-in-out;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  color: $red;
+}
+
+.not-visible {
+  display: none;
+  opacity: 0;
+}
+
+
 
 .hide {
   display: none;

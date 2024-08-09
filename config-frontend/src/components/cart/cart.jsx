@@ -17,7 +17,7 @@ const Cart = ({ getCart }) => {
     const queryclient = useQueryClient()
     const carts = queryclient.getQueryData(['carts'])
     const state = useSelector(state => state.getBlurred)
-    const cartEmpty = carts?.length === 0
+    const cartEmpty = carts?.cartitems?.length === 0
 
 
     const cartCalucation = (x, y, operand) => {
@@ -43,6 +43,8 @@ const Cart = ({ getCart }) => {
         }
     })
 
+    console.log(deleteCartItem)
+
 
     const updateCartItem = useMutation({
 
@@ -66,8 +68,7 @@ const Cart = ({ getCart }) => {
 
     
     const handleSubmit = (e) => {  
-        document.body.classList.toggle('noscroll')
-
+    
         if (carts.length === 0) {
             e.preventDefault()
         }
@@ -122,7 +123,7 @@ const Cart = ({ getCart }) => {
                                     src={import.meta.env.VITE_CLOUD_URL + cartitem.item.image}
                                     effect='blur'
                                     alt={cartitem.item.name}
-                                    placeholderSrc={import.meta.env.VITE_CLOUD_URL + cartitem.item.Lazyimage}
+                                    placeholderSrc={import.meta.env.VITE_CLOUD_URL + cartitem.item.lazyImage}
                                 />
                             </div>
                 
@@ -164,7 +165,12 @@ const Cart = ({ getCart }) => {
                             deleteCartItem.mutate(cartitem)
                             }, 2000)}
                             }>
-                            <span>REMOVE</span>
+
+                            {deleteCartItem.isLoading? 
+                                <div className='remove-cartitem-inprogress'>
+                                    <img src="/public/icons/spinner-trans-bg.gif" alt="" />
+                                </div>:
+                                <span>REMOVE</span>}
                         </div>
                     </div>
                 )))}

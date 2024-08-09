@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
-import 'mapbox-gl/dist/mapbox-gl.css'
 import { useQuery } from 'react-query';
 import { get, getCookie } from '../../utils';
 import CartPreloader from '../cart/cartPreloader';
 import { useMediaQuery } from 'react-responsive'
-import { lazy, Suspense, useEffect, useState, useRef} from 'react';
+import { lazy, Suspense, useState, useRef} from 'react';
 import { Blur, Menu } from '../../actions';
 import './navbar.scss';
 
@@ -18,10 +17,8 @@ const Navbar = () => {
     const navigate = useNavigate()
     const cartIcon = useRef()
     const [prevElement, setPrevElement] = useState()
-    const cartState = useSelector(state => state.getBlurred)
     const menuState = useSelector(state => state.getMenu)
-    const isMobile = useMediaQuery({query: '(max-width: 912px)'}); 
-    const isDesktop = useMediaQuery({query: '(min-width: 767px)'});
+    const isMobile = useMediaQuery({query: '(max-width: 912px)'});
 
 
     const getCart = useQuery({

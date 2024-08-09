@@ -21,6 +21,7 @@ const Item = () => {
     const dispatch = useDispatch();
     const param = useParams();
     const imageRef = useRef();
+    const [run, setRun] = useState(false);
     const cartError = useRef();
     const [count, setCount] = useState(1);
     const queryclient = useQueryClient();
@@ -44,7 +45,12 @@ const Item = () => {
     })
 
 
-    const { isError, isLoading, data, refetch} = useQuery({
+    const { isError, 
+            isLoading, 
+            data, 
+            refetch, 
+            isSuccess
+        } = useQuery({
         queryKey: ['products'],
         queryFn: () => get('products/'),
         select: useCallback(
@@ -53,15 +59,33 @@ const Item = () => {
     },)
 
 
+    const variation = useQuery({
+        queryKey: ['variation'],
+        queryFn: () => get(`variation/get_variation?productID=${data.id}`),
+        enabled: run,
+        staleTime: 1
+    })
+
+    console.log(variation.data)
+
+    document.title = `${data?.name} | Nene's Delicacy `;
+
+
     useEffect(() => {
         if (newCartItem.isError) {
             setTimeout(() => {
-                cartError.current.style.display = 'None'
+                cartError.current.style.display = 'none'
             }, 5000)
         }
     }, [newCartItem.isError])
 
-    
+
+
+    useEffect(() => {
+        if (isSuccess) setRun(true)
+
+    },[isSuccess])
+
     if (isLoading) {
         return <ItemPreloader/>
     }
@@ -92,7 +116,7 @@ const Item = () => {
                             effect='blur'
                             width='100%'
                             height='100%'
-                            placeholderSrc={data.lazyImage}
+                            placeholderSrc={import.meta.env.VITE_CLOUD_URL+data.lazyImage}
                         />
                     </div>
                 </div>
@@ -134,7 +158,7 @@ const Item = () => {
                                 {newCartItem.isLoading? 
                                     <div className='spinner'>
                                         <img src={spinner} alt="loading"/>
-                                    </div> : <></>
+                                    </div> : null
                                 }
                                 
                                 <span>ADD TO CART</span>

@@ -5,40 +5,42 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Topping(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=0)
+    name = models.CharField(max_length=100, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
 
     def __str__(self):
         return self.name
     
 
 class Layer(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=0)
+    name = models.CharField(max_length=100, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
 
     def __str__(self):
         return self.name
 
 
 class Filling(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=0)
+    name = models.CharField(max_length=100, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
 
     def __str__(self):
         return self.name
 
 
 class Sizes(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=0)
+    name = models.CharField(max_length=100, null=True)
+    title = models.CharField(max_length=100, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
 
     def __str__(self):
         return self.name
     
 
 class Icing(models.Model):
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=0)
+    name = models.CharField(max_length=100, null=True)
+    title = models.CharField(max_length=100, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
 
     def __str__(self):
         return self.name
@@ -49,9 +51,6 @@ class ProductType(models.Model):
     bannerImage = CloudinaryField('bannerImage', null=True, blank=True)
     lazyImage = CloudinaryField('lazyImage', null=True, blank=True)
     image = CloudinaryField('image', null=True, blank=True)
-    # bannerImage = models.ImageField('bannerImage', null=True, blank=True)
-    # lazyImage = models.ImageField('lazyImage', null=True, blank=True)
-    # image = models.ImageField('images', null=True, blank=True)
     parameter = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
@@ -62,8 +61,6 @@ class Products(models.Model):
     name = models.CharField(max_length=100)
     image = CloudinaryField('image', null=True)
     lazyImage= CloudinaryField('image', null=True)
-    # image = models.ImageField('images', null=True)
-    # lazyImage= models.ImageField('images', null=True)
     description = models.TextField(blank=True)  
     unit_price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, blank=True)
@@ -72,6 +69,21 @@ class Products(models.Model):
     def __str__(self):
         return self.name
     
+
+
+class ProductVariation(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
+    size = models.ForeignKey(Sizes, on_delete=models.CASCADE, null=True, blank=True)
+    filling = models.ForeignKey(Filling, on_delete=models.CASCADE, null=True, blank=True)
+    topping = models.ForeignKey(Topping, on_delete=models.CASCADE, null=True, blank=True)
+    layer = models.ForeignKey(Layer, on_delete=models.CASCADE, null=True, blank=True)
+    icing = models.ForeignKey(Icing, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.product.name}:{self.size}:\
+                {self.filling}:{self.topping}:{self.layer}:{self.icing}'
+    
+
 
 class User(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)

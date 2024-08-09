@@ -1,9 +1,10 @@
 @use '../../main.scss';
 
-
 .preview {
     border: main.$border;
     color: main.$black;
+    max-width: 550px;
+    margin: 0 auto;
     border-radius: 5px;
 
     &>ul:not(ul:last-child) {

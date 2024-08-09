@@ -100,6 +100,14 @@
             &>div:last-child {
                 font-size: .7em;
 
+                .remove-cartitem-inprogress {
+                    max-width: 20px;
+
+                    img {
+                        max-width: 100%;
+                    }
+                }
+
                 span {
                     padding-bottom: 4px;
                     border-bottom: 1px solid main.$black;
@@ -257,10 +265,6 @@
     }
 }
 
-
-.noscroll {
-    overflow: hidden;
-}
 
 .open-cart {
     transform: translateX(0vw);

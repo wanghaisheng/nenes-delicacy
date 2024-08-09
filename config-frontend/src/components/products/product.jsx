@@ -35,7 +35,7 @@ const Product = () => {
     }
 
     if (isError) {
-        return <Error refetch={refetch} message={`An error occured, while fetching ${current.name}`} />
+        return <Error refetch={refetch} message={`An error occured, while fetching products`} />
     }
 
     

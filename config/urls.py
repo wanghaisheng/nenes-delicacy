@@ -9,10 +9,8 @@ router.register(r'states', views.StatesView, basename='states')
 router.register(r'cart', views.CartView, basename='cart')
 router.register(r'categories', views.ProductTypeView, basename='categories')
 router.register(r'shipping', views.ShippingView, basename='shipping')
-router.register(r'icings', views.IcingView, basename='icings')
-router.register(r'toppings', views.ToppingView, basename='toppings')
-router.register(r'size', views.SizeView, basename='size')
 router.register(r'email', views.EmailsView, basename='email')
+router.register(r'variation', views.ProductVariationView, basename='variation')
 
 
 urlpatterns = [

@@ -31,7 +31,7 @@ const App = () => {
     
     useEffect(() => {
         if (!state && !menuState) {
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = '';
         } else {
             document.body.style.overflow = 'hidden';
         }

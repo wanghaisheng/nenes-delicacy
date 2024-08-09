@@ -79,7 +79,7 @@ const Index = () => {
                                 </>
                                 : 
                                 <>
-                                {data.map(product => (
+                                {data?.map(product => (
                                 <Link to={product.parameter} key={product.id}>
                                     <div>
                                         <LazyLoadImage

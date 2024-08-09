@@ -1,12 +1,13 @@
 @use '../../main.scss';
 
 section.shipping {
-    width: 83%;
+    width: 100%;
+    max-width: 550px;
     font-size: .9em;
     margin: 0 auto;
 
     .calender {
-        margin: 80px 0 50px;
+        margin: 80px auto;
         color: main.$black;
     
         h1 {
@@ -71,16 +72,6 @@ section.shipping {
 @media (max-width: 767px) {
 
     section.shipping {
-        width: 90%;
-
-        .preview > ul ul {
-            display: block;
-
-            li:nth-child(2) {
-                margin-top: 5px;
-                font-size: .9em;
-            }
-        }
 
         .calender {
             margin: 65px 35px;
