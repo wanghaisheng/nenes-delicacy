@@ -40,25 +40,8 @@ const Product = () => {
         keepPreviousData: true,
     }, )
 
-    console.log(data)
 
-
-//     const category = useQuery({
-//     queryKey: ['categories'],
-//     queryFn: () => get('categories/'),
-//     select: useCallback(
-//         (data) => data.find(category => {
-//             return category.parameter === pathname
-//         }),
-//     ),
-
-//     placeholderSrc: { 
-//         name: '', 
-//         bannerImage: '', 
-//         bannerText: ''}
-// })
-
-
+    
     if (isLoading) {
         return <ProductPreloader />
     }

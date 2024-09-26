@@ -47,7 +47,6 @@ const App = () => {
                             <Route path="/not-found" element={<div>Not Found</div>}/>
                             <Route path="/" element={<Index />} />
 
-
                             <Route path="/products" element={
                                 <Suspense fallback={<ProductPreloader/>}>
                                     <Grocery/>

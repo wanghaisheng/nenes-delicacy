@@ -52,8 +52,11 @@ class Collection(models.Model):
     desc = models.TextField(null=True)
     image = CloudinaryField('image', null=True, blank=True)
     alt = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.name
     
-    
+
 class ProductType(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     bannerText = models.TextField(null=True, blank=True)
