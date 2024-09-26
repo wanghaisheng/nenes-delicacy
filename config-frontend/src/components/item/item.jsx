@@ -2,6 +2,7 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import spinner from '/icons/pink-spinner.svg'
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Blur } from '../../actions';
 import ItemPreloader from '../item/itemPreloader'
@@ -19,9 +20,9 @@ const session = getCookie();
 const Item = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const param = useParams();
     const imageRef = useRef();
-    const [run, setRun] = useState(false);
     const cartError = useRef();
     const [count, setCount] = useState(1);
     const queryclient = useQueryClient();
@@ -54,21 +55,21 @@ const Item = () => {
         queryKey: ['products'],
         queryFn: () => get('products/'),
         select: useCallback(
-            (data) => data.find(item => item.name === param.name)
+            (data) => data.find(
+                item => item.name.toLowerCase() === param.name.replace(/-/g, ' ').toLowerCase()
+            )
         )
-    },)
-
-
-    const variation = useQuery({
-        queryKey: ['variation'],
-        queryFn: () => get(`variation/get_variation?productID=${data.id}`),
-        enabled: run,
-        staleTime: 1
     })
 
-    console.log(variation.data)
 
-    document.title = `${data?.name} | Nene's Delicacy `;
+    // const variation = useQuery({
+    //     queryKey: ['variation'],
+    //     queryFn: () => get(`variation/get_variation?productID=${data.id}`),
+    //     staleTime: 1
+    // })
+
+
+ 
 
 
     useEffect(() => {
@@ -82,15 +83,21 @@ const Item = () => {
 
 
     useEffect(() => {
-        if (isSuccess) setRun(true)
 
-    },[isSuccess])
+        // if (!data) {
+        //      navigate('/not-found')
+        // }
+    },[data])
+
 
     if (isLoading) {
+        document.title = "Loading... | Nene's Delicacy";
         return <ItemPreloader/>
     }
 
+
     if (isError) {
+        document.title = "Error | Nene's Delicacy";
         return <Error refetch={refetch} message="An error occurred"/> 
     }
 
@@ -101,7 +108,7 @@ const Item = () => {
             <div>
                 <a href="/">Home</a>
                 <div><ion-icon name="chevron-forward"></ion-icon></div>
-                <a href={`/${data.product_type.parameter}`}>
+                <a href={`/products/${data.product_type.parameter}`}>
                     {data.product_type.name}
                 </a>
                 <div><ion-icon name="chevron-forward"></ion-icon></div>

@@ -43,12 +43,41 @@ def get_distance(state, lga):
  
 class ProductView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    queryset = Products.objects.all()
 
+    def get_queryset(self):
+        queryset = Products.objects.all()
+        parameter = self.request.query_params.get('parameter')
+        filter = self.request.query_params.get('filter_by')
+        
+        if parameter: 
+            print(parameter)
+            product_type = ProductType.objects.get(parameter=parameter)
+            queryset = queryset.filter(product_type=product_type)
 
-    @method_decorator(cache_page(CACHE_TTL)) 
+        if filter == 'desc':
+            queryset = queryset.order_by('-unit_price')
+
+        elif filter == 'asc':
+            queryset = queryset.order_by('unit_price')
+    
+        return queryset
+    
+
     def dispatch(self, *args, **kwargs):
         return super(ProductView, self).dispatch(*args, **kwargs)
+    
+
+    @action(detail=False, methods=['get'])
+    def search(self, request):
+        query = self.request.query_params['query']
+        matchedObjects = Products.objects.filter(name__icontains=query) 
+        searchItems = [ProductSerializer(matchedObject).data for matchedObject in matchedObjects]
+
+        return HttpResponse(
+            json.dumps(
+                searchItems)
+        )
+
     
 
 class ProductTypeView(viewsets.ModelViewSet):
@@ -73,6 +102,7 @@ class CartView(viewsets.ModelViewSet):
     def getCart(self, request):
         sessionid = self.request.query_params['sessionid']
         [cart, created] = Cart.objects.get_or_create(session_id=sessionid, ordered=False)
+        Cartitem.objects.contains
         query = Cartitem.objects.filter(cart=cart)
 
         total = sum([float(item.price) for item in query])

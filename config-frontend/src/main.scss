@@ -1,25 +1,33 @@
 $white: #fbfbfb;
+$faint-white: #fbfbfb64;
 $black: #252525;
 $faint-black: #616161d4;
-$pink: #f7c0c3;
+$pink: #ffc9cb;
+$dark-yellow: #451f13;
 $dark-pink: #581b28;
 $darker-pink: #3e0e18;
 $red:  rgb(239, 51, 51);
 $light-red: rgba(255, 196, 196, 0.322);
 $gray: rgb(86, 86, 86);
-$light-gray: rgb(178, 178, 178);
+$light-gray: #b2b2b2;
 $lighter-gray: rgb(211, 211, 211);
 $deep-purple: #43234c;
 $green: #bae8d4;
+$carousel-nav-bottom: 120px;
+$carousel-nav-center: 268px;
+$carousel-dots-width: 60px;
+$light-purple: #e7cbef;
 $light-green: #4BB543;
 $dark-green: #98dbbe;
+$emerald: #00211a;
 $dark-blue: #0c07a7;
+$yellow: #ffe4a2;
 $box-shadow: 0 4px 4px $lighter-gray;
 $border: 1px solid $light-gray;
 
 
 :root {
-  font-family: 'Montserrat';
+  font-family: 'noto serif';
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -69,9 +77,7 @@ a {
 
 body {
   margin: 0;
-  color: $white;
   background: $white;
-  overflow-x: hidden;
 }
 
 .visible {
@@ -91,7 +97,6 @@ body {
   display: none;
   opacity: 0;
 }
-
 
 
 .hide {

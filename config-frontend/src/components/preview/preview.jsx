@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import './preview.scss';
 import { useSelector } from 'react-redux';
 
 const Preview = () => {
 
     const shipping = useSelector((state) => state.getShipping)
+    const navigate = useNavigate()
 
     return ( 
         <div className='preview'>
@@ -12,7 +14,7 @@ const Preview = () => {
                             <li>Name:</li>
                             <li>{shipping.firstName} {shipping.lastName}</li>
                         </ul>
-                        <li>Change</li>
+                        <li onClick={() => navigate('/checkout', { state: { focus: 'name' } })}>Change</li>
                     </ul>
                     
                     <ul>
@@ -20,7 +22,7 @@ const Preview = () => {
                             <li>Contact:</li>
                             <li>{shipping.email} <br/>{shipping.phone}</li>
                         </ul>
-                        <li>Change</li>
+                        <li onClick={() => navigate('/checkout', { state: { focus: 'contact' } })}>Change</li>
                     </ul>
 
                     <ul>
@@ -28,7 +30,7 @@ const Preview = () => {
                             <li>Ship to:</li>
                             <li>{shipping.address}</li>
                         </ul>
-                        <li>Change</li>
+                        <li onClick={() => navigate('/checkout', { state: { focus: 'address' } })}>Change</li>
                     </ul>
                 </div>
      );

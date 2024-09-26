@@ -90,9 +90,8 @@ function CheckoutLayout() {
             } return cart
         }
     })
-    console.log(preCart.data)
 
-
+    
      // dispatches the shipping information to the redux store
      useEffect(() => {
 
@@ -131,41 +130,43 @@ function CheckoutLayout() {
         <section className="checkout-layout">
             <Suspense fallback={<CheckoutPreloader />}>
                 <div className='layout-wrapper'>
-                    <header>
-                        <div className="mobile-logo">
-                            <a href="/">
-                                <img src='/images/mobile-view-logo.jpg'/>
-                            </a>
-                        </div>
+                    <div>
+                        <header>
+                            <div className="mobile-logo">
+                                <a href="/">
+                                    <img src='/images/mobile-view-logo.jpg'/>
+                                </a>
+                            </div>
                         
-                        <div className="navigation">
-                                <ul ref={onRefSet}>
-                                    {links.map(link => (
-                                        <li key={link.id} onClick={(e) => {
-                                            e.target.parentElement.classList.contains('disabled')?
-                                            e.preventDefault() : ''
-                                        }}>
-                                            <a href={link.ref}>{link.title}</a>
-                                            {link.hasNextSibling? <ion-icon name="chevron-forward-outline"></ion-icon> : ''}
-                                        </li> 
-                                    ))}
-                                </ul>
-                        </div>
-                    </header>
-                    <Outlet context={{ preCart }}/>
-                    <footer className='layout-footer'>
-                        <ul>
-                            <a href="">
-                                <li>Privacy policy</li>
-                            </a>
-                            <a href="">
-                                <li>Refund policy</li>
-                            </a>
-                            <a href="">
-                                <li>Terms of service</li>
-                            </a>
-                        </ul>
-                    </footer>
+                            <div className="navigation">
+                                    <ul ref={onRefSet}>
+                                        {links.map(link => (
+                                            <li key={link.id} onClick={(e) => {
+                                                e.target.parentElement.classList.contains('disabled')?
+                                                e.preventDefault() : ''
+                                            }}>
+                                                <a href={link.ref}>{link.title}</a>
+                                                {link.hasNextSibling? <ion-icon name="chevron-forward-outline"></ion-icon> : ''}
+                                            </li>
+                                        ))}
+                                    </ul>
+                            </div>
+                        </header>
+                        <Outlet context={{ preCart }}/>
+                        <footer className='layout-footer'>
+                            <ul>
+                                <a href="">
+                                    <li>Privacy policy</li>
+                                </a>
+                                <a href="">
+                                    <li>Refund policy</li>
+                                </a>
+                                <a href="">
+                                    <li>Terms of service</li>
+                                </a>
+                            </ul>
+                        </footer>
+                    </div>
                 </div>
                 <Precart preCart={preCart}/>  
                 {mobile? 

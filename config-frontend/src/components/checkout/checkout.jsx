@@ -20,6 +20,9 @@ const Checkout = () => {
     const [refetch, setRefetch] = useState(false)
     const [lga, setLGA] = useState(undefined)
     const [formData, setFormData] = useState(undefined)
+    const nameInputRef = useRef(null);
+    const contactInputRef = useRef(null);
+    const addressInputRef = useRef(null);
 
     
     const { data } = useQuery({
@@ -35,6 +38,24 @@ const Checkout = () => {
         cacheTime: 0,
         enabled: !!formData
     })
+
+    useEffect(() => {
+        // Get the state from location
+        const { state } = location;
+        const focusField = state?.focus;
+
+        // Focus the corresponding input based on the state
+        if (focusField === 'name' && nameInputRef.current) {
+            nameInputRef.current.focus();
+
+        } else if (focusField === 'contact' && contactInputRef.current) {
+            contactInputRef.current.focus();
+
+        } else if (focusField === 'address' && addressInputRef.current) {
+            addressInputRef.current.focus();
+        }
+
+    }, [location]);
 
 
     useEffect(() => {
@@ -62,9 +83,10 @@ const Checkout = () => {
         }
 
         if (Shipping.isError || location.state) {
-            setTimeout(() => (
+            setTimeout(() => {
                 visibility.current.classList.add('not-visible')
-            ), 8000 )
+                navigate(location.pathname, { replace: true, state: null })
+            }, 8000 )
             
         }}, [
         refetch, 
@@ -96,7 +118,7 @@ const Checkout = () => {
             <section className='checkout'>
                 <div className="address"> 
                     <div>
-                        <div ref={visibility} className={Shipping.isError || location.state? 'visible': 'not-visible'}>
+                        <div ref={visibility} className={Shipping.isError || location.state?.data ? 'visible': 'not-visible'}>
                             {Shipping.isError? 'Network Error: Check your internet connection' :
                             location.state?.data}
                         </div>
@@ -104,7 +126,7 @@ const Checkout = () => {
                         <h1>Shipping Adddress</h1>
                         <form onSubmit={handleSubmit} method='post'>
                             <div className='customer'>
-                                <input type="text" name='firstName' placeholder='First name' defaultValue={shippingData.firstName} required/>
+                                <input ref={nameInputRef} type="text" name='firstName' placeholder='First name' defaultValue={shippingData.firstName} required/>
                                 <input type="text" name='lastName' placeholder='Last name' defaultValue={shippingData.lastName} required/>
                             </div>
                             <div className="state">
@@ -122,8 +144,8 @@ const Checkout = () => {
                                 </select>
                             </div>
                         
-                            <input type="text" name='address' placeholder='Address' defaultValue={shippingData.address}required/>
-                            <input type="text" name='email' placeholder='Email' defaultValue={shippingData.email} required/>
+                            <input ref={addressInputRef} type="text" name='address' placeholder='Address' defaultValue={shippingData.address} required/>
+                            <input ref={contactInputRef} type="text" name='email' placeholder='Email' defaultValue={shippingData.email} required/>
                             <input type="text" name='phone' placeholder='Phone' defaultValue={shippingData.phone} required/>
                             <div className="buttons">
                                 <div>

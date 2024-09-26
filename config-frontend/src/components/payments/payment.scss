@@ -8,7 +8,6 @@
 
     &>div {
         width: 100%;
-        max-width: 700px;
     }
 
     .error-message {
@@ -29,7 +28,6 @@
 
     .shipping-method {
         color: main.$black;
-        max-width: 550px;
         margin: 0 auto;
         margin-top: 50px;
         
@@ -45,7 +43,7 @@
 
         &>div {
             display: flex;
-            padding: 20px 10px;
+            padding: 20px;
             border: main.$border;
             border-radius: 5px;
             gap: 12px;
@@ -97,9 +95,5 @@
 @media (max-width: 767px) {
     .payment-wrapper {
         font-size: .8em;
-        
-        &> div {
-            padding: 0 20px;
-        }
     } 
 }

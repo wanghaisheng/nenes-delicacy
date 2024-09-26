@@ -7,7 +7,6 @@ import { lazy, Suspense, useEffect } from "react";
 import { CheckoutPreloader } from "../checkout/checkoutLayout";
 import ProductPreloader from '../products/productPreloader';
 import ItemPreloader from '../item/itemPreloader';
-import { useMediaQuery } from 'react-responsive'
 import Layout from './appLayout';
 import Index from '../index';
 import './app.scss';
@@ -15,8 +14,10 @@ import './app.scss';
 const Product = lazy(() => import("../products/product"))
 const Item = lazy(() => import("../item/item"))
 const Payment = lazy(() => import("../payments/payment"))
+const Grocery = lazy(() => import("../grocery/grocery"))
 const Shipping = lazy(() => import("../shipping/shipping"))
 const Checkout = lazy(() => import("../checkout/checkout"))
+const Search = lazy(() => import("../search/search"))
 const CheckoutLayout = lazy(() => import('../checkout/checkoutLayout').then(
     module => ({default: module.CheckoutLayout})
 ));
@@ -26,7 +27,6 @@ const App = () => {
    
     const state = useSelector(state => state.getBlurred)
     const menuState = useSelector(state => state.getMenu)
-    const isDesktop = useMediaQuery({query: '(min-width: 912px)'}); 
 
     
     useEffect(() => {
@@ -39,18 +39,34 @@ const App = () => {
  
 
     return (  
-        <div className={(!state && !menuState || (isDesktop && menuState)) ? 'app': 'show'}>
+        <div className={(!state && !menuState)? 'app': 'show'}>
             <Router>
                 <Routes>
                     <Route element={<Layout />}>
+                            <Route path="*" element={<div>Not Found</div>}/>
+                            <Route path="/not-found" element={<div>Not Found</div>}/>
                             <Route path="/" element={<Index />} />
-                            <Route path="/:type" element={
+
+
+                            <Route path="/products" element={
+                                <Suspense fallback={<ProductPreloader/>}>
+                                    <Grocery/>
+                                </Suspense>
+                            }/>
+
+                            <Route path="/products/:type" element={
                                 <Suspense fallback={<ProductPreloader/>}>
                                     <Product/>
                                 </Suspense>
                             }/>
 
-                             <Route path="/:type/:name" element={
+                            <Route path="/search" element={
+                                <Suspense fallback={<ProductPreloader/>}>
+                                    <Search/>
+                                </Suspense>
+                            }/>
+
+                             <Route path="/:name" element={
                                 <Suspense fallback={<ItemPreloader/>}>
                                     <Item />
                                 </Suspense>

@@ -5,7 +5,7 @@
     position: relative;
     color: main.$black;
     border-left: 2px solid main.$dark-green;
-    flex-basis: 43%;
+    flex-basis: 50%;
 
     * {
         font-size: .95em;
@@ -65,7 +65,7 @@
     
 
     .precart-wrapper {
-        padding: 30px 15px;
+        padding: 40px 20px;
         display: grid;
         transition: all .3s ease-in-out;
         grid-template-rows: 0fr;

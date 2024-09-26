@@ -5,10 +5,10 @@
     min-height: 100vh;
     
     header {
-
         .navigation ul {
             display: flex;
             gap: 10px;
+            padding: 0;
             align-items: center;
             font-size: .8em;
 
@@ -42,16 +42,18 @@
 
     &>div:first-child {
         flex-basis: 65%;
-        padding: 20px 20px 0;
+        
+    }
+
+    .layout-wrapper > div {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
         justify-content: space-between;
         gap: 80px;
         display: flex;
         flex-direction: column;
         position: relative;
-    }
-
-    &>div:first-of-type {
-        padding: 0 20px;
     }
 
     .layout-footer {
@@ -61,7 +63,6 @@
             justify-content: center;
             border-top: main.$border;
             font-size: .7em;
-            max-width: 550px;
             padding: 10px 0;
             margin: 0 auto;
             color: main.$gray;
@@ -80,7 +81,7 @@
 
     .mobile-logo {
         max-width: 200px;
-        padding: 20px;
+        padding: 20px 0 0;
     
         a {
             display: block;

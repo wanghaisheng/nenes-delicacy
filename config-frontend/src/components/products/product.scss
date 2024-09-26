@@ -6,11 +6,15 @@ section.product {
         height: 300px;
         display: flex;
 
-        &>div:first-child {
+
+        .product-banner-text {
+            justify-content: space-around;
+        }
+
+        .banner-text-container {
             flex-basis: 50%;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
             padding: 20px;
             color: main.$black;
             background: main.$green;
@@ -22,13 +26,13 @@ section.product {
             display: flex;
             gap: 5px;
 
-            li:first-child:hover {
+            li:nth-child(odd) {
                 text-decoration: underline;
             }
 
-            li:nth-of-type(2) {
+            li:nth-child(even) {
                 display: flex;
-                align-items: center;
+                align-items: flex-end;
             }
 
             a {
@@ -66,14 +70,89 @@ section.product {
 
     }
 
-    .products {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
+    &>div:nth-child(2) {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
         padding: 20px;
 
-        &>a {
+        .radio-wrapper {
+            color: main.$black;
+            flex-basis: 25%;
 
+            h1 {
+                font-size: 2em;
+                margin: 0 0 10px;
+            }
+
+            label {
+                position: relative;
+
+                input {
+                    opacity: 0;
+                }
+
+                input:checked + span {
+                    background: main.$green;
+                }
+
+                span {
+                    position: absolute;
+                    border: 1px solid main.$black;
+                    top: 50%;
+                    cursor: pointer;
+                    transform: translateY(-50%);
+                    left: 0;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                }
+            }
+
+
+            &>div {
+                padding: 10px 0;
+                border-style: solid;
+                border-width: 1px 0 0;
+                border-color: main.$light-gray;
+                text-transform: uppercase;
+            }
+
+            &>div:last-child {
+                border-bottom: 1px solid main.$light-gray;
+            }
+        }
+
+        .radio-dropdown,
+        h1 {
+            display: none;
+        }
+    }
+
+    .spinner {
+        top: 0;
+        left: 0;
+        background: main.$faint-white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+
+        img {
+            max-width: 80px;
+        }
+    }
+
+    .products {
+        display: grid;
+        flex-basis: 75%;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    
+        &>a {
             text-decoration: none;
             color: main.$black;
 
@@ -108,9 +187,10 @@ section.product {
     
             p:first-of-type {
                 font-size: 1.3em;
+                text-transform: capitalize;
                 -webkit-line-clamp: 2;
-                font-weight: 600;
-                margin: .3em 0 0;
+                font-weight: 500;
+                margin: 0;
             }
     
             p {
@@ -124,9 +204,14 @@ section.product {
 
             div:last-child {
 
+                .naira-wrapper {
+                    display: flex;
+                    font-weight: 500;
+                    align-items: center;
+                }
+
                 .naira {
-                    opacity: .88;
-                    font-size: .9em;
+                    font-size: .8em;
                 }
             }
 
@@ -135,25 +220,72 @@ section.product {
 }
 
 
+@media (max-width: 912px) {
+    section.product {
 
-@media (max-width: 767px) {
-        section.product {
+        &>div:nth-child(2) {
+            display: block;
 
-            .products {
-                grid-template-columns: repeat(3, 1fr);
+            .radio-wrapper {
+                display: none;
             }
 
-            &>div:first-child {
-                display: none
+            .radio-dropdown {
+                display: block;
+
+                select {
+                    padding: 15px;
+                    background: main.$white;
+                    color: main.$black;
+                    width: 320px;
+                    text-transform: uppercase;
+                    font-weight: 500;
+                    outline: none;
+                    border: 1px solid main.$black;
+                    max-width: 100%;
+                }  
+            }
+
+            h1 {
+                display: block;
+            }
+
+            h1 {
+                color: main.$black;
+                text-transform: capitalize;
+                font-weight: 500;
+                margin-top: 30px;
+                font-size: 2.2em;
+            }
+
+            .products {
+                margin-top: 20px;
+                flex-basis: 100%;
             }
         }
     }
+}
+
+
+@media (max-width: 768px) {
+    section.product {
+        padding: 20px;
+
+        &>div:first-child {
+            display: none
+        }
+
+        &>div:nth-child(2) {
+            padding: 0;
+        }
+    }
+}
+
 
 @media (max-width: 540px) {
 
     section.product {
-
-        font-size: .7em;
+        font-size: .8em;
 
         &>div:first-child {
             display: none

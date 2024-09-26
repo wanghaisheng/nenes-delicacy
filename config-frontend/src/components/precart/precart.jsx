@@ -57,7 +57,7 @@ const Precart = ({preCart}) => {
                     </button>
                 </div>
             </div>
-    )}
+        )}
 
    
     //returns JSX element based on a satisfied condition

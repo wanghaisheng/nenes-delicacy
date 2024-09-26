@@ -44,14 +44,13 @@ section.item {
             top: 90px;
             
             .image {
-                width: 100%;
-                height: inherit;
+                aspect-ratio: 16/14;
+                background: main.$light-gray;
+
         
                 img {
                     width: 100%;
                     border-radius: 5px;
-                    background: main.$light-gray;
-                    aspect-ratio: 16/14;
                     height: 100%;
                     object-fit: cover;
                 }
@@ -156,6 +155,7 @@ section.item {
             border-radius: 5px;
             position: absolute;
             font-size: .9em;
+            z-index: 2;
             padding: 10px 5px;
             color: main.$red;
         }

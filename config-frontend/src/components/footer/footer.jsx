@@ -1,22 +1,26 @@
 import './footer.scss';
+import emailValidator  from '../../email';
 import { post } from '../../utils';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useMutation} from 'react-query';
 
 
 const Footer = () => {
     const [email, setEmail] = useState(null)
+    const inputRef = useRef()
     const [isInvalidMail, setMail] = useState()
+    const [message, setMessage] = useState()
     const [display, setDisplay] = useState(false)
-    const emailValidator = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-
+    
 
     const {data, isError, isLoading, mutate} = useMutation({
         mutationFn: async (data) => {
-            const isEmail = emailValidator.test(data.email)
+            console.log(email)
+            const {isValid, message} = emailValidator(email)
 
-            if (!isEmail) {
+            if (!isValid) {
                 setMail(true)
+                setMessage(message)
                 return
             }
 
@@ -28,11 +32,25 @@ const Footer = () => {
             return "Error, couldn't subscribe your email to our newsletter"
 
         }, onSettled: () => {
+            inputRef.current.value = ''
             setTimeout(() => {
                 setDisplay(false)
             }, 5000)
         }
     })
+
+
+    useEffect(() => {
+
+        const emailElement = document.querySelector('.email-validation')
+        emailElement?.style.setProperty('--after-content', `"${message}"`);
+
+        if(isInvalidMail) {
+            setTimeout(() => (
+                setMail(false)
+            ), 4000)
+        }
+    }, [isInvalidMail, message])
 
 
     const getStatus = () => {
@@ -84,13 +102,13 @@ const Footer = () => {
                                 <svg viewBox="0 0 520 65" fill="none" className="svg--desktop">
                                     <path d="M8.43002 2.53001C6.99002 4.75001 5.03002 6.58 2.74002 7.86C1.69002 8.45 1 9.52 1 10.72V53.64C1 54.84 1.69002 55.91 2.74002 56.5C5.03002 57.78 6.99002 59.61 8.43002 61.83C9.04002 62.77 10.06 63.36 11.18 63.36H508.68C509.8 63.36 510.82 62.77 511.43 61.83C512.87 59.62 514.83 57.78 517.12 56.5C518.17 55.91 518.86 54.84 518.86 53.64V10.72C518.86 9.52 518.17 8.45 517.12 7.86C514.83 6.58 512.87 4.75001 511.43 2.53001C510.82 1.59001 509.8 1 508.68 1H11.18C10.06 1 9.04002 1.59001 8.43002 2.53001Z" stroke="#00211A" strokeWidth="2"></path>
                                 </svg>
+
                                 <input 
                                     type="email" 
+                                    ref={inputRef}
                                     placeholder="ENTER EMAIL ADDRESS" 
                                     required 
-                                    onChange={(e) => setTimeout(() => {
-                                        setEmail(e.target.value);
-                                    }, 5000)}/>
+                                    onChange={(e) => setEmail(e.target.value)} />
                                 <button 
                                     onClick={(e) => {e.preventDefault();
                                         new mutate({

@@ -1,0 +1,134 @@
+@use '../../main.scss';
+
+.groceries {
+
+    &>div:first-child {
+
+        .grocery-slider {
+            max-width: 800px;
+            margin: 0 auto ;
+            padding: 70px 0 20px;
+        }
+
+        .grocery-title {
+            background-image: url('https://res.cloudinary.com/dqdtnitie/image/upload/v1723859555/magnolia-checkers_qzkpp0.webp');
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: main.$dark-yellow;
+            height: 140px;
+
+            div {
+                max-width: 450px;
+                text-align: center;
+
+                h1 {
+                    font-weight: 600;
+                    color: main.$dark-yellow;
+                    text-transform: capitalize;
+                }
+            }
+        }
+
+        .grocery-image-holder { 
+            cursor: pointer;
+            padding: 0 5px;
+            
+            &>div {
+                max-width: 150px;
+                overflow: hidden;
+                aspect-ratio: 10/12;
+                border-radius: 10px;
+    
+                img {
+                    object-fit: cover;
+                    transition: .3s transform ease-in-out;
+                    border-radius: inherit;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+    
+    
+            p {
+                color: main.$black;
+                text-align: center;
+                font-weight: 600;
+            }
+        }
+    
+        .grocery-image-holder:hover {
+    
+            &>div img {
+                transform: scale(1.1)
+            }
+        }
+    }
+
+    &>div:nth-child(2) {
+
+        &>div {
+            padding: 20px 10px;
+            margin: 50px 0;
+        }
+
+        &>div:nth-child(2n) {
+            background: main.$green;
+        }
+
+        .groceries-variety {
+            color: main.$black;
+
+            .groceries-image-wrapper {
+                width: 280px !important;
+                padding: 0 5px;
+                border-radius: 5px;
+
+                &>div {
+                    width: 100%;
+                    aspect-ratio: 12/10;
+                    border-radius: 10px;
+                }
+
+                img {
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: inherit;
+                    width: 100%;
+                }
+
+                h1 {
+                    font-weight: 500;
+                    color: main.$black;
+                }
+
+                p {
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    overflow: hidden;
+                }
+            }
+        }
+
+        .grocery-desc {
+            text-align: center;
+            margin-bottom: 20px;
+            color: main.$black;
+
+            h1 {
+                font-size: 2.5em;
+                font-weight: 500;
+                margin: 0;
+            }
+
+            a {
+                text-transform: uppercase;
+                font-weight: 600;
+                color: main.$black;
+                text-decoration: underline;
+            }
+        }
+    }
+}

@@ -61,9 +61,10 @@ const Shipping = () => {
 
     useEffect(() => {
         if (location.state) {
-            setTimeout(() => (
+            setTimeout(() => {
                 visibility.current.classList.add('not-visible')
-            ), 5000 )   
+                navigate(location.pathname, { replace: true, state: null })
+            }, 5000 )   
         }}
     , [location.state])
 

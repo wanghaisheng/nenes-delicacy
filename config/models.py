@@ -40,10 +40,19 @@ class Sizes(models.Model):
 class Icing(models.Model):
     name = models.CharField(max_length=100, null=True)
     title = models.CharField(max_length=100, null=True)
+    image = CloudinaryField('image', null=True)
     price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
 
     def __str__(self):
         return self.name
+    
+
+class Collection(models.Model):
+    name = models.CharField(max_length=100, null=True)
+    desc = models.TextField(null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
+    parameter = models.CharField(max_length=100, null=True)
+
     
 class ProductType(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -64,12 +73,11 @@ class Products(models.Model):
     description = models.TextField(blank=True)  
     unit_price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, blank=True)
-
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name
     
-
 
 class ProductVariation(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, null=True, blank=True)
@@ -93,7 +101,7 @@ class User(models.Model):
 
     
 class Cart(models.Model):
-    session_id = models.CharField(max_length=100, blank=True, null=True)
+    session_id = models.CharField(max_length=100, blank=True, null=True, unique=True)
     ordered = models.BooleanField(default=False, null=True, blank=True)
     date_ordered = models.DateField(null=True, blank=True)
 

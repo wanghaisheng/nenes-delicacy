@@ -1,0 +1,60 @@
+@use '../../main.scss';
+
+
+.product {
+
+    .no-results {
+        padding: 60px 20px;
+        text-align: center;
+        font-weight: 500;
+        color: main.$black;
+
+        &>div {
+            padding: 20px 0 0;
+        }
+    }
+
+    &>div:first-child .search-banner-text {
+        justify-content: center;
+    }
+
+    .mobile-search-banner-text {
+        font-weight: 500;
+        color: main.$black;
+        display: none;
+        font-size: 1.2em;
+
+        span {
+            text-transform: capitalize;
+        }
+    }
+
+    .loader {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            max-width: 50px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+
+    .product {
+
+        .mobile-search-banner-text {
+            margin: 0 0 20px;
+            display: block;
+    
+            h1 {
+                margin: 0;
+                font-weight: 500;
+            }
+        }
+    
+    }
+
+}

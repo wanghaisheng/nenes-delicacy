@@ -3,12 +3,12 @@
 .cart, .open-cart {
     background: main.$white;
     color: main.$black;
-    max-width: 400px;
-    transition: all .3s ease-in-out;
+    max-width: 380px;
+    transition: all .5s ease-in-out;
     width: 100%;
     top: 0;
     font-size: .9em;
-    z-index: 3;
+    z-index: -1;
     position: fixed;
     height: 100%;
     right: 0;
@@ -17,7 +17,7 @@
         overflow-y: scroll;
         display: flex;
         height: 100%;
-        padding: 190px 10px 25px;
+        padding: 200px 10px 25px;
         flex-direction: column;
         gap: 10px;
 
@@ -127,7 +127,7 @@
         width: 100%;
         position: fixed;
         padding: 0px 20px;
-        top: 50px;
+        top: 75px;
         background:main.$white;
         box-shadow: main.$box-shadow;
         z-index: 2;
@@ -139,8 +139,9 @@
         }
 
         &>a {
-            display: flex;
-            justify-content: center;
+                display: block;
+                width: fit-content;
+                margin: auto;
 
             &>div {
                 margin:15px 0 0;
@@ -212,7 +213,7 @@
 .open-cart, .cart {
 
     .checkout__preloader {
-        height: 120px;
+        height: 100px;
         display: flex;
         justify-content: center;
         align-items: center;

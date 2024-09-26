@@ -3,9 +3,13 @@
 .preview {
     border: main.$border;
     color: main.$black;
-    max-width: 550px;
     margin: 0 auto;
     border-radius: 5px;
+
+    a {
+        color: main.$gray;
+        text-decoration: none;
+    }
 
     &>ul:not(ul:last-child) {
         border-bottom: main.$border;
@@ -23,12 +27,18 @@
 
         li:first-child {
             flex-basis: 25%;
-            font-weight: 500;
+            font-weight: 600;
             color: main.$gray
         }
 
-        &>li:last-child{
+        &>li:last-child {
             font-size: .7em;
+            cursor: pointer;
+            transition: all .3s ease-in-out
+        }
+
+        &>li:last-child:hover {
+            text-decoration: underline;
         }
 
         ul {
