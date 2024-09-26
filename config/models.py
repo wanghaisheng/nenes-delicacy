@@ -45,14 +45,14 @@ class Icing(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class Collection(models.Model):
     name = models.CharField(max_length=100, null=True)
     desc = models.TextField(null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=0, null=True)
-    parameter = models.CharField(max_length=100, null=True)
-
+    image = CloudinaryField('image', null=True, blank=True)
+    alt = models.CharField(max_length=100, null=True)
+    
     
 class ProductType(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)

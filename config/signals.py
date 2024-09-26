@@ -3,15 +3,16 @@ from django.dispatch import receiver
 import cloudinary.uploader
 from PIL import Image, ImageFilter
 from io import BytesIO
-from .models import Products, ProductType
+from .models import Products, ProductType, Collection
 import requests
 import os
 
+
+@receiver(pre_save, sender=Collection)
 @receiver(pre_save, sender=ProductType)
 @receiver(pre_save, sender=Products)
 def create_placeholder(sender, instance, **kwargs):
     
- 
     try:
         response = requests.get(instance.image.url)
         if response.status_code == 200:
