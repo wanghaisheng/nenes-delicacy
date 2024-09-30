@@ -49,7 +49,8 @@ class Icing(models.Model):
 
 class Collection(models.Model):
     name = models.CharField(max_length=100, null=True)
-    desc = models.TextField(null=True)
+    description = models.TextField(null=True)
+    lazyImage = CloudinaryField('image', null=True)
     image = CloudinaryField('image', null=True, blank=True)
     alt = models.CharField(max_length=100, null=True)
 

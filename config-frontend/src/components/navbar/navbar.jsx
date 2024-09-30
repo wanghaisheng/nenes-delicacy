@@ -207,7 +207,7 @@ const Navbar = () => {
 
                 <div className='logo'>
                     <Link to={''}>
-                        <img src={`https://res.cloudinary.com/dqdtnitie/image/upload/${isMobile? 'v1721255425/mobile-logo_udgqxl.jpg': 'v1721251245/Untitled_x0uxvn.png'}`} 
+                        <img src={`https://res.cloudinary.com/dqdtnitie/image/upload/${isMobile? 'v1721255425/mobile-logo_udgqxl.jpg': 'v1727499524/Nene_s_Delicacy-1_zje8yw.png'}`} 
                             alt="logo of Nenee's delicacy"/>
                     </Link>
                 </div>  

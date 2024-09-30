@@ -17,6 +17,7 @@ const Payment = lazy(() => import("../payments/payment"))
 const Grocery = lazy(() => import("../grocery/grocery"))
 const Shipping = lazy(() => import("../shipping/shipping"))
 const Checkout = lazy(() => import("../checkout/checkout"))
+const Collection = lazy(() => import("../collection/collection"))
 const Search = lazy(() => import("../search/search"))
 const CheckoutLayout = lazy(() => import('../checkout/checkoutLayout').then(
     module => ({default: module.CheckoutLayout})
@@ -56,6 +57,18 @@ const App = () => {
                             <Route path="/products/:type" element={
                                 <Suspense fallback={<ProductPreloader/>}>
                                     <Product/>
+                                </Suspense>
+                            }/>
+
+                            <Route path="/collections" element={
+                                <Suspense fallback={<ProductPreloader/>}>
+                                    <Grocery/>
+                                </Suspense>
+                            }/>
+
+                            <Route path="/collections/:type" element={
+                                <Suspense fallback={<ProductPreloader/>}>
+                                    <Collection/>
                                 </Suspense>
                             }/>
 

@@ -21,9 +21,9 @@ section.index {
         overflow: hidden;
 
         .slick-dots {
-            bottom: 165px;
+            bottom: 195px;
             width: fit-content;
-            left: 297px;
+            left: 280px;
             z-index: 1;
     
             button {
@@ -34,8 +34,8 @@ section.index {
         .buttons {
             position: absolute;
             display: flex;
-            left: 245px;
-            bottom: 155px;
+            left: 230px;
+            bottom: 185px;
             gap: 100px;
 
             button {
@@ -65,7 +65,7 @@ section.index {
     
         &>div:first-child {
             position: relative;
-            width: 482px;
+            width: 450px;
             align-items: center;
             display: flex;
             margin-left: 60px;
@@ -77,6 +77,7 @@ section.index {
 
             .descriptions {
                 position: absolute;
+                padding: 0 10px;
                 text-align: center;
                 left: 0;
                 top: 50%;
@@ -160,6 +161,16 @@ section.index {
             max-width: 1320px;
             margin: 0 auto 50px;
 
+            .product-preloader,
+            .product-preloader-error {
+                border-radius: 5px;
+                position: relative;
+                width: 350px !important;
+                height: 300px;
+                animation: splash 1s linear infinite alternate;
+            }
+
+            
             .image-wrapper {
                 position: relative;
                 border-radius: 5px;

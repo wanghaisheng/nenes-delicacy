@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { backgroundImages, imageCollage } from '../../utils';
 import { useMediaQuery } from 'react-responsive'
-import { get, collections, comments } from '../../utils';
+import { get, comments } from '../../utils';
 import quote from '/images/icons8-quote-left-48.png'
 import buttonIcon from '/icons/button-shape.svg'
 import "slick-carousel/slick/slick.css";
@@ -40,12 +40,18 @@ const Index = () => {
     const { isError, 
             isLoading, 
             data, 
-            isPlaceholderData
         } = useQuery({
         queryKey: ['categories'],
         queryFn: () => get('categories/'),
         placeholderData: []
     })
+
+
+    const collection = useQuery({
+    queryKey: ['collections'],
+    queryFn: () => get('collections/'),
+    placeholderData: []
+})
 
 
     const handleClick = (position) => {
@@ -182,33 +188,31 @@ const Index = () => {
                         </ul>      
 
                         <div className="products">
-                                {isLoading || isPlaceholderData? 
-                                    <>
-                                        {[...Array(5)].map((x, index) => (
-                                            <div className='product-preloader' key={index}></div>
-                                        ))}
-                                    </>
-                                    : 
-                                    <>
-                                    <Slider ref={slider}  {...productSettings}>
-                                        {data?.map(product => (
-                                        <Link to={`products/${product.parameter}`} key={product.id}>
-                                            <div className='image-wrapper'>
-                                                <LazyLoadImage
-                                                width='100%'
-                                                height='100%'
-                                                src={import.meta.env.VITE_CLOUD_URL + product.image}
-                                                effect='blur'
-                                                alt={product.title}
-                                                placeholderSrc={import.meta.env.VITE_CLOUD_URL + product.lazyImage}
-                                                />
-                                                <div><p>{product.name}</p></div>
-                                            </div>
-                                        </Link>
-                                        ))}
-                                    </Slider>
-                                    </>
-                                }
+                            {isLoading? 
+                                <Slider ref={slider}  {...productSettings}>
+                                    {[...Array(5)].map((x, index) => (
+                                        <div className='product-preloader' key={index}></div>
+                                    ))}
+                                </Slider>
+                                : 
+                                <Slider ref={slider}  {...productSettings}>
+                                    {data?.map(product => (
+                                    <Link to={`products/${product.parameter}`} key={product.id}>
+                                        <div className='image-wrapper'>
+                                            <LazyLoadImage
+                                            width='100%'
+                                            height='100%'
+                                            src={import.meta.env.VITE_CLOUD_URL + product.image}
+                                            effect='blur'
+                                            alt={product.title}
+                                            placeholderSrc={import.meta.env.VITE_CLOUD_URL + product.lazyImage}
+                                            />
+                                            <div><p>{product.name}</p></div>
+                                        </div>
+                                    </Link>
+                                    ))}
+                                </Slider>
+                            }
                         </div>
                     </div>
                 </div>
@@ -221,14 +225,14 @@ const Index = () => {
 
                     <div>
                     <Slider {...collectionSettings}>
-                        {collections.map(collection => (
-                            <Link to={collection.parameter} key={collection.id}>
+                        {collection.data?.map(collection => (
+                            <Link to={`collections/${collection.name}`} key={collection.id}>
                                 <div className='collection-item'>
                                     <div>
-                                        <img src={import.meta.env.VITE_CLOUD_URL + collection.image} alt={collection.desc} loading='lazy'/>
+                                        <img src={import.meta.env.VITE_CLOUD_URL + collection.image} alt={collection.alt} loading='lazy'/>
                                     </div>
                                     <div>
-                                        <p>{collection.title}</p>
+                                        <p>{collection.name}</p>
                                     </div>
                                 </div>
                             </Link>

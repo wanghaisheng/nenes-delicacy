@@ -40,31 +40,40 @@ def get_distance(state, lga):
     return math.ceil(distance * 15)
 
 
+def filter_products(filter, queryset):
+
+    if filter == 'desc':
+        queryset = queryset.order_by('-unit_price')
+
+    elif filter == 'asc':
+        queryset = queryset.order_by('unit_price')
+
+    return queryset
+
  
 class ProductView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
         queryset = Products.objects.all()
-        parameter = self.request.query_params.get('parameter')
         filter = self.request.query_params.get('filter_by')
-        
-        if parameter: 
-            print(parameter)
-            product_type = ProductType.objects.get(parameter=parameter)
-            queryset = queryset.filter(product_type=product_type)
-
-        if filter == 'desc':
-            queryset = queryset.order_by('-unit_price')
-
-        elif filter == 'asc':
-            queryset = queryset.order_by('unit_price')
-    
+        queryset = filter_products(filter, queryset)
         return queryset
     
 
     def dispatch(self, *args, **kwargs):
         return super(ProductView, self).dispatch(*args, **kwargs)
+    
+
+    @action(detail=False, methods=['get'])
+    def get_product(self, request):
+        parameter = self.request.query_params.get('pathname')
+        filter = self.request.query_params.get('filter_by')
+        product_type = ProductType.objects.get(parameter=parameter)
+        queryset = queryset.filter(product_type=product_type)
+
+        queryset = filter_products(filter, queryset)
+        return queryset
     
 
     @action(detail=False, methods=['get'])
@@ -76,7 +85,7 @@ class ProductView(viewsets.ModelViewSet):
         return HttpResponse(
             json.dumps(
                 searchItems)
-        )
+            )
 
     
 
@@ -87,6 +96,28 @@ class ProductTypeView(viewsets.ModelViewSet):
     @method_decorator(cache_page(CACHE_TTL))
     def dispatch(self, *args, **kwargs):
         return super(ProductTypeView, self).dispatch(*args, **kwargs)
+    
+
+
+class CollectionView(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
+
+    @action(detail=False, methods=['get'])
+    def get_queryset(self):
+        queryset = Collection.objects.all()
+        name = self.request.query_params.get('pathname')
+        filter = self.request.query_params.get('filter_by')
+
+        if name:
+            collection = Collection.objects.get(name=name)
+            queryset = Products.objects.filter(collection=collection)
+        queryset = filter_products(filter, queryset)
+        return queryset
+   
+
+    # @method_decorator(cache_page(CACHE_TTL))
+    def dispatch(self, *args, **kwargs):
+        return super(CollectionView, self).dispatch(*args, **kwargs)
     
 
 class CartView(viewsets.ModelViewSet):
@@ -118,7 +149,7 @@ class CartView(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def createCart(self, request):
-            
+
         sessionid = request.query_params.get('sessionid')
         [cart, completed] = Cart.objects.get_or_create(session_id=sessionid)
 
@@ -126,7 +157,7 @@ class CartView(viewsets.ModelViewSet):
             cart.save()
         return HttpResponse('cart created')
     
-
+     
     @action(detail=False, methods=['post'])
     def addToCart(self, request):
 

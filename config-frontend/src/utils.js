@@ -100,41 +100,6 @@ const backgroundImages = [
 ]
 
 
-const collections = [
-    {
-        id: 1,
-        title: 'Chocolate Galore',
-        desc: 'a slice of chocolate with a bite eaten',
-        image: 'image/upload/v1725287491/Rich_and_Moist_Chocolate_Cake_from_scratch_recipe_1_ofyafo.jpg',
-        parameter: 'collections/chocolate-galore'
-    },
-
-    {
-        id: 2,
-        title: 'Birthday Parties',
-        desc: 'blue colored birthday cake decorated with sprinkles with a candle placed on it',
-        image: 'image/upload/v1725287491/2148186702_1_awadbs.jpg',
-        parameter: 'collections/birthdays'
-    },
-
-    {
-        id: 3,
-        title: 'Under 5000',
-        desc: "samosa's on a plate garnished with thyme leaves",
-        image: 'image/upload/v1725287491/Chicken_Samosa_zu3m2i.jpg',
-        parameter: 'collections/items-under-5000'
-    },
-
-    {
-        id: 4,
-        title: 'Embracing Love',
-        desc: 'chocolate cupcakes with vanilla icing sprinkled with heart shaped sprinkles',
-        image: 'image/upload/v1725287491/2148381133_1_wpeg0z.jpg',
-        parameter: 'collections/embracing-love'
-    }
-]
-
-
 const placeHolder = {
     id: null,
     address: '',
@@ -283,7 +248,6 @@ export {
         routeProtection,
         backgroundImages,
         placeHolder,
-        collections,
         imageCollage,
         comments
      }

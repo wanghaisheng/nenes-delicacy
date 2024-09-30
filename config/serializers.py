@@ -3,11 +3,25 @@ from django.contrib.auth.models import User
 from .models import *
 
 
+
+class CollectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = '__all__'
+        depth = 1
+
+
+
 class ProductSerializer(serializers.ModelSerializer):
+    collection = CollectionSerializer
+
     class Meta:
         model = Products
         fields = '__all__'
         depth = 1
+
+    def get_collection(self, obj):
+        return obj.collection
 
 
 class ProductVariationSerializer(serializers.ModelSerializer):

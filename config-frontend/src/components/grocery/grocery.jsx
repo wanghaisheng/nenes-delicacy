@@ -9,13 +9,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { get } from '../../utils';
 import '../products/product.scss';
 import './grocery.scss'
-import Slider from 'react-slick';
 // import '../preloader/preloader.scss'
 
 
 
 const Grocery = () => {
+    const url = window.location.href
     const [filter, setFilter] = useState('recommended')
+    const pathname = url.substring(url.lastIndexOf('/') + 1);
 
     const { isError, 
             isLoading,
@@ -24,7 +25,7 @@ const Grocery = () => {
             refetch
         } = useQuery({
         queryKey: ['products', filter],
-        queryFn: () => get(`products/?filter_by=${filter}`),
+        queryFn: () => get(`products/?filter_by=${filter}&collection=${path}`),
         keepPreviousData: true,
         placeholderData: []
     })
