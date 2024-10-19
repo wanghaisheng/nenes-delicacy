@@ -3,7 +3,6 @@
 section.index {
     width: 100%;
 
-
     h1 {
         font-size: 2em;
         margin: 0 auto;
@@ -188,7 +187,7 @@ section.index {
                 }
     
                 span {
-                    background: main.$light-gray;
+                    background: main.$light-gray center / cover;
                     border-radius: 5px;
 
                     img {
@@ -674,6 +673,29 @@ section.index {
     }
 }
 
+
+@media (max-width: 912px) {
+    section.index {
+
+        .wrapper > div {
+            justify-content: center;
+
+            &>div:first-child {
+                margin-left: 0;
+            }
+        }
+
+        &>div:first-child {
+
+            .slick-dots, .buttons {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    }
+}
+
+
 @media (max-width: 768px) {
     section.index {
 
@@ -684,20 +706,16 @@ section.index {
             &>div:first-child {
                 justify-content: center;
                 width: 410px;
-                margin-left: 0;
             }
         }
 
         &>div:first-child {
-
-            .slick-dots, .buttons {
-                bottom: 105px;
-                left: 50%;
-                transform: translateX(-50%);
+            .slick-dots {
+                bottom: 99px;
             }
 
             .buttons {
-                bottom: 95px;
+                bottom: 89px;
             }
         }
 
@@ -922,4 +940,3 @@ section.index {
         }
     }
 }
-

@@ -1,22 +1,27 @@
 import { useQuery } from 'react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Error } from '../preloader/preloader'
-// import ProductPreloader from './productPreloader'
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ProductPreloader from '../products/productPreloader';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import Pagination from '../pagination/pagination';
 import { get } from '../../utils';
 import '../products/product.scss';
 import './grocery.scss'
-// import '../preloader/preloader.scss'
-
+import '../preloader/preloader.scss'
 
 
 const Grocery = () => {
-    const url = window.location.href
+    const navigate = useNavigate()
     const [filter, setFilter] = useState('recommended')
-    const pathname = url.substring(url.lastIndexOf('/') + 1);
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(segment => segment !== '');
+    const pathname = segments[segments.length - 1];
+    const queries = new URLSearchParams(useLocation().search);
+    const page  = queries.get('page');
+    const [currentPage, setCurrentPage] = useState(page? parseInt(page) : 1)
+
+
 
     const { isError, 
             isLoading,
@@ -24,20 +29,26 @@ const Grocery = () => {
             data, 
             refetch
         } = useQuery({
-        queryKey: ['products', filter],
-        queryFn: () => get(`products/?filter_by=${filter}&collection=${path}`),
+        queryKey: ['products', filter, currentPage],
+        queryFn: () => get(`products?filter_by=${filter}&collection=${pathname}&page=${currentPage}`),
         keepPreviousData: true,
-        placeholderData: []
     })
-    
-  
-    document.title = `products | Nene's Delicacy `;
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+        document.title = `Products | Nene's Delicacy `;
+    }, [data])
+
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page)
+        navigate(`/products?page=${page}`)
+    }
 
 
     if (isLoading) {
-        <div>Loading..</div>
+        return <ProductPreloader />
     }
-
 
     if (isError) {
         return <Error refetch={refetch} message={`An error occured, while fetching products`} />
@@ -49,7 +60,9 @@ const Grocery = () => {
              <div>
                 <div className='banner-text-container product-banner-text'>
                     <ul className="links">
-                        <li><a href="/">Continue Shopping</a></li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
+                        <li>Products</li>
                     </ul>
                     <div className='banner-text'>
                         <h1>Our Products</h1>
@@ -117,8 +130,8 @@ const Grocery = () => {
                 <h1>All products</h1>
 
                 <div className="products">
-                    {data.map(product => (
-                        <Link to={`/${product.name}`.replace(/ /g,'-').toLowerCase()} key={product.id}>
+                    {data?.results.map(product => (
+                        <Link to={`/${product.name}`} key={product.id}>
                             <div>
                                 <div className='image-wrapper'>
                                     <LazyLoadImage
@@ -132,7 +145,7 @@ const Grocery = () => {
                                     <p>{product.description}</p>
                                     <div className='naira-wrapper'>
                                         <span className='naira'>
-                                            <FontAwesomeIcon icon={faNairaSign} />
+                                            <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
                                         </span>
                                         <span>{Intl.NumberFormat("en-US").format(product.unit_price)}</span>
                                     </div>
@@ -146,10 +159,18 @@ const Grocery = () => {
             {isFetching?
                 <div className='spinner'>
                     <img src={import.meta.env.VITE_CLOUD_URL + 'image/upload/v1721250342/spinner-trans-bg_r89iew.gif'} alt="loading spinner" />
-                </div> : ''
-            }
+                </div> : null}
+
+            <div className='pagination'>
+                <Pagination
+                    currentPage={currentPage}
+                    totalCount={data.count}
+                    pageSize={data.page_size}
+                    onPageChange={page => handlePageChange(page)}
+                />
+            </div>
         </section>
-     );
+     )
 }
 
 export default Grocery ;

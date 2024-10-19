@@ -58,8 +58,8 @@
                         margin-top: 3px;
                     }
     
-                    .naira-sign {
-                        font-size: 14px;
+                    .naira-sign img{
+                        max-width: .6em;
                     }
     
                     .quantity {
@@ -127,7 +127,7 @@
         width: 100%;
         position: fixed;
         padding: 0px 20px;
-        top: 75px;
+        top: 55px;
         background:main.$white;
         box-shadow: main.$box-shadow;
         z-index: 2;

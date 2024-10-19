@@ -35,6 +35,11 @@ section.product {
                 align-items: flex-end;
             }
 
+            li:last-child {
+                text-decoration: none;
+                color: main.$gray;
+            }
+
             a {
                 text-decoration: none;
                 color: black;
@@ -78,7 +83,7 @@ section.product {
 
         .radio-wrapper {
             color: main.$black;
-            flex-basis: 25%;
+            flex-basis: 22%;
 
             h1 {
                 font-size: 2em;
@@ -124,7 +129,7 @@ section.product {
         }
 
         .radio-dropdown,
-        h1 {
+        &>h1 {
             display: none;
         }
     }
@@ -132,6 +137,7 @@ section.product {
     .spinner {
         top: 0;
         left: 0;
+        animation: none;
         background: main.$faint-white;
         display: flex;
         justify-content: center;
@@ -148,7 +154,7 @@ section.product {
 
     .products {
         display: grid;
-        flex-basis: 75%;
+        flex-basis: 78%;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 15px;
     
@@ -185,14 +191,6 @@ section.product {
                 }
             }
     
-            p:first-of-type {
-                font-size: 1.3em;
-                text-transform: capitalize;
-                -webkit-line-clamp: 2;
-                font-weight: 500;
-                margin: 0;
-            }
-    
             p {
                 overflow: hidden;
                 display: -webkit-box;
@@ -202,22 +200,37 @@ section.product {
                 text-align: left;
             }
 
+
+            p:first-of-type {
+                font-size: 1.3em;
+                margin: 0;
+                text-transform: capitalize;
+                -webkit-line-clamp: 2;
+                font-weight: 500;
+            }
+
+
             div:last-child {
 
                 .naira-wrapper {
                     display: flex;
-                    font-weight: 500;
                     align-items: center;
                 }
 
                 .naira {
-                    font-size: .8em;
+                    max-width: .62em;
                 }
             }
 
         }
     }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+    }
 }
+
 
 
 @media (max-width: 912px) {
@@ -246,12 +259,9 @@ section.product {
                 }  
             }
 
-            h1 {
-                display: block;
-            }
-
-            h1 {
+            &>h1 {
                 color: main.$black;
+                display: block;
                 text-transform: capitalize;
                 font-weight: 500;
                 margin-top: 30px;

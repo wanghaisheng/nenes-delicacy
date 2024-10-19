@@ -128,7 +128,9 @@ const Cart = ({ getCart }) => {
                             <div>
                                 <span>{cartitem.item.name}</span>
                                 <div>
-                                    <span className='naira-sign'><FontAwesomeIcon icon={faNairaSign} /></span>
+                                    <span className='naira-sign'>
+                                        <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
+                                    </span>
                                     {Intl.NumberFormat("en-US").format(cartitem.price)}
                                 </div>
                                 <div className='quantity'>

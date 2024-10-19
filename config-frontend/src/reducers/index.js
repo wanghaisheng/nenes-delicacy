@@ -1,7 +1,8 @@
 import { 
         getBlurred, 
         getMenu,
-        getShipping,  
+        getShipping,
+        getPage  
     } from "./util"
 
 import { combineReducers } from 'redux';
@@ -9,5 +10,6 @@ import { combineReducers } from 'redux';
 export const allReducers = combineReducers({
     getBlurred,
     getMenu,
-    getShipping
+    getShipping,
+    getPage
 })

@@ -8,7 +8,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { backgroundImages, imageCollage } from '../../utils';
 import { useMediaQuery } from 'react-responsive'
 import { get, comments } from '../../utils';
-import quote from '/images/icons8-quote-left-48.png'
+import quote from '/images/icons8-quote-left-48.png'  
 import buttonIcon from '/icons/button-shape.svg'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

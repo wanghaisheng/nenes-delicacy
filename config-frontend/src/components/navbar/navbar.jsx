@@ -20,6 +20,7 @@ const Navbar = () => {
                           
     const cartIcon = useRef()
     const inputRef = useRef()
+    const mobileInputRef = useRef()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [searchValue, setSearchValue] = useState('');
@@ -39,16 +40,18 @@ const Navbar = () => {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['search', debouncedValue],
-        queryFn: () => get(`products/search/?query=${searchValue}`), 
+        queryFn: () => get(`products/search/?query=${debouncedValue}`), 
         staleTime: Infinity,
         enabled: debouncedValue != '',
-        select: useCallback((data) => data.slice(0, 5))
     })
+
+    console.log(data)
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
         inputRef.current.value = ''
+        mobileInputRef.current.value = ''
         setSearchValue('')
         dispatch(Menu())
         navigate(`search?query=${searchValue}`)
@@ -94,6 +97,7 @@ const Navbar = () => {
                             </div>
                             <form action="" onSubmit={handleSubmit}>
                                 <input 
+                                    ref={mobileInputRef}
                                     onChange={(e) => setSearchValue(e.target.value)}
                                     type="text" 
                                     name="" 
@@ -260,44 +264,48 @@ const Navbar = () => {
                                 </div> : null
                             }
 
-                            {data?
+                            {data && data.results.length != 0?
                                 <div className='search-results'>
                                     <div>
                                         <p>
                                             Search results for: <br/> <span>'{debouncedValue}'</span>
                                         </p>
                                     </div>
+            
+                                    <div className='search-items'>
+                                        {data.results.slice(0,5).map(query => (
+                                            <Link key={query.id} onClick={() => dispatch(Menu())} 
+                                                    to={`${query.product_type.parameter}/${query.name}`}>
+                                                    <div className='result-item'>
+                                                        <div>
+                                                            <LazyLoadImage
+                                                                src={import.meta.env.VITE_CLOUD_URL + query.image}
+                                                                effect='blur'
+                                                                alt={query.name}
+                                                                placeholderSrc={import.meta.env.VITE_CLOUD_URL + query.lazyImage}
+                                                            />
+                                                        </div>
 
-                                    {data.length === 0? 
-                                        <div className='no-result'><span>NO RESULTS FOUND</span></div> :
-                                        <div className='search-items'>
-                                            {data?.map(query => (
-                                                <Link key={query.id} onClick={() => dispatch(Menu())} 
-                                                      to={`${query.product_type.parameter}/${query.name}`}>
-                                                        <div className='result-item'>
-                                                            <div>
-                                                                <LazyLoadImage
-                                                                    src={import.meta.env.VITE_CLOUD_URL + query.image}
-                                                                    effect='blur'
-                                                                    alt={query.name}
-                                                                    placeholderSrc={import.meta.env.VITE_CLOUD_URL + query.lazyImage}
-                                                                />
-                                                            </div>
-
-                                                            <div>
-                                                                <p>{query.name}</p>
-                                                                <div className='query-price'>
-                                                                    <div>
-                                                                        <FontAwesomeIcon icon={faNairaSign} />
-                                                                    </div>
-                                                                    {Intl.NumberFormat("en-US").format(query.unit_price)}
+                                                        <div>
+                                                            <p>{query.name}</p>
+                                                            <div className='query-price'>
+                                                                <div>
+                                                                <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
                                                                 </div>
+                                                                {Intl.NumberFormat("en-US").format(query.unit_price)}
                                                             </div>
                                                         </div>
-                                                </Link>
-                                            ))}
-                                        </div>}
+                                                    </div>
+                                            </Link>
+                                        ))}
+                                    </div>
                                 </div> : null
+                            }
+
+                            {data && data.results.length === 0?
+                                <center className='no-results'>
+                                    <p>No results found for '<span>{debouncedValue}</span>' </p>
+                                </center> : null
                             }
                         </div>
                     </div>

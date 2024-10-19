@@ -1,15 +1,13 @@
 import { useQuery } from 'react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Error } from '../preloader/preloader'
-// import ProductPreloader from './productPreloader'
+import ProductPreloader from '../products/productPreloader'
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { get } from '../../utils';
 import '../products/product.scss';
 import './collection.scss' 
-// import '../preloader/preloader.scss'
+import '../preloader/preloader.scss'
 
 
 
@@ -19,14 +17,21 @@ const Collection = () => {
     const pathname = url.substring(url.lastIndexOf('/') + 1);
 
 
-    const { isError, 
-            isLoading,
-            isFetching,
-            data, 
-            refetch
-        } = useQuery({
-        queryKey: ['collections', filter],
+    const {
+        data,
+        isLoading,
+        isFetching,
+        isError,
+        refetch
+    } = useQuery({
+        queryKey: ['collections', filter, pathname],
         queryFn: () => get(`collections/?filter_by=${filter}&pathname=${pathname}`),
+        select: ((data) => {
+            return {
+                products: data,
+                collection: data[0].collection
+            }
+        }),
         keepPreviousData: true,
     })
     
@@ -34,9 +39,11 @@ const Collection = () => {
     console.log(data)
     document.title = `products | Nene's Delicacy `;
 
+    console.log(isLoading, isFetching)
 
-    if (isLoading) {
-        <div>Loading..</div>
+
+    if (isLoading || !data) {
+        return <ProductPreloader />
     }
 
 
@@ -50,14 +57,23 @@ const Collection = () => {
              <div>
                 <div className='banner-text-container product-banner-text'>
                     <ul className="links">
-                        <li><a href="/">Continue Shopping</a></li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
+                        <li><Link to="/collections">Collections</Link></li>
+                        <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
+                        <li>{data.collection.name}</li>
                     </ul>
                     <div className='banner-text'>
-                        <h1></h1>
-                        <div></div>
+                        <h1>{data.collection.name}</h1>
+                        <div>{data.collection.description}</div>
                     </div>
                 </div>
-                <div><img src={import.meta.env.VITE_CLOUD_URL + 'data.image'} alt='' loading='lazy'/></div>
+                <div>
+                    <img src={import.meta.env.VITE_CLOUD_URL + data.collection.image} 
+                         alt={data.collection.alt} 
+                         loading='lazy'
+                    />
+                </div>
             </div>
 
             <div>
@@ -111,18 +127,18 @@ const Collection = () => {
                     </select>
                 </div>   
 
-                <h1></h1>
+                <h1>{data.collection.name}</h1>
 
                 <div className="products">
-                    {data?.map(product => (
-                        <Link to={`/${product.name}`.replace(/ /g,'-').toLowerCase()} key={product.id}>
+                    {data.products.map(product => (
+                        <Link to={`/${product.name}`} key={product.id}>
                             <div>
                                 <div className='image-wrapper'>
                                     <LazyLoadImage
                                     src={import.meta.env.VITE_CLOUD_URL+product.image}
                                     effect='blur'
                                     alt={product.name}
-                                    // placeholderSrc={import.meta.env.VITE_CLOUD_URL+product.lazyImage}
+                                    placeholderSrc={import.meta.env.VITE_CLOUD_URL+product.lazyImage}
                                     />
                                 </div>
                                 <div>
@@ -130,7 +146,7 @@ const Collection = () => {
                                     <p>{product.description}</p>
                                     <div className='naira-wrapper'>
                                         <span className='naira'>
-                                            <FontAwesomeIcon icon={faNairaSign} />
+                                            <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
                                         </span>
                                         <span>{Intl.NumberFormat("en-US").format(product.unit_price)}</span>
                                     </div>
@@ -141,7 +157,7 @@ const Collection = () => {
                 </div>
             </div>
 
-            {isFetching?
+            {isFetching && !isLoading?
                 <div className='spinner'>
                     <img src={import.meta.env.VITE_CLOUD_URL + 'image/upload/v1721250342/spinner-trans-bg_r89iew.gif'} alt="loading spinner" />
                 </div> : ''

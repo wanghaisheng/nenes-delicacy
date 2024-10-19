@@ -7,9 +7,7 @@ import { useDispatch } from 'react-redux';
 import { Blur } from '../../actions';
 import ItemPreloader from '../item/itemPreloader'
 import { useMutation, useQueryClient } from 'react-query'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { get, post, getCookie } from '../../utils';
 import { Error } from '../preloader/preloader';
 import { useState, useCallback, useRef, useEffect } from 'react';
@@ -20,8 +18,8 @@ const session = getCookie();
 const Item = () => {
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const param = useParams();
+    const url = window.location.href
+    const itemName = url.substring(url.lastIndexOf('/') + 1);
     const imageRef = useRef();
     const cartError = useRef();
     const [count, setCount] = useState(1);
@@ -52,13 +50,8 @@ const Item = () => {
             refetch, 
             isSuccess
         } = useQuery({
-        queryKey: ['products'],
-        queryFn: () => get('products/'),
-        select: useCallback(
-            (data) => data.find(
-                item => item.name.toLowerCase() === param.name.replace(/-/g, ' ').toLowerCase()
-            )
-        )
+        queryKey: ['products', itemName],
+        queryFn: () => get(`products/get_item?name=${itemName}`)
     })
 
 
@@ -69,10 +62,10 @@ const Item = () => {
     // })
 
 
- 
-
 
     useEffect(() => {
+        window.scrollTo(0, 0)
+    
         if (newCartItem.isError) {
             setTimeout(() => {
                 cartError.current.style.display = 'none'
@@ -114,6 +107,7 @@ const Item = () => {
                 <div><ion-icon name="chevron-forward"></ion-icon></div>
                 <a href="" onClick={(e) => e.preventDefault()}>{data.name}</a>
             </div>
+
             <div>
                 <div>
                     <div className="image" ref={imageRef}>
@@ -131,7 +125,9 @@ const Item = () => {
                 <div className='item-info'>
                     <p>{data.name}</p>
                     <div>
-                        <span><FontAwesomeIcon icon={faNairaSign} /></span>
+                        <span> 
+                            <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
+                        </span>
                         {Intl.NumberFormat("en-US").format(data.unit_price * count)}
                     </div>
 
@@ -162,7 +158,7 @@ const Item = () => {
                             </svg>
 
                             <div>
-                                {newCartItem.isLoading? 
+                                {isLoading? 
                                     <div className='spinner'>
                                         <img src={spinner} alt="loading"/>
                                     </div> : null
@@ -177,10 +173,8 @@ const Item = () => {
                             </div> : null
                         }
                         </button>
-
                     </div>
                 </div>
-                
             </div>
         </section>
         </>

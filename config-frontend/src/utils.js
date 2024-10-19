@@ -241,6 +241,19 @@ const comments = [
 ]
 
 
+const collectionPlaceHolder = [
+   
+     {
+        name:'',
+        description: '',
+        image: '',
+        alt: '',
+        collection: ''
+    }
+]
+
+
+
 export { 
         get, 
         post, 
@@ -249,6 +262,7 @@ export {
         backgroundImages,
         placeHolder,
         imageCollage,
-        comments
+        comments,
+        collectionPlaceHolder
      }
 

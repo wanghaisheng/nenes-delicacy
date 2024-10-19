@@ -33,8 +33,18 @@ const getShipping = (state = placeHolder, action) => {
     }
 }
 
+const getPage = (state = 1, action) => {
+    switch(action.type) {
+        case "PAGE":
+            return action.payload
+        default:
+            return state
+    }
+}
+
 export { 
     getBlurred, 
     getMenu,
     getShipping,
+    getPage
 }

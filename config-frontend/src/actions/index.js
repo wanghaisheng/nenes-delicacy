@@ -20,8 +20,16 @@ const shipping = (shippingInfo) => {
     }
 }
 
+const page = (page) => {
+    return {
+        type: "PAGE",
+        payload: page
+    }
+}
+
 export { 
         Blur,
         Menu,
         shipping,
+        page
     }

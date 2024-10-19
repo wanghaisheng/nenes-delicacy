@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.core import mail
+from .pagination import StandardResultsSetPagination
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from rest_framework.decorators import action
@@ -47,48 +48,71 @@ def filter_products(filter, queryset):
 
     elif filter == 'asc':
         queryset = queryset.order_by('unit_price')
+    else:
+        queryset = queryset.order_by('id')
 
     return queryset
 
  
 class ProductView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-
+    pagination_class = StandardResultsSetPagination
+    
     def get_queryset(self):
         queryset = Products.objects.all()
         filter = self.request.query_params.get('filter_by')
         queryset = filter_products(filter, queryset)
         return queryset
     
-
     def dispatch(self, *args, **kwargs):
         return super(ProductView, self).dispatch(*args, **kwargs)
     
 
     @action(detail=False, methods=['get'])
     def get_product(self, request):
+        queryset = Products.objects.all()
         parameter = self.request.query_params.get('pathname')
         filter = self.request.query_params.get('filter_by')
+
         product_type = ProductType.objects.get(parameter=parameter)
         queryset = queryset.filter(product_type=product_type)
+        filtered_queryset = filter_products(filter, queryset)
 
-        queryset = filter_products(filter, queryset)
-        return queryset
+        paginator = self.pagination_class()
+        paginated_queryset = paginator.paginate_queryset(filtered_queryset, request)
+
+        serialized_queryset = ProductSerializer(paginated_queryset, many=True)
+        
+        return paginator.get_paginated_response(serialized_queryset.data)
     
+
+    @action(detail=False, methods=['get'])
+    def get_item(self, request):
+        name = self.request.query_params.get('name')
+        item = Products.objects.get(name=name)
+        item = ProductSerializer(item).data
+        
+        return HttpResponse(
+            json.dumps(item)
+        )
+
 
     @action(detail=False, methods=['get'])
     def search(self, request):
         query = self.request.query_params['query']
+        filter = self.request.query_params.get('filter_by')
         matchedObjects = Products.objects.filter(name__icontains=query) 
-        searchItems = [ProductSerializer(matchedObject).data for matchedObject in matchedObjects]
+        filteredObjects = filter_products(filter, matchedObjects)
 
-        return HttpResponse(
-            json.dumps(
-                searchItems)
-            )
+        print(filter) 
+
+        paginator = self.pagination_class()
+        paginated_objects = paginator.paginate_queryset(filteredObjects, request)
+
+        serializedObjects = ProductSerializer(paginated_objects, many=True)
+        return paginator.get_paginated_response(serializedObjects.data)
 
     
-
 class ProductTypeView(viewsets.ModelViewSet):
     serializer_class = ProductTypeSerializer
     queryset = ProductType.objects.all()
