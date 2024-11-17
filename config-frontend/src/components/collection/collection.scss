@@ -1,0 +1,137 @@
+@use '../../main.scss';
+
+.collections {
+    background: main.$green;
+    margin-top: 3.5em auto 0;
+    padding: 30px 20px;
+
+
+    .collections-preloader {
+        overflow: hidden;
+        opacity: .8;
+        border-radius: 5px;
+        position: relative;
+        background: main.$lighter-gray;
+        height: 280px;
+        width: 200px !important;
+    }
+
+    .collections-preloader::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        animation: loading 1.5s infinite;
+    }
+
+    .slick-slide {
+        padding: 0 5px;
+    }
+
+
+    &>div:first-child {
+        text-align: center;
+        margin: 0 auto;
+        color: main.$black;
+
+        p {
+            margin: 8px 0 20px;
+        }
+    }
+
+    &>div:nth-child(2) {
+        max-width: 835px;
+        margin: 0 auto;
+
+        a {
+            text-decoration: none;
+        }
+       
+        .collection-item {
+            cursor: pointer;
+
+            &>div:first-child {
+                width: 200px;
+                position: relative;
+                height: 280px;
+                border-radius: 5px;
+                overflow: hidden;
+
+                img {
+                    width: 100%;
+                    border-radius: inherit;
+                    transition: .3s all ease-in-out;
+                    object-fit: cover;
+                    height: 100%;
+                }
+            }
+
+            &>div:first-child::before {
+                content: '';
+                width: 100%;
+                height: 100%;
+                transition: opacity .8s ease-in-out;
+                opacity: .35;
+                position: absolute;
+                background: main.$black;
+                top: 0;
+            }
+
+
+            &>div:nth-child(2) {
+                margin: 10px 0;
+
+                p {
+                    color: main.$black;
+                    font-size: 1.2em;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        .collection-item:hover {
+
+            &>div:first-child::before {
+                opacity: 0;
+            }
+
+            img {
+                transform: scale(1.1)
+            }
+        }
+    }
+}
+
+
+
+@media (max-width: 480px) {
+    
+    section.index {
+
+        .collections {
+            padding: 30px 5px;
+
+            &> div:nth-child(2) {
+                padding: 0;
+            }
+        }
+    }
+}
+
+
+@keyframes loading {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }

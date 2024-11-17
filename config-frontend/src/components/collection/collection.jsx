@@ -1,169 +1,101 @@
 import { useQuery } from 'react-query'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { Error } from '../preloader/preloader'
-import ProductPreloader from '../products/productPreloader'
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link } from 'react-router-dom'
 import { get } from '../../utils';
-import '../products/product.scss';
+import { useRef } from 'react';
+import Slider from "react-slick"; 
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 import './collection.scss' 
-import '../preloader/preloader.scss'
 
 
 
 const Collection = () => {
-    const url = window.location.href
-    const [filter, setFilter] = useState('recommended')
-    const pathname = url.substring(url.lastIndexOf('/') + 1);
+    const slider = useRef();
 
-
-    const {
-        data,
-        isLoading,
-        isFetching,
-        isError,
-        refetch
-    } = useQuery({
-        queryKey: ['collections', filter, pathname],
-        queryFn: () => get(`collections/?filter_by=${filter}&pathname=${pathname}`),
-        select: ((data) => {
-            return {
-                products: data,
-                collection: data[0].collection
-            }
-        }),
-        keepPreviousData: true,
+    const collection = useQuery({
+        queryKey: ['collections'],
+        queryFn: () => get('categories/collection/'),
+        placeholderData: []
     })
+
     
-  
-    console.log(data)
-    document.title = `products | Nene's Delicacy `;
+    const collectionSettings = {
+        className: "slider variable-width",
+        dots: false,
+        arrows: false,
+        slidesToScroll: 0,
+        swipe: false,
+        draggable: false,
+        infinite: false,
+        variableWidth: true,
+        adaptiveHeight: true,
+        responsive: [
+        
+            {
+              breakpoint: 880,
+              settings: {
+                infinite: true,
+                dots: true,
+                slidesToShow: 1,
+                draggable: true,
+                swipe: true,
+                slidesToScroll: 1,
+                swipeToSlide: true,
+              }
+            },
 
-    console.log(isLoading, isFetching)
-
-
-    if (isLoading || !data) {
-        return <ProductPreloader />
+            {
+                breakpoint: 768,
+                settings: {
+                  dots: true,
+                }
+            }
+        
+          ]
     }
+    
 
-
-    if (isError) {
-        return <Error refetch={refetch} message={`An error occured, while fetching products`} />
-    }
-
-
-    return ( 
-        <section className='product'>
-             <div>
-                <div className='banner-text-container product-banner-text'>
-                    <ul className="links">
-                        <li><Link to="/">Home</Link></li>
-                        <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
-                        <li><Link to="/collections">Collections</Link></li>
-                        <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
-                        <li>{data.collection.name}</li>
-                    </ul>
-                    <div className='banner-text'>
-                        <h1>{data.collection.name}</h1>
-                        <div>{data.collection.description}</div>
-                    </div>
-                </div>
-                <div>
-                    <img src={import.meta.env.VITE_CLOUD_URL + data.collection.image} 
-                         alt={data.collection.alt} 
-                         loading='lazy'
-                    />
-                </div>
+    return (
+        <div className="collections">
+            <div>
+                <h1>Sweets for any gathering</h1>
+                <p>Whether it's a holiday, special event, or reason to celebrate, we have everything you need.</p>
             </div>
 
             <div>
-                <div className='radio-wrapper'>
-                    <h1>Filter By</h1>
-                    <div>
-                        <label>
-                            <input
-                            type="radio"
-                            value="recommended"
-                            onChange={() => setFilter('recommended')}
-                            checked={filter === 'recommended'}
-                            />
-                            <span className='custom-radio-input'></span>
-                            Recommended
-                        </label>
-                    </div>
+                {collection.isFetching? 
+                    <Slider ref={slider}  {...collectionSettings}>
+                        {[...Array(5)].map((x, index) => (
+                            <div className='collections-preloader' key={index}></div>
+                        ))}
+                    </Slider> : null}
 
-                    <div>
-                        <label>
-                            <input
-                            type="radio"
-                            value="low-to-high"
-                            onChange={() => setFilter('asc')}
-                            checked={filter === 'asc'}
-                            />
-                            <span className='custom-radio-input'></span>
-                            Low to high
-                        </label>
-                    </div>
 
-                    <div>
-                        <label>
-                            <input
-                            type="radio"
-                            value="high-to-low"
-                            onChange={() => setFilter('desc')}
-                            checked={filter === 'desc'}
-                            />
-                            <span className='custom-radio-input'></span>
-                            High to low
-                        </label>
-                    </div>
-                </div>
+                {collection.data? 
+                    <Slider {...collectionSettings}>
+                        {collection.data?.map(collection => (
+                            <Link to={`collections/${collection.name}`} key={collection.id}>
+                                <div className='collection-item'>
+                                    <div>
+                                        <LazyLoadImage
+                                            width='100%'
+                                            height='100%'
+                                            src={import.meta.env.VITE_CLOUD_URL + collection.image}
+                                            effect='blur'
+                                            alt={collection.alt}
+                                            placeholderSrc={import.meta.env.VITE_CLOUD_URL + collection.lazyImage}
+                                            />
+                                    </div>
 
-                <div className='radio-dropdown'>
-                    <select required onChange={(e) => setFilter(e.target.value)}>
-                        <option value="recommended">Recommended</option>
-                        <option value="asc">low to high</option>
-                        <option value="desc">high to low</option>
-                    </select>
-                </div>   
-
-                <h1>{data.collection.name}</h1>
-
-                <div className="products">
-                    {data.products.map(product => (
-                        <Link to={`/${product.name}`} key={product.id}>
-                            <div>
-                                <div className='image-wrapper'>
-                                    <LazyLoadImage
-                                    src={import.meta.env.VITE_CLOUD_URL+product.image}
-                                    effect='blur'
-                                    alt={product.name}
-                                    placeholderSrc={import.meta.env.VITE_CLOUD_URL+product.lazyImage}
-                                    />
-                                </div>
-                                <div>
-                                    <p>{product.name}</p>
-                                    <p>{product.description}</p>
-                                    <div className='naira-wrapper'>
-                                        <span className='naira'>
-                                            <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
-                                        </span>
-                                        <span>{Intl.NumberFormat("en-US").format(product.unit_price)}</span>
+                                    <div>
+                                        <p>{collection.name}</p>
                                     </div>
                                 </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                            </Link>
+                        ))}
+                    </Slider> : null}
             </div>
-
-            {isFetching && !isLoading?
-                <div className='spinner'>
-                    <img src={import.meta.env.VITE_CLOUD_URL + 'image/upload/v1721250342/spinner-trans-bg_r89iew.gif'} alt="loading spinner" />
-                </div> : ''
-            }
-        </section>
-     );
+        </div>
+    )
 }
 
 export default Collection;

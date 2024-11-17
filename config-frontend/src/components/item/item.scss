@@ -1,28 +1,29 @@
 @use '../../main.scss';
 
 section.item {
-    padding: 20px;
+    padding: 0 20px;
     font-size: .9em;
     
     &>div:first-child {
         gap: 5px;
         display: flex;
-        margin-bottom: 25px;
+        margin: 25px 0;
         color: main.$black;
         align-items: center;
 
         div {
             display: flex;
             align-items: center;
+            font-size: 20px;
         }
 
         a {
-            text-decoration: none;
             color: main.$black; 
+            font-size: 17px;
         }
 
         a:hover {
-            text-decoration: underline;
+            color: main.$green;
         }
 
         a:last-child {
@@ -45,13 +46,6 @@ section.item {
             
             .image {
                 aspect-ratio: 16/12;
-
-                span {
-                    background-position: center;
-                    border-radius: 5px;
-                    background: main.$light-gray;
-                }
-
         
                 img {
                     width: 100%;
@@ -70,7 +64,8 @@ section.item {
         padding: 0 20px;
 
         p:first-child {
-            font-size: 2em;
+            font-size: 2.5em;
+            font-weight: 500;
             margin: 0;
         }
 
@@ -79,7 +74,7 @@ section.item {
             font-size: 1.5em;
 
             img {
-                max-width: .62em;
+                max-width: .66em;
             }    
         }
     }
@@ -96,6 +91,7 @@ section.item {
 
             button {
                 border: none;
+                position: relative;
                 background: inherit;
                 padding: 0;
 
@@ -107,8 +103,13 @@ section.item {
                 }
 
                 ion-icon:hover {
-                    color: main.$pink;
+                    color: main.$darker-pink;
                 }
+            }
+
+            span {
+                color: main.$dark-pink;
+                font-weight: bold;
             }
 
             button:disabled {
@@ -120,9 +121,19 @@ section.item {
         &>button {
             position: relative;
             background: transparent;
+            cursor: pointer;
+            width: 100%;
             max-width: 190px;
             border:0;
             padding:0;
+
+            .spinner {
+                max-width: 25px;
+                z-index: 3;
+                width: 100%;
+                position: absolute;
+                animation: loader 1.3s infinite linear;
+            }
 
 
             svg {
@@ -138,14 +149,9 @@ section.item {
                 top:0;
                 height: 100%;
                 color: main.$pink;
-                cursor: pointer;
                 position: absolute;
                 justify-content: center;
                 align-items: center;
-
-                span {
-                    font-size: .8em;
-                }
             }
         }
 
@@ -156,24 +162,35 @@ section.item {
             }
         }
 
+        &>button:disabled {
+            cursor: not-allowed;
+
+            svg {
+                fill: #581b2889;
+            }
+
+        }
+
         .add-to-cart__error {
             background: main.$light-red;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
             border-radius: 5px;
-            position: absolute;
-            font-size: .9em;
-            z-index: 2;
-            padding: 10px 5px;
-            color: main.$red;
+            top: 50%;
+            font-weight: 500;
+            right: 50%;
+            transform: translate(50%, -50%);
+            position: fixed;
+            font-size: 12px;
+            padding: 10px;
+            color: main.$gray;
         }
     }
 }
 
 
-.spinner {
-    width: 10%;
-    animation: loader 1.3s infinite linear;
-  }
-  
 
 @media(max-width: 768px) {
 

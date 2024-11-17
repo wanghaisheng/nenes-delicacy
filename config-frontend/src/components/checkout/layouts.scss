@@ -40,24 +40,27 @@
         }
     }
 
+    .logo-ismobile {
+        margin: 10px 20px;
+    }
+
     &>div:first-child {
         flex-basis: 65%;
-        
+        position: relative;  
     }
 
     .layout-wrapper > div {
-        max-width: 600px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 20px 20px 0;
         justify-content: space-between;
         gap: 80px;
         display: flex;
         flex-direction: column;
-        position: relative;
     }
 
-    .layout-footer {
 
+    .layout-footer {
+        
         ul {
             display: flex;
             justify-content: center;
@@ -80,8 +83,7 @@
     }
 
     .mobile-logo {
-        max-width: 200px;
-        padding: 20px 0 0;
+        max-width: 150px;
     
         a {
             display: block;

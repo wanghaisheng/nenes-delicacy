@@ -162,6 +162,10 @@ const Search = () => {
                 </div> : 
                 
                 <div className="no-results">
+                    <div className="banner-text mobile-search-banner-text">
+                        <h1>Results for <span>"{query}"</span></h1>
+                        {data? <div>Showing total of {data.count} results</div> : null}
+                    </div>
                     <div>Please try a different search term or go back to the homepage.</div>
                 </div>
             } 

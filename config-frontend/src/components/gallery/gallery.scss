@@ -1,0 +1,105 @@
+@use '../../main.scss';
+
+.image-collage-section  {
+    padding: 0 20px 20px;
+    border-top: thick double main.$green;
+    margin-top: 50px;
+    color: main.$black;
+
+    &>div:first-child {
+        text-align: center;
+        padding: 20px;
+
+        p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+    }
+
+
+    .image-collage {
+        max-width: 65em;
+        display: flex;
+        margin: 0 auto;
+        gap: 5px;
+        flex-direction: column;
+
+        &>div {
+            display: flex;
+            gap: 5px;
+        }
+
+        &>div:last-child {
+
+            span:nth-of-type(1) img {
+                object-position: top;
+            }
+        }
+
+
+        &>div:nth-child(odd) {
+
+            span:nth-child(odd) {
+               flex-grow: 2;         
+            }
+
+            span:nth-child(even) {
+                flex-grow: 1.2;
+            }
+        }
+
+
+        &>div:nth-child(even) {
+
+            span:nth-child(odd) {
+                flex-grow: 1.2;
+            }
+
+            span:nth-child(even) {
+                flex-grow: 2;
+            }
+        }
+       
+
+        span {
+            background: main.$light-gray;
+            aspect-ratio: 12/8;
+            flex-basis: 0;
+            border: 2px solid main.$green;
+            overflow: hidden;
+            border-radius: 10px;
+
+            img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                border-radius: inherit;
+            }
+        }
+    }
+}
+
+
+@media (max-width: 768px) {
+ 
+    .image-collage-section {
+        padding: 0 10px 20px;
+
+        .image-collage > div span:first-child {
+            display: none;
+        }    
+    }
+}
+
+@media (max-width: 480px) {
+
+    .image-collage-section {
+
+        .image-collage > div span:nth-child(2) {
+            display: none;
+        }    
+    }
+}
+
+

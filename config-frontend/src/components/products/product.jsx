@@ -35,7 +35,9 @@ const Product = () => {
     useEffect(() => {
         window.scrollTo(0, 0)
         if (data) {
-            document.title = `${data.category.name} | Nene's Delicacy `;
+            document.title = `${data.isCollection? data.collection.name : data.category.name} | Nene's Delicacy `;
+        } else {
+            document.title = "Nene's Delicacy"
         }
     }, [data])
 
@@ -65,16 +67,18 @@ const Product = () => {
                     <ul className="links">
                         <li><Link to="/">Home</Link></li>
                         <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
-                        <li><Link to="/products">Products</Link></li>
+                        <li><Link to={data.isCollection? "/collections":"/products"}>{data.isCollection? 'Collections' : 'Products'}</Link></li>
                         <li><ion-icon name="chevron-forward-outline"></ion-icon></li>
-                        <li>{data.category.name}</li>
+                        <li>{data.isCollection? data.collection.name : data.category.name}</li>
                     </ul>
                     <div className='banner-text'>
-                        <h1>{data.category.name}</h1>
-                        <div>{data.category.bannerText}</div>
+                        <h1>{data.isCollection? data.collection.name : data.category.name}</h1>
+                        <div>{data.isCollection? data.collection.description : data.category.bannerText}</div>
                     </div>
                 </div>
-                <div><img src={import.meta.env.VITE_CLOUD_URL+data.category.bannerImage} alt="colorful cake" srcSet="" loading='lazy'/></div>
+                <div>
+                    <img src={`${import.meta.env.VITE_CLOUD_URL}${data.isCollection ? data.collection.image : data.category.bannerImage}`} />
+                </div>
             </div>
             
             <div>
@@ -128,7 +132,7 @@ const Product = () => {
                     </select>
                 </div>   
 
-                <h1>{data.category.name}</h1>
+                <h1>{data.isCollection? data.collection.name : data.category.name}</h1>
 
                 <div className="products">
                     {data.results.map(product => (
@@ -147,7 +151,7 @@ const Product = () => {
                                     <p>{product.description}</p>
                                     <div className='naira-wrapper'>
                                         <span className='naira'>
-                                            <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
+                                            <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1731311449/naira_k99wwn.png" alt="" />
                                         </span>   
                                         <span>{Intl.NumberFormat("en-US").format(product.unit_price)}</span>
                                     </div>
@@ -166,7 +170,7 @@ const Product = () => {
                 <Pagination
                     currentPage={currentPage}
                     totalCount={data.count}
-                    pageSize={data.results.length}
+                    pageSize={data.page_size}
                     onPageChange={page => handlePageChange(page)}
                 />
             </div>

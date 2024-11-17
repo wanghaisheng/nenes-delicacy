@@ -3,11 +3,12 @@
 
 @mixin rounded-icons {
     border-radius: 50%;
-    border: .09em solid main.$black;
+    border: 2px solid main.$black;
     transition: .3s ease-in-out;
 
     ion-icon {
         transition: inherit;
+        --ionicon-stroke-width: 40px;
         font-size: 1.4em;
         padding: 3px;
         color: main.$black;
@@ -217,7 +218,7 @@ header.index {
 
         .logo {
             position: absolute;
-            width: 120px;
+            width: 130px;
             cursor: pointer;
             left: 50%;
             top: 100%;
@@ -257,7 +258,7 @@ header.index {
                     margin-top: 2px;
                     top: 50%;
                     align-items: center;
-                    transform: translateY(-50%);
+                    transform: translateY(-42%);
                     color: main.$green;
                     display: flex;
                     height: 100%;

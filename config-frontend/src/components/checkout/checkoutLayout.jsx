@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { shipping } from '../../actions';
 import { useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
+import Precart from '../precart/precart';
 import { useMediaQuery } from 'react-responsive'
 import './layouts.scss'
 import { placeHolder, 
@@ -12,9 +13,7 @@ import { placeHolder,
         get } from '../../utils';
 
 
-
-
-const Precart = lazy(() => import('../precart/precart'))
+// const Precart = lazy(() => import('../precart/precart'))
 
 
 const CheckoutPreloader = () => {
@@ -71,7 +70,6 @@ function CheckoutLayout() {
     const { data } = useQuery({
         queryKey: ['shipping'],
         queryFn: () => get(`shipping/get_shipping?sessionID=${getCookie()}`),
-        placeholderData: placeHolder
     })
     
 
@@ -79,7 +77,6 @@ function CheckoutLayout() {
         queryKey: ['pre-cart'],
         queryFn: () =>  get(`cart/getCart/?sessionid=${getCookie()}`), 
         staleTime: Infinity,
-        placeholderData: { cartitems: [''], total: 0 },
         select: (cart) => {
             
             if (data?.routeProtection && cart.cartitems.length != 0) {
@@ -134,7 +131,7 @@ function CheckoutLayout() {
                         <header>
                             <div className="mobile-logo">
                                 <a href="/">
-                                    <img src='/images/mobile-view-logo.jpg'/>
+                                    <img src={import.meta.env.VITE_CLOUD_URL + '/image/upload/v1731314786/nene_s_delicacy_logo_black_rnle2z.png'}/>
                                 </a>
                             </div>
                         
@@ -171,9 +168,9 @@ function CheckoutLayout() {
                 <Precart preCart={preCart}/>  
                 {mobile? 
                     <div>
-                        <div className="mobile-logo">
+                        <div className="mobile-logo logo-ismobile">
                             <a href="/">
-                                <img src='https://res.cloudinary.com/dqdtnitie/image/upload/v1721255425/mobile-logo_udgqxl.jpg'/>
+                                <img src={import.meta.env.VITE_CLOUD_URL + '/image/upload/v1731314786/nene_s_delicacy_logo_black_rnle2z.png'}/>
                             </a>
                         </div>
                     </div> : null

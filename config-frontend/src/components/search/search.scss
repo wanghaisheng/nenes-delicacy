@@ -10,7 +10,7 @@
         color: main.$black;
 
         &>div {
-            padding: 20px 0 0;
+            margin: 50px 0;
         }
     }
 
@@ -44,6 +44,10 @@
 @media (max-width: 768px) {
 
     .product {
+
+        .no-results {
+            text-align: left;
+        }
 
         .mobile-search-banner-text {
             margin: 20px 0;

@@ -4,11 +4,9 @@ import { get, getCookie } from '../../utils';
 import { PaystackButton } from 'react-paystack'
 import { useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
+import Preview from '../preview/preview';
 import { lazy } from "react";
 import { useNavigate, useOutletContext } from 'react-router-dom';
-
-
-const Preview = lazy(() => import("../preview/preview"))
 
 
 const Payment = () => {
@@ -21,12 +19,22 @@ const Payment = () => {
   const amount = Number(preCart?.data?.total) + Number(shipping.price)
 
   
-  useQuery({
+  const {isSuccess} = useQuery({
     queryKey: ['order', success],
     queryFn: () => get(`cart/createOrder?sessionid=${getCookie()}`),
     enabled: success
   })
 
+
+useEffect(() => {
+
+  if (isSuccess) {
+    document.cookie = `sessionid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+    navigate('/')
+  }
+  
+}, [isSuccess])
+  
 
   useEffect(() => {
 
@@ -34,18 +42,15 @@ const Payment = () => {
       navigate('/checkout', { 
           state: { data: "Cannot start a payment session without adding an address"}
       }
-    )} else if (!shipping.deliveryDate)
-      navigate('/shipping', { 
-        state: { data: "Kindly set a delivery date before proceeding to payment"}
-    })
+    )} else if (!shipping.deliveryDate) {
+        navigate('/shipping', { 
+          state: { data: "Kindly set a delivery date before proceeding to payment"}
+      })
+    }
+      
   }, [shipping])
 
 
-
-const handleSubmit = () => {
-  setSuccess(true)
-  navigate('/')
-}
 
   const componentProps = {
     email: shipping.email,
@@ -55,7 +60,7 @@ const handleSubmit = () => {
     },
     publicKey,
     text: `Pay NGN${Intl.NumberFormat("en-US").format(amount)}`,
-    onSuccess: () => handleSubmit(),
+    onSuccess: () => setSuccess(true),
     onClose: () => alert("Wait! You need this oil, don't go!!!!"),
   }
 

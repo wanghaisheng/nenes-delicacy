@@ -1,64 +1,64 @@
 import './index.scss';
-import { useRef, useState } from 'react';
+import { useRef, useState, lazy, useEffect } from 'react';
 import Marquee from "react-fast-marquee";
 import Slider from "react-slick";
-import { Link } from 'react-router-dom'
-import { useQuery } from 'react-query';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { backgroundImages, imageCollage } from '../../utils';
+import { backgroundImages } from '../../utils';
 import { useMediaQuery } from 'react-responsive'
-import { get, comments } from '../../utils';
+import { comments } from '../../utils';
+import Gallery from '../gallery/gallery';
+import ProductCategory from '../category/category';
+import Collection from '../collection/collection';
 import quote from '/images/icons8-quote-left-48.png'  
 import buttonIcon from '/icons/button-shape.svg'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Index = () => {
-    const slider = useRef()
+    
     const indexSlider = useRef();
     const cakeSlice =  useRef();
+    const navigate = useNavigate();
     const cakeSlide = useRef();
     const [autoPlay, setAutoPlay] = useState(true)
     const [cakeState, setCakeState] = useState(false)
     const [colorScheme, setColorScheme] = useState(backgroundImages[0].colorScheme)
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
+    const isMiniMobile = useMediaQuery({query: '(max-width: 480px)'})
+    const [isHovered, setIsHovered] = useState(false);
 
 
-    window.addEventListener("scroll", () => {
-        let currentTop = cakeSlice.current?.getBoundingClientRect().top;
-        let slideTop = cakeSlide.current?.getBoundingClientRect().top
+    useEffect(() => {
+        
+        const handleScroll = () => {
+            let currentTop = cakeSlice.current?.getBoundingClientRect().top;
+            let slideTop = cakeSlide.current?.getBoundingClientRect().top;
 
-        setCakeState(isMobile || currentTop < 480? false: true)
+            setCakeState(isMobile || currentTop < 480 ? false : true);
 
-        if (!isMobile && cakeSlice.current) {
-            cakeSlice.current.style.transform = `translate(${slideTop < 520? -50 : -100}%, -41.5%)`
-        }
-    });
+            if (!isMobile && cakeSlice.current) {
+                cakeSlice.current.style.transform = `translate(${slideTop < 520 ? -50 : -100}%, -41.5%)`;
+            }
+        };
 
-
-    const { isError, 
-            isLoading, 
-            data, 
-        } = useQuery({
-        queryKey: ['categories'],
-        queryFn: () => get('categories/'),
-        placeholderData: []
-    })
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [isMobile]);
 
 
-    const collection = useQuery({
-    queryKey: ['collections'],
-    queryFn: () => get('collections/'),
-    placeholderData: []
-})
+    const handleMouseEnter = () => setIsHovered(true);
+    const handleMouseLeave = () => setIsHovered(false);
 
 
     const handleClick = (position) => {
         if (position === 'prev') {
             indexSlider?.current?.slickPrev()
 
-        } else if (position === 'next') {
+        } else {
             indexSlider?.current?.slickNext()
         }
         setAutoPlay(false)
@@ -90,62 +90,37 @@ const Index = () => {
     }
 
 
-    const productSettings = {
-        className: "slider variable-width center",
-        centerMode: false,
-        swipeToSlide: true,
-        dots: true,
-        arrows: false,
-        infinite: true,
-        variableWidth: true,
-        adaptiveHeight: true,
-        speed: 300,
-    }
-
-
-    const collectionSettings = {
-        className: "slider variable-width",
-        dots: false,
-        arrows: false,
-        slidesToScroll: 0,
-        swipe: false,
-        draggable: false,
-        infinite: false,
-        variableWidth: true,
-        adaptiveHeight: true,
-        responsive: [
-        
-            {
-              breakpoint: 880,
-              settings: {
-                infinite: true,
-                slidesToShow: 1,
-                draggable: true,
-                swipe: true,
-                slidesToScroll: 1,
-                swipeToSlide: true,
-              }
-            }
-          ]
-    }
-    
-
     return ( 
             <section className='index'>
                 <div>
                     <Slider ref={indexSlider} {...settings}>
                         {backgroundImages.map((item, index) => (
-                            <div key={item.id} className="wrapper" >    
+                            <div key={item.id} className="wrapper">    
                                 <div style={{backgroundImage: `url(${item.background})`}}>
                                     <div className='svg-wrapper'>
                                         <img src={item.svg} alt={item.desc} loading='lazy'/>
-                                        <div className='descriptions'>
+                                        <div className='descriptions' style={{color: item.colorScheme}}>
                                             <h1>{item.header}</h1>
-                                            <p>{item.paragraph}</p>
-                                            <div className='tab-view'>
-                                                <img src={import.meta.env.VITE_CLOUD_URL + 'image/upload/v1697689063/noun-decorative-line-4253413-cropped_jgf417.png'} alt="line break" srcSet="" loading='lazy' />
-                                                <p>{item.lineBreakText}</p>
-                                            </div>
+                                            <p style={{display: isMiniMobile && !item.lineBreak? 'none' : 'block'}}>{item.paragraph}</p>
+
+                                            {item.lineBreak? 
+                                                <div className='tab-view'>
+                                                    <img src={item.lineBreak} alt="line break" srcSet="" loading='lazy' />
+                                                    <p>{item.lineBreakText}</p>
+                                                </div> : 
+
+                                                <div className='shop-now' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                                                    <button 
+                                                        style={{color: isHovered? item.colorScheme : item.secondaryColor}}
+                                                        onClick={() => {navigate('/products/cookies')}}>
+                                                        <div>Shop Now</div>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 242 63" fill={isHovered? 'white' : item.colorScheme} className="Button__svg">
+                                                            <path d="M233.592 60.2841L233.591 60.2856C233.153 60.9604 232.439 61.36 231.68 61.36H10.18C9.42073 61.36 8.70676 60.9604 8.26887 60.2856C6.7404 57.9293 4.6602 55.9868 2.22891 54.6277C1.46111 54.1958 1 53.4414 1 52.64V9.72C1 8.91859 1.46114 8.16415 2.22899 7.7323C4.6603 6.37309 6.74051 4.43059 8.26898 2.0742C8.70689 1.39952 9.4208 1 10.18 1H231.68C232.439 1 233.153 1.39958 233.591 2.07437C235.119 4.43039 237.199 6.37264 239.63 7.7318C240.399 8.16355 240.86 8.91826 240.86 9.72V52.64C240.86 53.4417 240.399 54.1965 239.63 54.6282C237.198 55.9882 235.119 57.9408 233.592 60.2841Z" strokeWidth="2"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            }
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -167,79 +142,9 @@ const Index = () => {
                         </button>
                     </div>
                 </div>
-                
-                <div>
-                    <div>
-                        <h1>Our products</h1>
-                        <p>
-                            Get ready to embark on a gastronomic journey {isMobile? <br/> : null} with us as we unlock a world of flavors
-                            {isMobile? '' : <span>and discover the true artistry behind the finest food products</span>}.
-                        </p>
-                    </div>
 
-                    <div>
-                        <ul>
-                            <li onClick={() => slider?.current?.slickPrev()}>
-                                <ion-icon name="chevron-back-circle-sharp"></ion-icon>
-                            </li>
-                            <li onClick={() => slider?.current?.slickNext()}>
-                                <ion-icon name="chevron-forward-circle-sharp"></ion-icon>
-                            </li>
-                        </ul>      
-
-                        <div className="products">
-                            {isLoading? 
-                                <Slider ref={slider}  {...productSettings}>
-                                    {[...Array(5)].map((x, index) => (
-                                        <div className='product-preloader' key={index}></div>
-                                    ))}
-                                </Slider>
-                                : 
-                                <Slider ref={slider}  {...productSettings}>
-                                    {data?.map(product => (
-                                    <Link to={`products/${product.parameter}`} key={product.id}>
-                                        <div className='image-wrapper'>
-                                            <LazyLoadImage
-                                            width='100%'
-                                            height='100%'
-                                            src={import.meta.env.VITE_CLOUD_URL + product.image}
-                                            effect='blur'
-                                            alt={product.title}
-                                            placeholderSrc={import.meta.env.VITE_CLOUD_URL + product.lazyImage}
-                                            />
-                                            <div><p>{product.name}</p></div>
-                                        </div>
-                                    </Link>
-                                    ))}
-                                </Slider>
-                            }
-                        </div>
-                    </div>
-                </div>
-
-                <div className="collections">
-                    <div>
-                        <h1>Sweets for any gathering</h1>
-                        <p>Whether it's a holiday, special event, or reason to celebrate, we have everything you need.</p>
-                    </div>
-
-                    <div>
-                    <Slider {...collectionSettings}>
-                        {collection.data?.map(collection => (
-                            <Link to={`collections/${collection.name}`} key={collection.id}>
-                                <div className='collection-item'>
-                                    <div>
-                                        <img src={import.meta.env.VITE_CLOUD_URL + collection.image} alt={collection.alt} loading='lazy'/>
-                                    </div>
-                                    <div>
-                                        <p>{collection.name}</p>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                        </Slider>
-                    </div>
-                </div>
+                <ProductCategory />
+                <Collection />
 
                 <div className="store-services">
                     <div>
@@ -357,26 +262,9 @@ const Index = () => {
                             </Marquee>
                         </ul>
                 </div>
-                
-                <div className="image-collage-section">
-                    <div>
-                        <h1>No matter the size, be sure to tag us in your celebrations!</h1>
-                        <p>#nenesdelicacy</p>
-                    </div>
-                    
-                    <div className='image-collage'>
-                        {imageCollage.map((collage, index) => (
-                            <div key={index}>
-                                {collage.map(image => (
-                                    <span key={image.id}>
-                                        <img src={import.meta.env.VITE_CLOUD_URL + image.url} alt={image.title} loading='lazy'/>
-                                    </span>
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                </div>
 
+                <Gallery />
+                
                 <div className="catering-service">
                     <div>
                         <h1>Catering & Events</h1>

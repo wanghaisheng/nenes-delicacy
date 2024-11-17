@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faNairaSign } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { shipping } from '../../actions';
@@ -36,6 +35,7 @@ const Precart = ({preCart}) => {
             const protection = JSON.parse(res.data.toLowerCase())
 
             queryclient.setQueryData(['shipping'], (shippingData) => {
+                console.log(shippingData)
                 shippingData.routeProtection = protection
                 dispatch(shipping(Object.create(shippingData)))
                 return shippingData
@@ -72,8 +72,8 @@ const Precart = ({preCart}) => {
         else { 
             return (
                 <div>
-                    <FontAwesomeIcon icon={faNairaSign } />
-                    {Intl.NumberFormat("en-US").format(Number(data.price))} 
+                    <span className="naira-logo"><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="" /></span>
+                    <span>{Intl.NumberFormat("en-US").format(Number(data.price))}</span> 
                 </div>
         )}}
      
@@ -95,10 +95,10 @@ const Precart = ({preCart}) => {
                                 </div>
 
                                 <div>
-                                    <span><FontAwesomeIcon icon={faNairaSign} /></span>
+                                    <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
                                     <span>
                                         {Intl.NumberFormat("en-US").format(
-                                            Number(preCart.data.total) + (isCheckout? 0 : Number(data.price))
+                                            Number(preCart.data? preCart.data.total: 0) + (isCheckout? 0 : Number(data.price))
                                         )}
                                     </span>
                                 </div>
@@ -142,7 +142,7 @@ const Precart = ({preCart}) => {
                                             </div>
                                             <div className="precart-price">
                                                 <div>
-                                                    <span><FontAwesomeIcon icon={faNairaSign} /></span>
+                                                    <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
                                                     <span>{Intl.NumberFormat("en-US").format(cart.price)}</span>
                                                 </div>
                                             </div>
@@ -155,8 +155,8 @@ const Precart = ({preCart}) => {
                                 <div>
                                     <h1>Subtotal</h1>
                                     <p>
-                                        <FontAwesomeIcon icon={faNairaSign } />
-                                        {Intl.NumberFormat("en-US").format(preCart?.data.total)}
+                                        <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
+                                        {Intl.NumberFormat("en-US").format(preCart.data? preCart.data.total: 0)}
                                     </p>
                                 </div>
                                 <div>
@@ -168,9 +168,11 @@ const Precart = ({preCart}) => {
                                 <div className="total">
                                     <h1>Total</h1>
                                     <p>
-                                        <FontAwesomeIcon icon={faNairaSign} />
+                                        <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
                                         {Intl.NumberFormat("en-US").format(
-                                            isCheckout? Number(preCart?.data.total) : Number(preCart?.data.total) + Number(data? data.price: 0)
+                                            preCart.data? (
+                                                isCheckout? Number(preCart.data.total) : Number(preCart.data.total) + Number(data? data.price: 0)
+                                            ) : 0
                                             )}
                                     </p>
                                 </div>

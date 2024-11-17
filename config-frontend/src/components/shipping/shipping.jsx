@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import dateFormat from 'dateformat'
 import { shipping } from '../../actions'
 import { useQuery } from 'react-query'
+import { Spinner } from '../preloader/preloader'
 import axios from '../../axios'
 import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
@@ -70,44 +71,44 @@ const Shipping = () => {
 
     
     return ( 
-        <section className="shipping">  
-            <div>
-                <Preview />
-                
-                <div className='calender'>
-                    <div ref={visibility} className={location.state? 'visible': 'not-visible'}>
-                        {location.state?.data}
-                    </div>
-                    <div>
-                        <h1>Choose a delivery date <br/>for your order</h1>
-                    </div>
-                    <DayPicker
-                    mode='single'
-                    fromMonth={date}
-                    selected={selected}
-                    onSelect={setSelected}
-                    toMonth={nextMonth}
-                    disabled={{from: new Date(year, month, 1), 
-                               to: new Date(year, month, day + 2)}
-                            }
-                    />
-                </div>
-            </div>
-
-            <div className="buttons">
+            <section className="shipping">  
                 <div>
-                    <ion-icon name="arrow-back-sharp"/>
-                    <a href='/checkout'>Back to information</a>
+                    <Preview />
+                    
+                    <div className='calender'>
+                        <div ref={visibility} className={location.state? 'visible': 'not-visible'}>
+                            {location.state?.data}
+                        </div>
+                        <div>
+                            <h1>Choose a delivery date <br/>for your order</h1>
+                        </div>
+                        <DayPicker
+                        mode='single'
+                        fromMonth={date}
+                        selected={selected}
+                        onSelect={setSelected}
+                        toMonth={nextMonth}
+                        disabled={{from: new Date(year, month, 1), 
+                                to: new Date(year, month, day + 2)}
+                                }
+                        />
+                    </div>
                 </div>
 
-                <button 
-                onClick={() => navigate('/payment')}
-                disabled={preCart.status !== 'success'}>
-                    <span>Continue to payment</span>
-                    <ion-icon name="arrow-forward"/>
-                </button>
-            </div>
-        </section>
+                <div className="buttons">
+                    <div>
+                        <ion-icon name="arrow-back-sharp"/>
+                        <a href='/checkout'>Back to information</a>
+                    </div>
+
+                    <button 
+                    onClick={() => navigate('/payment')}
+                    disabled={preCart.status !== 'success'}>
+                        <span>Continue to payment</span>
+                        <ion-icon name="arrow-forward"/>
+                    </button>
+                </div>
+            </section>
      );
 }
 

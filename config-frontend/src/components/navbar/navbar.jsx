@@ -3,13 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDebounce } from "@uidotdev/usehooks";
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { useQuery } from 'react-query';
 import { get, getCookie } from '../../utils';
 import CartPreloader from '../cart/cartPreloader';
 import { useMediaQuery } from 'react-responsive'
-import { lazy, Suspense, useState, useRef, useCallback} from 'react';
+import { lazy, Suspense, useState, useRef} from 'react';
 import { Blur, Menu } from '../../actions';
 import './navbar.scss';
 
@@ -44,8 +42,6 @@ const Navbar = () => {
         staleTime: Infinity,
         enabled: debouncedValue != '',
     })
-
-    console.log(data)
 
 
     const handleSubmit = (e) => {
@@ -211,7 +207,7 @@ const Navbar = () => {
 
                 <div className='logo'>
                     <Link to={''}>
-                        <img src={`https://res.cloudinary.com/dqdtnitie/image/upload/${isMobile? 'v1721255425/mobile-logo_udgqxl.jpg': 'v1727499524/Nene_s_Delicacy-1_zje8yw.png'}`} 
+                        <img src={`https://res.cloudinary.com/dqdtnitie/image/upload/${isMobile? 'v1731314786/nene_s_delicacy_logo_black_rnle2z.png': 'v1727499524/Nene_s_Delicacy-1_zje8yw.png'}`} 
                             alt="logo of Nenee's delicacy"/>
                     </Link>
                 </div>  

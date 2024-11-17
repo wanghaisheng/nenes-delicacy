@@ -1,67 +1,62 @@
 import json
 import math
-from geopy.geocoders import Nominatim
-from geopy.distance import geodesic
 from rest_framework import viewsets
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
+from rest_framework.response import Response
 from django.utils.decorators import method_decorator
+from django.forms.models import model_to_dict
 from django.core import mail
 from .pagination import StandardResultsSetPagination
 from django.utils.html import strip_tags
 from django.template.loader import render_to_string
 from rest_framework.decorators import action
+from django.shortcuts import render
 from django.core import serializers as serializer
 from django.views.decorators.cache import cache_page
+from .utils.filter import filter_products
+from .utils.distance import get_distance
 from .models import *
 import environ
 from .serializers import *  
+
 
 env = environ.Env()
 environ.Env.read_env()
 
 CACHE_TTL = 60 * 60
 
+# def send_email(request):
+#     sessionid = '0028ea17-8525-4239-a9d8-3eb6be5e1417'
+#     cart = Cart.objects.get(session_id=sessionid, ordered=False)
+#     cartitems = Cartitem.objects.filter(cart=cart)
+#     total = sum([int(item.price) for item in cartitems])
 
-def get_distance(state, lga):   
+#     shipping = ShippingAddress.objects.get(session_id=sessionid)
 
-    geolocator = Nominatim(user_agent="nene", timeout=5)
+#     cartitems = [
+#         {
+#             'item': model_to_dict(item.item, fields=['unit_price', 'image', 'name']),
+#             'quantity': item.quantity,
+#         }
+#         for item in cartitems
+#     ]
 
-    try:
-        shop_location = geolocator.geocode("Jos North, Plateau")
-    except:
-        return None
-    shop_lat, shop_lon = shop_location.latitude, shop_location.longitude
+#     data = {'cartitems': cartitems, 
+#             'shipping': shipping,
+#             'total': total,
+#             'id': 'uioy'}
 
-    # Geocode client address
-    client_location = geolocator.geocode(f"{lga}, {state}")
-    client_lat, client_lon= client_location.latitude,  client_location.longitude
-   
-    # Calculate distance
-    distance = geodesic((shop_lat, shop_lon), (client_lat, client_lon)).km
-    return math.ceil(distance * 15)
+#     return render(request, 'email-templates.html', data)
 
 
-def filter_products(filter, queryset):
-
-    if filter == 'desc':
-        queryset = queryset.order_by('-unit_price')
-
-    elif filter == 'asc':
-        queryset = queryset.order_by('unit_price')
-    else:
-        queryset = queryset.order_by('id')
-
-    return queryset
-
- 
 class ProductView(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
+    queryset = Products.objects.all()
     
     def get_queryset(self):
-        queryset = Products.objects.all()
         filter = self.request.query_params.get('filter_by')
-        queryset = filter_products(filter, queryset)
+        queryset = filter_products(filter, self.queryset)
         return queryset
     
     def dispatch(self, *args, **kwargs):
@@ -70,12 +65,19 @@ class ProductView(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def get_product(self, request):
-        queryset = Products.objects.all()
         parameter = self.request.query_params.get('pathname')
         filter = self.request.query_params.get('filter_by')
+        isCollection = False
 
-        product_type = ProductType.objects.get(parameter=parameter)
-        queryset = queryset.filter(product_type=product_type)
+        try:
+            product_type = ProductType.objects.get(parameter=parameter)
+            queryset = self.queryset.filter(product_type=product_type)
+
+        except ProductType.DoesNotExist:
+            isCollection = True
+            collection = Collection.objects.get(name=parameter)
+            queryset = self.queryset.filter(collection=collection)
+
         filtered_queryset = filter_products(filter, queryset)
 
         paginator = self.pagination_class()
@@ -83,7 +85,10 @@ class ProductView(viewsets.ModelViewSet):
 
         serialized_queryset = ProductSerializer(paginated_queryset, many=True)
         
-        return paginator.get_paginated_response(serialized_queryset.data)
+        response = paginator.get_paginated_response(serialized_queryset.data)
+        response.data['isCollection'] = isCollection
+
+        return response
     
 
     @action(detail=False, methods=['get'])
@@ -104,44 +109,29 @@ class ProductView(viewsets.ModelViewSet):
         matchedObjects = Products.objects.filter(name__icontains=query) 
         filteredObjects = filter_products(filter, matchedObjects)
 
-        print(filter) 
-
         paginator = self.pagination_class()
         paginated_objects = paginator.paginate_queryset(filteredObjects, request)
 
         serializedObjects = ProductSerializer(paginated_objects, many=True)
         return paginator.get_paginated_response(serializedObjects.data)
 
+
     
 class ProductTypeView(viewsets.ModelViewSet):
     serializer_class = ProductTypeSerializer
     queryset = ProductType.objects.all()
 
-    @method_decorator(cache_page(CACHE_TTL))
-    def dispatch(self, *args, **kwargs):
-        return super(ProductTypeView, self).dispatch(*args, **kwargs)
-    
-
-
-class CollectionView(viewsets.ModelViewSet):
-    serializer_class = ProductSerializer
 
     @action(detail=False, methods=['get'])
-    def get_queryset(self):
+    def collection(self, request):
         queryset = Collection.objects.all()
-        name = self.request.query_params.get('pathname')
-        filter = self.request.query_params.get('filter_by')
+        serialized_queryset = CollectionSerializer(queryset, many=True)
+        return Response(serialized_queryset.data)
 
-        if name:
-            collection = Collection.objects.get(name=name)
-            queryset = Products.objects.filter(collection=collection)
-        queryset = filter_products(filter, queryset)
-        return queryset
-   
-
+    
     # @method_decorator(cache_page(CACHE_TTL))
     def dispatch(self, *args, **kwargs):
-        return super(CollectionView, self).dispatch(*args, **kwargs)
+        return super(ProductTypeView, self).dispatch(*args, **kwargs)
     
 
 class CartView(viewsets.ModelViewSet):
@@ -157,7 +147,6 @@ class CartView(viewsets.ModelViewSet):
     def getCart(self, request):
         sessionid = self.request.query_params['sessionid']
         [cart, created] = Cart.objects.get_or_create(session_id=sessionid, ordered=False)
-        Cartitem.objects.contains
         query = Cartitem.objects.filter(cart=cart)
 
         total = sum([float(item.price) for item in query])
@@ -230,9 +219,19 @@ class CartView(viewsets.ModelViewSet):
         cartitems = Cartitem.objects.filter(cart=cart)
         total = sum([int(item.price) for item in cartitems])
         cart.ordered = True
+        cart.save()
 
         shipping = ShippingAddress.objects.get(session_id=sessionid)
-        html_body = render_to_string("email-templates.html", {'order': cartitems, 
+
+        cartitems = [
+            {
+                'item': model_to_dict(item.item, fields=['unit_price', 'image', 'name']),
+                'quantity': item.quantity,
+            }
+            for item in cartitems
+        ]
+
+        html_body = render_to_string("email-templates.html", {'cartitems': cartitems, 
                                                               'shipping': shipping,
                                                               'total': total,
                                                             'id': 'uioy'})
@@ -245,7 +244,7 @@ class CartView(viewsets.ModelViewSet):
         return HttpResponse('Success')
     
 
-class ShippingView(viewsets.ModelViewSet):
+class ShippingView(viewsets.ModelViewSet): 
     serializer_class = ShippingSerializer
     queryset = ShippingAddress.objects.all()
          
@@ -308,7 +307,6 @@ class EmailsView(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['post'])
     def add_email(self, request):
-        print(request.data)
         try: 
             CustomerEmail.objects.get(email=request.data['email'])
             return HttpResponse("You're already subscribed to our newsletter.")
@@ -336,11 +334,8 @@ class ProductVariationView(viewsets.ModelViewSet):
     def get_variation(self, request):
         product_id = self.request.query_params.get('productID')
         product = Products.objects.get(id=product_id)
-        variations = ProductVariation.objects.filter(product=product).values()
-        for variation in variations:
-            print(variation.keys())
-        print('yes')
-        return HttpResponse('yes')
+        variations = ProductVariation.objects.filter(product=product)
+        return Response({})
     
 
 class StatesView(viewsets.ModelViewSet):

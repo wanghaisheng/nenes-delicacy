@@ -7,10 +7,10 @@ $dark-yellow: #451f13;
 $dark-pink: #581b28;
 $darker-pink: #3e0e18;
 $red:  rgb(239, 51, 51);
-$light-red: rgba(255, 196, 196, 0.322);
-$gray: rgb(86, 86, 86);
+$light-red: rgba(255,235,235,255);
+$gray: #646464;
 $light-gray: #b2b2b2;
-$lighter-gray: rgb(211, 211, 211);
+$lighter-gray: rgb(207, 207, 207);
 $deep-purple: #43234c;
 $green: #bae8d4;
 $carousel-nav-bottom: 120px;
@@ -22,19 +22,28 @@ $dark-green: #98dbbe;
 $emerald: #00211a;
 $dark-blue: #0c07a7;
 $yellow: #ffe4a2;
-$box-shadow: 0 4px 4px $lighter-gray;
+$box-shadow: 0 4px 4px 0 $lighter-gray;
 $border: 1px solid $light-gray;
 
 
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT9.TTF') format('truetype');
+  font-style: normal;
+  font-weight: normal;
+}
+
+
 :root {
-  font-family: 'noto serif';
   color-scheme: light dark;
   font-synthesis: none;
+  font-family: 'bahnschrift';
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
 
 #root {
   position: relative;
@@ -86,11 +95,12 @@ body {
   font-weight: 500;
   position: relative;
   opacity: 1;
+  font-size: .85em;
   transition: opacity .3s ease-in-out;
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 5px;
-  color: $red;
+  color: $gray;
 }
 
 .not-visible {
@@ -104,8 +114,10 @@ body {
 }
 
 .lazy-load-image-background {
+  border-radius: 5px;
+  background: $light-gray;
   background-size: cover !important;
-  background-position: center;
+  background-position: center !important;
 }
 
 @keyframes splash {

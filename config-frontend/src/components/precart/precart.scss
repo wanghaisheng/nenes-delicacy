@@ -8,8 +8,9 @@
     flex-basis: 50%;
 
     * {
-        font-size: .95em;
-    }
+        font-size: clamp(.8em, 0.97em, 1em);
+      }
+
 
     .error {
         text-align: center;
@@ -19,9 +20,6 @@
         align-items: center;
         vertical-align: middle;
 
-        ion-icon {
-            font-size: 2em;
-        }
 
         button {
             border: 0;
@@ -35,6 +33,11 @@
             }
         }
     }
+
+    .naira-logo img{
+        max-width: 9px;
+    }
+
 
 
     .order-summary {
@@ -180,11 +183,8 @@
         
                         &>div {
                             display: flex;
-                        }
-        
-                        span:first-child {
-                            width: 100%;
-                        }                  
+                            justify-content: end;
+                        } 
                 }
             }
 
@@ -232,7 +232,6 @@
                     color: main.$gray;
                 }
             }
-        
         }
 
         .route-protection-wrapper {
@@ -242,7 +241,8 @@
                 color: main.$black;
                 font-style: italic;
                 padding-bottom: 0;
-                font-size: .8em;
+                font-size: .75em;
+                color: main.$gray;
                 margin-top: 0;
                 max-width: 500px;
             }
@@ -256,8 +256,7 @@
                     }
         
                     p {
-                        font-weight: 600;
-                        color: main.$gray
+                        font-weight: 500;
                     }
                 }
             }

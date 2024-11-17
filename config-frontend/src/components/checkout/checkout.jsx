@@ -3,6 +3,7 @@ import { Blur } from '../../actions';
 import { get, post, getCookie, placeHolder } from '../../utils'
 import { useDispatch, useSelector } from 'react-redux';
 import { shipping } from '../../actions';
+import { Spinner } from '../preloader/preloader';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { useQuery } from 'react-query'
 import { useEffect, useState, useRef } from 'react'; 
@@ -17,7 +18,6 @@ const Checkout = () => {
     const {preCart} = useOutletContext()
     const shippingData = useSelector((state) => state.getShipping)
     const [state, setState] = useState({state:'', lga: []})
-    const [refetch, setRefetch] = useState(false)
     const [lga, setLGA] = useState(undefined)
     const [formData, setFormData] = useState(undefined)
     const nameInputRef = useRef(null);
@@ -31,13 +31,14 @@ const Checkout = () => {
     })
 
 
+
     const Shipping = useQuery({
         queryKey: ['shipping', {type:'post'}],
         queryFn: () => post(`shipping/add_shipping/?sessionID=${getCookie()}`, formData),
-        placeholderData: placeHolder,
         cacheTime: 0,
         enabled: !!formData
     })
+
 
     useEffect(() => {
         // Get the state from location
@@ -58,47 +59,43 @@ const Checkout = () => {
     }, [location]);
 
 
+    
+    useEffect(() => {
+        if (data && shippingData) {
+            const query = data.find(
+                state => state.state === shippingData.state)
+            setState(query)
+            setLGA(shippingData.lga)
+        }
+    }, [data, shippingData])
+
+
     useEffect(() => {
 
-        if (Shipping.isFetched && Shipping.isSuccess) {
+        if (Shipping.data && window.location.pathname !== '/shipping') {
             dispatch(shipping(Shipping.data.data))
             navigate('/shipping')
         }
 
-        if (data && shippingData.id) {
-            const result = data.filter(
-                state => state.state === shippingData.state)[0]
-            setState(result)
-            
-            const filtered_lga = result? result.lga.filter(
-                lga => lga === shippingData.lga)[0] : ''
-            setLGA(filtered_lga)}
+    }, [Shipping])
 
-    }, [data, shippingData, Shipping])
 
 
     useEffect(() => {
-        if (refetch && formData) {
-            Shipping.refetch()
-        }
 
         if (Shipping.isError || location.state) {
             setTimeout(() => {
                 visibility.current.classList.add('not-visible')
+                console.log(location.pathname)
                 navigate(location.pathname, { replace: true, state: null })
             }, 8000 )
             
-        }}, [
-        refetch, 
-        formData,
-        Shipping.isError,
-        location.state
-    ])
+        }}, [Shipping, location])
 
 
     const handleChange = (e) => {
-        const query = data.filter(
-            state => state.state === e.target.value)[0]
+        const query = data.find(
+            state => state.state === e.target.value)
         setState(query)
     }
 
@@ -111,16 +108,17 @@ const Checkout = () => {
         formdata.state = state.state
         formdata.lga = lga
         setFormData(formdata)
-        setRefetch(true)
     }
-    
+
+
+
+
     return ( 
             <section className='checkout'>
                 <div className="address"> 
                     <div>
                         <div ref={visibility} className={Shipping.isError || location.state?.data ? 'visible': 'not-visible'}>
-                            {Shipping.isError? 'Network Error: Check your internet connection' :
-                            location.state?.data}
+                            {Shipping.isError? "An error occurred, Please try again" : location.state?.data}
                         </div>
 
                         <h1>Shipping Adddress</h1>
@@ -138,7 +136,7 @@ const Checkout = () => {
                                 </select>
                                 <select required onChange={(e) => setLGA(e.target.value)} value={lga}>
                                     <option value="" hidden>LGA</option>
-                                    {state.lga.map(item => (
+                                    {state?.lga.map(item => (
                                         <option key={item} value={item}>{item}</option>
                                     ))}
                                 </select>

@@ -56,47 +56,46 @@ const routeProtection = {
 
 
 const backgroundImages = [
+
     {
         id: 0,
-        background: import.meta.env.VITE_CLOUD_URL + 'image/upload/v1723443945/delicious-pakistani-food-with-tomato-sauce_1_bqefon.jpg',
-        header: "Welcome to Nene's delicacy",
-        svg: Shape1,
-        paragraph: "We invite you to enter a world where buttery\
-                    perfection meets irresistible flavors, where each\
-                    bite transports you to a realm of pure bliss.",
-        lineBreak: "images/noun-decorative-line-4253413.png",
-        colorScheme: '#00211a',
-        desc: 'samosas with two dipping sauces',
-        lineBreakText: "whether you're celebrating a special occasion or simply craving a moment of indulgence, let us be your trusted companion on this journey of sweet ecstasy"
-    }, 
-
-    {
-        id: 1,
-        background: import.meta.env.VITE_CLOUD_URL + 'image/upload/v1723478265/79897_1_rvkunk.jpg',
-        header: "Welcome to Nene's delicacy",
-        svg: Shape2,
-        paragraph: "We invite you to enter a world where buttery\
-                    perfection meets irresistible flavors, where each\
-                    bite transports you to a realm of pure bliss.",
-        lineBreak: "images/noun-decorative-line-4253413.png",
-        colorScheme: '#00211a',
-        desc: 'cookies with cinnamon ornaments',
-        lineBreakText: "whether you're celebrating a special occasion or simply craving a moment of indulgence, let us be your trusted companion on this journey of sweet ecstasy"
-    },
-
-    {
-        id: 2,
         background: import.meta.env.VITE_CLOUD_URL + 'image/upload/v1725039156/Cupcake_Confetti_Vanilla_6_Count_2048x_s0iprk.webp',
         header: "Welcome to Nene's delicacy",
         svg: Shape3,
         paragraph: "We invite you to enter a world where buttery\
                     perfection meets irresistible flavors, where each\
                     bite transports you to a realm of pure bliss.",
-        lineBreak: "images/noun-decorative-line-4253413.png",
+        lineBreak: import.meta.env.VITE_CLOUD_URL + 'image/upload/v1697689063/noun-decorative-line-4253413-cropped_jgf417.png',
         colorScheme: '#43234c',
         desc: 'cupcakes with sprinkles',
         lineBreakText: "whether you're celebrating a special occasion or simply craving a moment of indulgence, let us be your trusted companion on this journey of sweet ecstasy"
     },
+    
+    {
+        id: 1,
+        background: import.meta.env.VITE_CLOUD_URL + 'image/upload/v1723478265/79897_1_rvkunk.jpg',
+        header: "Collection of Freshly Baked Cookies",
+        svg: Shape1,
+        paragraph: "We offer a delicious mix of golden cookies, baked with the perfect hint of cinnamon, bringing you the taste of homemade goodness in every bite.",
+        lineBreak: "",
+        colorScheme: '#00211a',
+        secondaryColor: '#bae8d4',
+        desc: 'cookies with cinnamon ornaments',
+        lineBreakText: ""
+    },
+
+    {
+        id: 2,
+        background: import.meta.env.VITE_CLOUD_URL + 'image/upload/v1723443945/delicious-pakistani-food-with-tomato-sauce_1_bqefon.jpg',
+        header: "Satisfy Your Cravings With Our Treats",
+        svg: Shape2,
+        lineBreak:  import.meta.env.VITE_CLOUD_URL + 'image/upload/v1697689063/noun-decorative-line-4253413-cropped_jgf417.png',
+        paragraph: "Explore our savory selection, from crispy samosas to hearty meat pies. Each creation is filled with rich, satisfying flavors that hit just the right spot!",
+        colorScheme: '#00211a',
+        desc: 'samosas with two dipping sauces',
+        lineBreakText: " Enjoy a delicious balancing mix of spices and textures, crafted with love to add that pinch of great taste to your daily moments."
+    }, 
+
 ]
 
 
@@ -110,7 +109,7 @@ const placeHolder = {
     state: '',
     lga: '',
     email: '',
-    deliveryDate: '',
+    deliveryDate: ' ',
     routeProtection: null
 }
 
@@ -119,22 +118,22 @@ const imageCollage = [
     [
         {
             id: 1,
-            'title': 'Girl celebrating birthday with a cake',
-            'url': 'image/upload/v1725649747/dreamstime_ftdomr.jpg',
-            'placeHolderSrc': ''
-        },
-
-        {
-            id: 2,
             'title': 'Slice of red velvet cake on a plate',
             'url': 'image/upload/v1725807223/Classic_Red_Velvet_Cake_pg1g3i.jpg',
             'placeHolderSrc': ''
         },
 
         {
+            id: 2,
+            'title': 'A lady celebrating her birthday, holding a cake',
+            'url': 'image/upload/v1725649749/Photo_from_catabong89_4_iti3sx.png',
+            'placeHolderSrc': ''
+        },
+
+        {
             id: 3,
             'title': 'Three people celebrating with one holding a cake',
-            'url': 'image/upload/v1725649748/1725628768549_scfpl9.png',
+            'url': 'image/upload/v1725649749/Photo_from_catabong89_3_meftq7.png',
             'placeHolderSrc': ''
         },
 
@@ -156,8 +155,8 @@ const imageCollage = [
 
         {
             id: 2,
-            'title': 'A lady celebrating her birthday, holding a cake',
-            'url': 'image/upload/v1725649749/Photo_from_catabong89_4_iti3sx.png',
+            'title': 'Girl celebrating birthday with a cake',
+            'url': 'image/upload/v1725649747/dreamstime_ftdomr.jpg',
             'placeHolderSrc': ''
         },
 
@@ -179,8 +178,8 @@ const imageCollage = [
     [
         {
             id: 1,
-            'title': 'Three women on a picnic taking a bit of cupcake',
-            'url': 'image/upload/v1725649749/images_d18mol.png',
+            'title': 'Three people celebrating with one holding a cake',
+            'url': 'image/upload/v1725649748/1725628768549_scfpl9.png',
             'placeHolderSrc': ''
         },
 
@@ -193,8 +192,8 @@ const imageCollage = [
 
         {
             id: 3,
-            'title': 'Young girl in a graduation gown holding up a cake',
-            'url': 'image/upload/v1725649749/Photo_from_catabong89_3_meftq7.png',
+            'title': 'Three women on a picnic taking a bit of cupcake',
+            'url': 'image/upload/v1725649749/images_d18mol.png',
             'placeHolderSrc': ''
         },
 

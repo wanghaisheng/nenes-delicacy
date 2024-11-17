@@ -129,7 +129,7 @@ const Cart = ({ getCart }) => {
                                 <span>{cartitem.item.name}</span>
                                 <div>
                                     <span className='naira-sign'>
-                                        <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1727523518/naira_aon4oj.svg" alt="" />
+                                        <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1731311449/naira_k99wwn.png" alt="" />
                                     </span>
                                     {Intl.NumberFormat("en-US").format(cartitem.price)}
                                 </div>
@@ -147,24 +147,21 @@ const Cart = ({ getCart }) => {
                                     </button>
                                     <span>{cartitem.quantity}</span>
                                     <button disabled={cartitem.quantity <= 1? true : false}
-                                            onClick={() => {setTimeout(() => {updateCartItem.mutate({
+                                            onClick={() => updateCartItem.mutate({
                                                 index,
                                                 item: cartitem.id,
                                                 unit_price: Number(cartitem.item.unit_price),
                                                 price: Number(cartitem.price),
                                                 quantity: cartitem.quantity - 1,
                                                 operand: '-'
-                                                })}, 2000)}
+                                                })
                                         }>
                                         <ion-icon name="remove-circle"/>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <div onClick={() => {setTimeout(() => {
-                            deleteCartItem.mutate(cartitem)
-                            }, 2000)}
-                            }>
+                        <div onClick={() => deleteCartItem.mutate(cartitem)}>
 
                             {deleteCartItem.isLoading? 
                                 <div className='remove-cartitem-inprogress'>

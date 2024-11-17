@@ -3,7 +3,7 @@
 section.product {
     
     &>div:first-child {
-        height: 300px;
+        height: 320px;
         display: flex;
 
 
@@ -64,11 +64,10 @@ section.product {
     &>div:nth-child(2) {
         flex-basis: 50%;
         background: main.$green;
-        height: 100%;
 
         img {
             width: 100%;
-            height: inherit;
+            height: 100%;
             object-fit: cover;
         }
     }
@@ -87,6 +86,7 @@ section.product {
 
             h1 {
                 font-size: 2em;
+                font-weight: 600;
                 margin: 0 0 10px;
             }
 
@@ -194,6 +194,7 @@ section.product {
             p {
                 overflow: hidden;
                 display: -webkit-box;
+                margin-top: 0;
                 font-size: 0.95em;
                 -webkit-box-orient: vertical;
                 -webkit-line-clamp: 3;
@@ -203,7 +204,7 @@ section.product {
 
             p:first-of-type {
                 font-size: 1.3em;
-                margin: 0;
+                margin: 10px 0;
                 text-transform: capitalize;
                 -webkit-line-clamp: 2;
                 font-weight: 500;
@@ -218,7 +219,7 @@ section.product {
                 }
 
                 .naira {
-                    max-width: .62em;
+                    max-width: .66em;
                 }
             }
 
@@ -252,7 +253,6 @@ section.product {
                     color: main.$black;
                     width: 320px;
                     text-transform: uppercase;
-                    font-weight: 500;
                     outline: none;
                     border: 1px solid main.$black;
                     max-width: 100%;
