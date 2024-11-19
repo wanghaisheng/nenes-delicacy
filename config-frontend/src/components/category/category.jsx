@@ -1,22 +1,20 @@
 import './category.scss'
 import { Link } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import Slider from "react-slick";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
 import { useEffect } from 'react';
-import { useRef } from 'react';
 import { get } from '../../utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { useQuery } from 'react-query';
 
 
 const ProductCategory = () => {
-    const slider = useRef()
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
 
     const { 
             isFetching, 
-            data, 
-        } = useQuery({
+            data } = useQuery({
         queryKey: ['categories'],
         queryFn: () => get('categories/'),
         placeholderData: []
@@ -24,18 +22,6 @@ const ProductCategory = () => {
 
 
     useEffect(() => {}, [data])
-
-    const productSettings = {
-        className: "slider variable-width center",
-        centerMode: false,
-        swipeToSlide: true,
-        dots: true,
-        arrows: false,
-        infinite: true,
-        variableWidth: true,
-        adaptiveHeight: true,
-        speed: 300,
-    }
 
 
     return ( 
@@ -52,10 +38,10 @@ const ProductCategory = () => {
                 <div className='product-title'>
                     <Link to={'/products'}>View all</Link>
                     <ul>
-                        <li onClick={() => slider?.current?.slickPrev()}>
+                        <li className='swiper-prev-button'>
                             <ion-icon name="chevron-back-circle-sharp"></ion-icon>
                         </li>
-                        <li onClick={() => slider?.current?.slickNext()}>
+                        <li className='swiper-next-button'>
                             <ion-icon name="chevron-forward-circle-sharp"></ion-icon>
                         </li>
                     </ul>
@@ -63,29 +49,52 @@ const ProductCategory = () => {
 
                 <div className="products">
                    
-                <Slider ref={slider} {...productSettings}>
+                <Swiper 
+                    slidesPerView={'auto'}
+                    loop={true}
+                    grabCursor={true}
+                    autoplay={{delay: 2500,
+                        disableOnInteraction: true,}}
+                    keyboard={{
+                        enabled: true
+                    }}
+                    spaceBetween={10}
+                    pagination={{
+                    clickable: true,
+                    }}
+                    navigation={{
+                        nextEl: '.swiper-next-button',
+                        prevEl: '.swiper-prev-button'
+                    }}
+                    modules={[Pagination, Navigation]}
+                    className="mySwiper"
+                >
                     {isFetching ? (
                         [...Array(4)].map((x, index) => (
-                            <div className='product-preloader' key={index}></div>
+                            <SwiperSlide key={index}>
+                                <div className='product-preloader'></div>
+                            </SwiperSlide>
                         ))
                     ) : (
                         data?.map(product => (
-                            <Link to={`products/${product.parameter}`} key={product.id}>
-                                <div className='image-wrapper'>
-                                    <LazyLoadImage
-                                        width='100%'
-                                        height='100%'
-                                        src={import.meta.env.VITE_CLOUD_URL + product.image}
-                                        effect='blur'
-                                        alt={product.title}
-                                        placeholderSrc={import.meta.env.VITE_CLOUD_URL + product.lazyImage}
-                                    />
-                                    <div><p>{product.name}</p></div>
-                                </div>
-                            </Link>
+                            <SwiperSlide  key={product.id}>
+                                <Link to={`products/${product.parameter}`}>
+                                    <div className='image-wrapper'>
+                                        <LazyLoadImage
+                                            width='100%'
+                                            height='100%'
+                                            src={import.meta.env.VITE_CLOUD_URL + product.image}
+                                            effect='blur'
+                                            alt={product.title}
+                                            placeholderSrc={import.meta.env.VITE_CLOUD_URL + product.lazyImage}
+                                        />
+                                        <div><p>{product.name}</p></div>
+                                    </div>
+                                </Link>
+                            </SwiperSlide>
                         ))
                     )}
-                </Slider>
+                </Swiper>
                 </div>
             </div>
         </div>

@@ -1,15 +1,18 @@
 import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { get } from '../../utils';
 import { useRef } from 'react';
-import Slider from "react-slick"; 
+import { Pagination, Navigation, FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import './collection.scss' 
 
 
 
 const Collection = () => {
-    const slider = useRef();
 
     const collection = useQuery({
         queryKey: ['collections'],
@@ -41,15 +44,7 @@ const Collection = () => {
                 slidesToScroll: 1,
                 swipeToSlide: true,
               }
-            },
-
-            {
-                breakpoint: 768,
-                settings: {
-                  dots: true,
-                }
-            }
-        
+            },        
           ]
     }
     
@@ -62,37 +57,48 @@ const Collection = () => {
             </div>
 
             <div>
-                {collection.isFetching? 
-                    <Slider ref={slider}  {...collectionSettings}>
-                        {[...Array(5)].map((x, index) => (
+                
+                <Swiper 
+                    slidesPerView={'auto'}
+                    spaceBetween={10}
+                    loop={true}
+                    pagination={{
+                    clickable: true,
+                    }}
+                    navigation={true}
+                    modules={[Pagination, Navigation]}
+                    className="mySwiper">
+
+                    {collection.isFetching?
+                    
+                        ([...Array(5)].map((x, index) => (
                             <div className='collections-preloader' key={index}></div>
-                        ))}
-                    </Slider> : null}
+                        ))) :
 
+                        (collection.data?.map(collection => (
+                            <SwiperSlide  key={collection.id}>
+                                <Link to={`collections/${collection.name}`}>
+                                    <div className='collection-item'>
+                                        <div>
+                                            <LazyLoadImage
+                                                width='100%'
+                                                height='100%'
+                                                src={import.meta.env.VITE_CLOUD_URL + collection.image}
+                                                effect='blur'
+                                                alt={collection.alt}
+                                                placeholderSrc={import.meta.env.VITE_CLOUD_URL + collection.lazyImage}
+                                                />
+                                        </div>
 
-                {collection.data? 
-                    <Slider {...collectionSettings}>
-                        {collection.data?.map(collection => (
-                            <Link to={`collections/${collection.name}`} key={collection.id}>
-                                <div className='collection-item'>
-                                    <div>
-                                        <LazyLoadImage
-                                            width='100%'
-                                            height='100%'
-                                            src={import.meta.env.VITE_CLOUD_URL + collection.image}
-                                            effect='blur'
-                                            alt={collection.alt}
-                                            placeholderSrc={import.meta.env.VITE_CLOUD_URL + collection.lazyImage}
-                                            />
+                                        <div>
+                                            <p>{collection.name}</p>
+                                        </div>
                                     </div>
-
-                                    <div>
-                                        <p>{collection.name}</p>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
-                    </Slider> : null}
+                                </Link>
+                            </SwiperSlide>
+                        )))
+                    }
+                </Swiper>
             </div>
         </div>
     )

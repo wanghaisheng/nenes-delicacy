@@ -50,13 +50,12 @@ section.index {
     }
    
 
-    .wrapper > div {
+    .swiper-slide > div {
         background-size: cover;
         transition: .8s translate ease-in-out;
         padding: 0 40px;
         display: flex;
         align-items: center;
-        cursor: grab;
         background-position: center;
         background-repeat: no-repeat;
         height: 800px;
@@ -442,7 +441,7 @@ section.index {
 @media (max-width: 912px) {
     section.index {
 
-        .wrapper > div {
+        .swiper-slide > div {
             justify-content: center;
 
             &>div:first-child {
@@ -464,7 +463,7 @@ section.index {
 @media (max-width: 768px) {
     section.index {
 
-        .wrapper > div {
+        .swiper-slide > div {
             height: 600px;
             justify-content: center;
     
@@ -577,11 +576,8 @@ section.index {
     section.index {
         font-size: .8em;
 
-        .slick-dots button:before {
-            font-size: 8px;
-        }
 
-        .wrapper > div {
+        .swiper-slide > div {
             height: 500px;
     
             &>div:first-child {

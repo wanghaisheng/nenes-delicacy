@@ -1,7 +1,8 @@
 import './index.scss';
 import { useRef, useState, lazy, useEffect } from 'react';
 import Marquee from "react-fast-marquee";
-import Slider from "react-slick";
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { backgroundImages } from '../../utils';
 import { useMediaQuery } from 'react-responsive'
 import { comments } from '../../utils';
@@ -10,21 +11,20 @@ import ProductCategory from '../category/category';
 import Collection from '../collection/collection';
 import quote from '/images/icons8-quote-left-48.png'  
 import buttonIcon from '/icons/button-shape.svg'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import { useNavigate } from 'react-router-dom';
 
 
 
 const Index = () => {
     
-    const indexSlider = useRef();
     const cakeSlice =  useRef();
     const navigate = useNavigate();
     const cakeSlide = useRef();
-    const [autoPlay, setAutoPlay] = useState(true)
     const [cakeState, setCakeState] = useState(false)
-    const [colorScheme, setColorScheme] = useState(backgroundImages[0].colorScheme)
+    // const [colorScheme, setColorScheme] = useState(backgroundImages[0].colorScheme)
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
     const isMiniMobile = useMediaQuery({query: '(max-width: 480px)'})
     const [isHovered, setIsHovered] = useState(false);
@@ -54,48 +54,29 @@ const Index = () => {
     const handleMouseLeave = () => setIsHovered(false);
 
 
-    const handleClick = (position) => {
-        if (position === 'prev') {
-            indexSlider?.current?.slickPrev()
-
-        } else {
-            indexSlider?.current?.slickNext()
-        }
-        setAutoPlay(false)
-    }
-
-
-    const settings = {
-        dots: true,
-        autoplay: autoPlay,
-        infinite: true,
-        pauseOnHover: true,
-        autoplaySpeed: 5000,
-        speed: 200,
-        cssEase: "linear",
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        appendDots: dots => (
-            <div>
-              <ul 
-                style={{ margin: 0, padding: 0 }}
-                onClick={() => setAutoPlay(false)}>
-                {dots}
-            </ul>
-            </div>
-        ),
-        afterChange: (current) => {
-            setColorScheme(backgroundImages[current].colorScheme)
-        }  
-    }
-
-
     return ( 
             <section className='index'>
                 <div>
-                    <Slider ref={indexSlider} {...settings}>
+                    <Swiper 
+                        slidesPerView={1}
+                        loop={true}
+                        grabCursor={true}
+                        autoplay={{delay: 3000,
+                            pauseOnMouseEnter: true,
+                            disableOnInteraction: true,}}
+                        keyboard={{
+                            enabled: true
+                        }}
+                        spaceBetween={0}
+                        pagination={{
+                        clickable: true,
+                        }}
+                        navigation={true}
+                        modules={[Autoplay, Pagination, Navigation]}
+                        className="mySwiper"
+                        >
                         {backgroundImages.map((item, index) => (
-                            <div key={item.id} className="wrapper">    
+                            <SwiperSlide key={index}>
                                 <div style={{backgroundImage: `url(${item.background})`}}>
                                     <div className='svg-wrapper'>
                                         <img src={item.svg} alt={item.desc} loading='lazy'/>
@@ -124,21 +105,21 @@ const Index = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </SwiperSlide>
                         ))}
-                    </Slider>
+                    </Swiper>
                     
                     <div className="buttons">
                         <button onClick={() => handleClick('prev')}>
                             <ion-icon 
                             name="chevron-back-circle-sharp"
-                            style={{color: colorScheme}}></ion-icon>
+                            ></ion-icon>
                         </button>
 
                         <button onClick={() => handleClick('next')}>
                             <ion-icon 
                             name="chevron-forward-circle-sharp"
-                            style={{color: colorScheme}}></ion-icon>
+                            ></ion-icon>
                         </button>
                     </div>
                 </div>

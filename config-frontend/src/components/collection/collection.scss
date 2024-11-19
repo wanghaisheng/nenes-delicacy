@@ -13,7 +13,7 @@
         position: relative;
         background: main.$lighter-gray;
         height: 280px;
-        width: 200px !important;
+        width: 200px;
     }
 
     .collections-preloader::before {
@@ -32,11 +32,6 @@
         animation: loading 1.5s infinite;
     }
 
-    .slick-slide {
-        padding: 0 5px;
-    }
-
-
     &>div:first-child {
         text-align: center;
         margin: 0 auto;
@@ -54,14 +49,22 @@
         a {
             text-decoration: none;
         }
+
+        .swiper-slide {
+            width: 200px;
+            border-radius: 5px;
+            height: 280px;
+        }
        
         .collection-item {
             cursor: pointer;
+            width: 100%;
+            height: 100%;
 
             &>div:first-child {
-                width: 200px;
+                width: 100%;
                 position: relative;
-                height: 280px;
+                height: 100%;
                 border-radius: 5px;
                 overflow: hidden;
 
@@ -114,14 +117,10 @@
 
 @media (max-width: 480px) {
     
-    section.index {
+    .collections {
 
-        .collections {
-            padding: 30px 5px;
-
-            &> div:nth-child(2) {
-                padding: 0;
-            }
+        &> div:nth-child(2) {
+            padding: 0;
         }
     }
 }
