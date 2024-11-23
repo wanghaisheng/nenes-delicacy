@@ -1,18 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import './preview.scss';
-import { useSelector } from 'react-redux';
+import {useOutletContext } from 'react-router-dom';
+
 
 const Preview = () => {
 
-    const shipping = useSelector((state) => state.getShipping)
+    const { shippingData } = useOutletContext();
     const navigate = useNavigate()
+    console.log(shippingData)
 
     return ( 
         <div className='preview'>
                     <ul>
                         <ul>
                             <li>Name:</li>
-                            <li>{shipping.firstName} {shipping.lastName}</li>
+                            <li>{shippingData.data?.firstName} {shippingData.data?.lastName}</li>
                         </ul>
                         <li onClick={() => navigate('/checkout', { state: { focus: 'name' } })}>Change</li>
                     </ul>
@@ -20,7 +22,7 @@ const Preview = () => {
                     <ul>
                         <ul>
                             <li>Contact:</li>
-                            <li>{shipping.email} <br/>{shipping.phone}</li>
+                            <li>{shippingData.data?.email} <br/>{shippingData.data?.phone}</li>
                         </ul>
                         <li onClick={() => navigate('/checkout', { state: { focus: 'contact' } })}>Change</li>
                     </ul>
@@ -28,7 +30,7 @@ const Preview = () => {
                     <ul>
                         <ul>
                             <li>Ship to:</li>
-                            <li>{shipping.address}</li>
+                            <li>{shippingData.data?.address}</li>
                         </ul>
                         <li onClick={() => navigate('/checkout', { state: { focus: 'address' } })}>Change</li>
                     </ul>

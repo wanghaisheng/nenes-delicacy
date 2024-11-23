@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { get } from '../../utils';
@@ -21,33 +21,6 @@ const Collection = () => {
     })
 
     
-    const collectionSettings = {
-        className: "slider variable-width",
-        dots: false,
-        arrows: false,
-        slidesToScroll: 0,
-        swipe: false,
-        draggable: false,
-        infinite: false,
-        variableWidth: true,
-        adaptiveHeight: true,
-        responsive: [
-        
-            {
-              breakpoint: 880,
-              settings: {
-                infinite: true,
-                dots: true,
-                slidesToShow: 1,
-                draggable: true,
-                swipe: true,
-                slidesToScroll: 1,
-                swipeToSlide: true,
-              }
-            },        
-          ]
-    }
-    
 
     return (
         <div className="collections">
@@ -57,47 +30,48 @@ const Collection = () => {
             </div>
 
             <div>
-                
-                <Swiper 
-                    slidesPerView={'auto'}
-                    spaceBetween={10}
-                    loop={true}
-                    pagination={{
-                    clickable: true,
-                    }}
-                    navigation={true}
-                    modules={[Pagination, Navigation]}
-                    className="mySwiper">
-
-                    {collection.isFetching?
-                    
-                        ([...Array(5)].map((x, index) => (
-                            <div className='collections-preloader' key={index}></div>
-                        ))) :
-
-                        (collection.data?.map(collection => (
-                            <SwiperSlide  key={collection.id}>
-                                <Link to={`collections/${collection.name}`}>
-                                    <div className='collection-item'>
-                                        <div>
-                                            <LazyLoadImage
-                                                width='100%'
-                                                height='100%'
-                                                src={import.meta.env.VITE_CLOUD_URL + collection.image}
-                                                effect='blur'
-                                                alt={collection.alt}
-                                                placeholderSrc={import.meta.env.VITE_CLOUD_URL + collection.lazyImage}
+                <Swiper
+                        slidesPerView={'auto'}
+                        spaceBetween={10}
+                        grabCursor={true}
+                        pagination={{
+                            clickable: true,
+                        }}
+                        navigation={false}
+                        modules={[Pagination, Navigation]}
+                        className="slider-class"
+                    >
+                        {collection.isFetching ? (
+                            [...Array(4)].map((_, index) => (
+                                <SwiperSlide key={index}>
+                                    <div className="collections-preloader"></div>
+                                </SwiperSlide>
+                            ))
+                        ) : (
+                            collection.data?.map((collection) => (
+                                <SwiperSlide key={collection.name}>
+                                    <Link
+                                        to={`collections/${encodeURIComponent(collection.name)}`}
+                                    >
+                                        <div className="collection-item">
+                                            <div>
+                                                <LazyLoadImage
+                                                    width="100%"
+                                                    height="100%"
+                                                    src={`${import.meta.env.VITE_CLOUD_URL}${collection.image}`}
+                                                    effect="blur"
+                                                    alt={collection.alt || "Collection image"}
+                                                    placeholderSrc={`${import.meta.env.VITE_CLOUD_URL}${collection.lazyImage}`}
                                                 />
+                                            </div>
+                                            <div>
+                                                <p>{collection.name}</p>
+                                            </div>
                                         </div>
-
-                                        <div>
-                                            <p>{collection.name}</p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </SwiperSlide>
-                        )))
-                    }
+                                    </Link>
+                                </SwiperSlide>
+                            ))
+                        )}
                 </Swiper>
             </div>
         </div>

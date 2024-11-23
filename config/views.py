@@ -129,7 +129,7 @@ class ProductTypeView(viewsets.ModelViewSet):
         return Response(serialized_queryset.data)
 
     
-    # @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(CACHE_TTL))
     def dispatch(self, *args, **kwargs):
         return super(ProductTypeView, self).dispatch(*args, **kwargs)
     
@@ -151,6 +151,7 @@ class CartView(viewsets.ModelViewSet):
 
         total = sum([float(item.price) for item in query])
         cartitems = [CartItemSerializer(item).data for item in query]
+        print(cartitems)
 
         return HttpResponse(
             json.dumps({
@@ -255,12 +256,9 @@ class ShippingView(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def get_shipping(self, request):
         sessionID = self.request.query_params.get('sessionID')
-
-        try:
-            address = ShippingAddress.objects.get(session_id=sessionID)
-            serializer = ShippingSerializer(address).data
-        except:
-            return HttpResponse('none')
+        address, created = ShippingAddress.objects.get_or_create(session_id=sessionID)
+        serializer = ShippingSerializer(address).data
+    
         return HttpResponse(json.dumps(serializer))
 
 

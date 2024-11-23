@@ -4,7 +4,7 @@
     text-align: center;
     font-size: .95em;
     color: main.$black;
-    margin: 3.5em 0;
+    margin: 40px 0;
 
     &>div:first-child {
         padding: 0 25px;
@@ -71,8 +71,7 @@
 
 
     .products {
-        padding: 0 20px;
-        margin: 0 auto 50px;
+        padding: 0 10px;
 
         .product-preloader {
             border-radius: 5px;

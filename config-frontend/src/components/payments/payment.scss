@@ -43,10 +43,16 @@
 
         &>div {
             display: flex;
+            justify-content: space-between;
             padding: 20px;
             border: main.$border;
             border-radius: 5px;
-            gap: 12px;
+            gap: 15px;
+
+            &>div {
+                display: flex;
+                gap: 15px;
+            }
 
             input[type='radio'] {
                 display: none;

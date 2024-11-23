@@ -1,11 +1,12 @@
 import './index.scss';
-import { useRef, useState, lazy, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Marquee from "react-fast-marquee";
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { backgroundImages } from '../../utils';
 import { useMediaQuery } from 'react-responsive'
 import { comments } from '../../utils';
+import { useLocation } from 'react-router-dom';
 import Gallery from '../gallery/gallery';
 import ProductCategory from '../category/category';
 import Collection from '../collection/collection';
@@ -22,12 +23,15 @@ const Index = () => {
     
     const cakeSlice =  useRef();
     const navigate = useNavigate();
+    const errorRef = useRef()
     const cakeSlide = useRef();
+    const location = useLocation();
     const [cakeState, setCakeState] = useState(false)
-    // const [colorScheme, setColorScheme] = useState(backgroundImages[0].colorScheme)
+    const [colorScheme, setColorScheme] = useState(backgroundImages[0].colorScheme)
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
     const isMiniMobile = useMediaQuery({query: '(max-width: 480px)'})
     const [isHovered, setIsHovered] = useState(false);
+
 
 
     useEffect(() => {
@@ -50,13 +54,43 @@ const Index = () => {
     }, [isMobile]);
 
 
+
+    useEffect(() => {
+
+        if (location.state?.data) {
+            setTimeout(() => {
+                errorRef.current.remove()
+            }, 8000 )
+            
+        }}, [location.state?.data])
+
+
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
+
+
+    const handleSlideChange = (swiper) => {
+        const activeIndex = swiper.realIndex; 
+        const color = backgroundImages[activeIndex].colorScheme
+        const index = document.querySelector('.index > div')
+        let paginationBullets = index.querySelectorAll('.swiper-pagination-bullet');
+
+        paginationBullets.forEach(bullet => {
+            bullet.style.background = color
+        })
+        setColorScheme(color)
+    };
 
 
     return ( 
             <section className='index'>
                 <div>
+                    {location.state?.data && 
+                        <div ref={errorRef} className='checkout-error'>
+                            {location.state?.data}
+                        </div>
+                    }
+
                     <Swiper 
                         slidesPerView={1}
                         loop={true}
@@ -71,14 +105,19 @@ const Index = () => {
                         pagination={{
                         clickable: true,
                         }}
-                        navigation={true}
+                        navigation={{
+                            nextEl: '.swiper-next-button',
+                            prevEl: '.swiper-prev-button'
+                        }}
                         modules={[Autoplay, Pagination, Navigation]}
+                        onSlideChange={handleSlideChange}
                         className="mySwiper"
                         >
+
                         {backgroundImages.map((item, index) => (
                             <SwiperSlide key={index}>
-                                <div style={{backgroundImage: `url(${item.background})`}}>
-                                    <div className='svg-wrapper'>
+                                <div className='hero-wrapper' style={{backgroundImage: `url(${item.background})`}}>
+                                    <div>
                                         <img src={item.svg} alt={item.desc} loading='lazy'/>
                                         <div className='descriptions' style={{color: item.colorScheme}}>
                                             <h1>{item.header}</h1>
@@ -101,25 +140,20 @@ const Index = () => {
                                                     </button>
                                                 </div>
                                             }
-                                            
                                         </div>
                                     </div>
                                 </div>
                             </SwiperSlide>
                         ))}
                     </Swiper>
-                    
+
                     <div className="buttons">
-                        <button onClick={() => handleClick('prev')}>
-                            <ion-icon 
-                            name="chevron-back-circle-sharp"
-                            ></ion-icon>
+                        <button className='swiper-prev-button' style={{color: colorScheme}}>
+                            <ion-icon name="chevron-back-circle-sharp"></ion-icon>
                         </button>
 
-                        <button onClick={() => handleClick('next')}>
-                            <ion-icon 
-                            name="chevron-forward-circle-sharp"
-                            ></ion-icon>
+                        <button className='swiper-next-button' style={{color: colorScheme}}>
+                            <ion-icon name="chevron-forward-circle-sharp"></ion-icon>
                         </button>
                     </div>
                 </div>

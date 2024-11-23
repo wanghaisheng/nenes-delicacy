@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Error } from '../preloader/preloader'
 import ProductPreloader from '../products/productPreloader';

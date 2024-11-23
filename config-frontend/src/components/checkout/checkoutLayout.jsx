@@ -1,13 +1,12 @@
 import { useLocation, Outlet, useNavigate } from 'react-router-dom';
-import { lazy, Suspense  } from 'react';
 import { useEffect, useState, useCallback } from 'react';
-import { shipping } from '../../actions';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import Precart from '../precart/precart';
+import { Spinner } from '../preloader/preloader';
 import { useMediaQuery } from 'react-responsive'
 import './layouts.scss'
-import { placeHolder, 
+import {
         getCookie,
         routeProtection, 
         get } from '../../utils';
@@ -15,18 +14,6 @@ import { placeHolder,
 
 // const Precart = lazy(() => import('../precart/precart'))
 
-
-const CheckoutPreloader = () => {
-
-    return (
-        <section className='checkout__preloader'>
-            <div>
-                <img src="https://res.cloudinary.com/dqdtnitie/image/upload/v1721250342/spinner-trans-bg_r89iew.gif" alt="preloader" />
-                <pre>Loading, please wait</pre>
-            </div>
-        </section>
-    )
-}
 
 
 function CheckoutLayout() {
@@ -67,7 +54,7 @@ function CheckoutLayout() {
     ]
 
 
-    const { data } = useQuery({
+    const shippingData = useQuery({
         queryKey: ['shipping'],
         queryFn: () => get(`shipping/get_shipping?sessionID=${getCookie()}`),
     })
@@ -76,30 +63,27 @@ function CheckoutLayout() {
     const preCart = useQuery({
         queryKey: ['pre-cart'],
         queryFn: () =>  get(`cart/getCart/?sessionid=${getCookie()}`), 
-        staleTime: Infinity,
         select: (cart) => {
-            
-            if (data?.routeProtection && cart.cartitems.length != 0) {
-                return {
-                    cartitems: [routeProtection, ...cart.cartitems],
-                    total: Number(cart.total) + routeProtection.price,
-                }
-            } return cart
-        }
+
+            if (cart.cartitems.length === 0 || !shippingData.data?.routeProtection) {
+                return cart;
+            }
+
+            return {
+                cartitems: [routeProtection, ...cart.cartitems],
+                total: Number(cart.total) + routeProtection.price,
+            };
+        },
+
+        onSuccess: (cart) => {
+            if (cart.cartitems.length === 0) {
+                navigate('/', { 
+                    state: { data: "Cannot begin checkout with an empty cart"}
+                })
+            }
+        },
     })
 
-    
-     // dispatches the shipping information to the redux store
-     useEffect(() => {
-
-        if (preCart.data?.cartitems.length === 0) {
-            navigate('/')
-        }
-
-        if (data) {
-            dispatch(shipping(data))
-
-        }}, [data, preCart.data])
 
 
 
@@ -120,64 +104,71 @@ function CheckoutLayout() {
         })
 
     }, [location.pathname, ref])
+
+
+
+    if (preCart.isLoading) {
+        return (
+            <Spinner message="Loading, please wait"/>
+        )
+    }
     
- 
 
     return ( 
         <section className="checkout-layout">
-            <Suspense fallback={<CheckoutPreloader />}>
-                <div className='layout-wrapper'>
-                    <div>
-                        <header>
-                            <div className="mobile-logo">
-                                <a href="/">
-                                    <img src={import.meta.env.VITE_CLOUD_URL + '/image/upload/v1731314786/nene_s_delicacy_logo_black_rnle2z.png'}/>
-                                </a>
-                            </div>
-                        
-                            <div className="navigation">
-                                    <ul ref={onRefSet}>
-                                        {links.map(link => (
-                                            <li key={link.id} onClick={(e) => {
-                                                e.target.parentElement.classList.contains('disabled')?
-                                                e.preventDefault() : ''
-                                            }}>
-                                                <a href={link.ref}>{link.title}</a>
-                                                {link.hasNextSibling? <ion-icon name="chevron-forward-outline"></ion-icon> : ''}
-                                            </li>
-                                        ))}
-                                    </ul>
-                            </div>
-                        </header>
-                        <Outlet context={{ preCart }}/>
-                        <footer className='layout-footer'>
-                            <ul>
-                                <a href="">
-                                    <li>Privacy policy</li>
-                                </a>
-                                <a href="">
-                                    <li>Refund policy</li>
-                                </a>
-                                <a href="">
-                                    <li>Terms of service</li>
-                                </a>
-                            </ul>
-                        </footer>
-                    </div>
-                </div>
-                <Precart preCart={preCart}/>  
-                {mobile? 
-                    <div>
-                        <div className="mobile-logo logo-ismobile">
+            
+            <div className='layout-wrapper'>
+                <div>
+                    <header>
+                        <div className="mobile-logo">
                             <a href="/">
                                 <img src={import.meta.env.VITE_CLOUD_URL + '/image/upload/v1731314786/nene_s_delicacy_logo_black_rnle2z.png'}/>
                             </a>
                         </div>
-                    </div> : null
-                    }
-            </Suspense>
+                    
+                        <div className="navigation">
+                                <ul ref={onRefSet}>
+                                    {links.map(link => (
+                                        <li key={link.id} onClick={(e) => {
+                                            e.target.parentElement.classList.contains('disabled')?
+                                            e.preventDefault() : ''
+                                        }}>
+                                            <a href={link.ref}>{link.title}</a>
+                                            {link.hasNextSibling? <ion-icon name="chevron-forward-outline"></ion-icon> : ''}
+                                        </li>
+                                    ))}
+                                </ul>
+                        </div>
+                    </header>
+                    <Outlet context={{ preCart, shippingData }}/>
+                    <footer className='layout-footer'>
+                        <ul>
+                            <a href="">
+                                <li>Privacy policy</li>
+                            </a>
+                            <a href="">
+                                <li>Refund policy</li>
+                            </a>
+                            <a href="">
+                                <li>Terms of service</li>
+                            </a>
+                        </ul>
+                    </footer>
+                </div>
+            </div>
+            <Precart preCart={preCart} data={shippingData.data}/>  
+            {mobile? 
+                <div>
+                    <div className="mobile-logo logo-ismobile">
+                        <a href="/">
+                            <img src={import.meta.env.VITE_CLOUD_URL + '/image/upload/v1731314786/nene_s_delicacy_logo_black_rnle2z.png'}/>
+                        </a>
+                    </div>
+                </div> : null
+            }
+           
         </section>
      );
 }
 
-export { CheckoutLayout, CheckoutPreloader};
+export { CheckoutLayout };

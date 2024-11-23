@@ -4,7 +4,7 @@ import {
     Route } from "react-router-dom";
 import { useSelector } from 'react-redux'
 import { lazy, Suspense, useEffect } from "react";
-import { CheckoutPreloader } from "../checkout/checkoutLayout";
+import { Spinner } from "../preloader/preloader";
 import ProductPreloader from '../products/productPreloader';
 import ItemPreloader from '../item/itemPreloader';
 import Layout from './appLayout';
@@ -85,7 +85,7 @@ const App = () => {
                     </Route>
                             
                     <Route element={
-                        <Suspense fallback={<CheckoutPreloader/>}>
+                        <Suspense fallback={<Spinner message="Loading, please wait"/>}>
                             <CheckoutLayout />
                         </Suspense>}> 
                         <Route path="/checkout" element={<Checkout/>}/>

@@ -2,8 +2,7 @@ import './payment.scss'
 import { useEffect, useState } from 'react';
 import { get, getCookie } from '../../utils';
 import { PaystackButton } from 'react-paystack'
-import { useSelector } from 'react-redux';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Preview from '../preview/preview';
 import { lazy } from "react";
 import { useNavigate, useOutletContext } from 'react-router-dom';
@@ -11,52 +10,46 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 
 const Payment = () => {
 
-  const { preCart } = useOutletContext()
-  const shipping = useSelector((state) => state.getShipping);
+  const { preCart, shippingData } = useOutletContext()
   const [success, setSuccess] = useState(false)
   const publicKey = import.meta.env.VITE_PUBLIC_KEY
   const navigate = useNavigate()
-  const amount = Number(preCart?.data?.total) + Number(shipping.price)
+  const amount = Number(preCart.data?.total) + Number(shippingData.data?.price)
 
   
-  const {isSuccess} = useQuery({
+  useQuery({
     queryKey: ['order', success],
     queryFn: () => get(`cart/createOrder?sessionid=${getCookie()}`),
-    enabled: success
+    enabled: success,
+
+    onSuccess: () => {
+      document.cookie = `sessionid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+      navigate('/')
+    }
   })
 
 
-useEffect(() => {
-
-  if (isSuccess) {
-    document.cookie = `sessionid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
-    navigate('/')
-  }
-  
-}, [isSuccess])
-  
-
   useEffect(() => {
 
-    if (shipping === 'none') {
+    if (shippingData === 'none') {
       navigate('/checkout', { 
           state: { data: "Cannot start a payment session without adding an address"}
       }
-    )} else if (!shipping.deliveryDate) {
+    )} else if (!shippingData.data?.deliveryDate) {
         navigate('/shipping', { 
           state: { data: "Kindly set a delivery date before proceeding to payment"}
       })
     }
       
-  }, [shipping])
+  }, [shippingData.data])
 
 
 
   const componentProps = {
-    email: shipping.email,
+    email: shippingData.data?.email,
     amount: amount * 100,
     metadata: {
-      phone: shipping.phone,
+      phone: shippingData.data?.phone,
     },
     publicKey,
     text: `Pay NGN${Intl.NumberFormat("en-US").format(amount)}`,
@@ -68,18 +61,22 @@ useEffect(() => {
   return ( 
         <div className="payment-wrapper">
             <div>
-              <Preview/>
+              <Preview />
               <section className='shipping-method'>
                 <h4>Shipping method</h4>
+
                 <div>
-                  <span>
-                    <input type="radio" name='priority-overnigt' id='priority'/>
-                    <span className="custom-radio"></span>
-                  </span>
-                  <label htmlFor="priority"> 
-                    <div>Priority Overnight - {new Date(shipping.deliveryDate).toLocaleDateString('en-US', { weekday: 'long' })} Delivery</div>
-                    <div className='shipping-method_desc'>We bake fresh and overnight ship your items based on your chosen delivery date.</div>
-                  </label>
+                  <div>
+                    <span>
+                      <input type="radio" name='priority-overnigt' id='priority'/>
+                      <span className="custom-radio"></span>
+                    </span>
+                    
+                    <label htmlFor="priority">
+                      <div>Priority Overnight - {new Date(shippingData.data?.deliveryDate).toLocaleDateString('en-US', { weekday: 'long' })} Delivery</div>
+                      <div className='shipping-method_desc'>We bake fresh and overnight ship your items based on your chosen delivery date.</div>
+                    </label>
+                  </div>
                   <span>FREE</span>
                 </div>
 

@@ -1,30 +1,24 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRef, useState } from "react";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { shipping } from '../../actions';
-import { getCookie } from '../../utils';
+import { getCookie, routeProtection } from '../../utils';
 import axios from '../../axios';
 import { useLocation } from 'react-router-dom';
-import { useQueryClient, useMutation} from 'react-query'
-import { useMediaQuery } from 'react-responsive'
-import { useDispatch, useSelector } from "react-redux";  
+import { useQueryClient, useMutation} from '@tanstack/react-query'
+import { useMediaQuery } from 'react-responsive' 
 import route from '/icons/route.svg'
 import './precart.scss'  
 
 
-const Precart = ({preCart}) => { 
-    const dispatch = useDispatch()
+const Precart = ({preCart, data}) => { 
     const cursor = useRef()
     const queryclient = useQueryClient()
     const location = useLocation()
     const precart = useRef(null)
     const [hidden, setHidden] = useState(false)
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
-    const data = useSelector((state) => state.getShipping)
     const isCheckout = location.pathname == '/checkout'
 
 
-  
     const updateProtection = useMutation({
         mutationFn: async (data) => {
             cursor.current.classList.add('updating_route')
@@ -33,13 +27,13 @@ const Precart = ({preCart}) => {
     
         }, onSuccess: (res) => {
             const protection = JSON.parse(res.data.toLowerCase())
+          
 
-            queryclient.setQueryData(['shipping'], (shippingData) => {
-                console.log(shippingData)
-                shippingData.routeProtection = protection
-                dispatch(shipping(Object.create(shippingData)))
-                return shippingData
-            })
+            queryclient.setQueryData(['shipping'], (shippingData) => ({
+                ...shippingData,
+                routeProtection: protection,
+            }));
+
         }, onSettled: () => {
             cursor.current.classList.remove('updating_route')
         }
@@ -183,8 +177,8 @@ const Precart = ({preCart}) => {
                             <div>
                                 <div ref={cursor} className='select-wrapper'>
                                     <div
-                                         className={data.routeProtection? "toggle":"deselect"}
-                                         onClick={() => new updateProtection.mutate({
+                                         className={data && data.routeProtection? "toggle":"deselect"}
+                                         onClick={() => updateProtection.mutate({
                                             'sessionID': getCookie()})
                                             }>
                                         <div>

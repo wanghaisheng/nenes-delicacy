@@ -4,38 +4,69 @@ section.index {
     width: 100%;
 
     h1 {
-        font-size: 2.2em;
-        margin: 0 auto;
-        max-width: 20em;
-        font-weight: 500;
+        font-size: 2.5em;
+        margin: 0;
     }
 
-    .slick-dots button:before {
-        font-size: 10px;
-    }
+    .slider-class {
+
+        .swiper-pagination-lock {
+            display: block;
+            visibility: hidden;
+        }
+
+        .swiper-pagination {
+            position: static;
+            margin: 20px 0; 
+            z-index: 2;
     
+            .swiper-pagination-bullet {
+                background: main.$black;
+            }
+        }
+    }
+
 
     &>div:first-child {
         position: relative;
         overflow: hidden;
 
-        .slick-dots {
-            bottom: 205px;
+        .checkout-error {
+            padding: 20px 10px;
+            position: absolute;
+            top: 40px;
+            max-width: 80vw;
+            transition: transform .3s ease-in-out;
+            width: 100%;
+            left: 50%;
+            z-index: 6;
+            transform: translateX(-50%);
+            border-right: 5px solid main.$dark-pink;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            background: main.$white;
+            color: main.$gray
+        }
+
+
+        .mySwiper .swiper-pagination {
+            bottom: 200px;
+            left: 293px;
+            z-index: 2;
             width: fit-content;
-            left: 280px;
-            z-index: 1;
-    
-            button {
-                cursor: pointer;
+
+            .swiper-pagination-bullet {
+                background: main.$dark-pink;
             }
         }
 
         .buttons {
             position: absolute;
             display: flex;
-            left: 230px;
-            bottom: 185px;
-            gap: 120px;
+            left: 250px;
+            bottom: 180px;
+            z-index: 2;
+            gap: 80px;
 
             button {
                 background: transparent;
@@ -43,14 +74,14 @@ section.index {
                 border: none;
 
                 ion-icon {
-                    font-size: 2.5em;
+                    font-size: 2.1em;
                 }
             }
         }
     }
    
 
-    .swiper-slide > div {
+    .hero-wrapper {
         background-size: cover;
         transition: .8s translate ease-in-out;
         padding: 0 40px;
@@ -106,7 +137,7 @@ section.index {
                 }
     
                 h1 {
-                    font-size: 2.35em;
+                    font-size: 2.5em;
                     margin: 0 0 25px;
                     font-weight: 600;
                 }
@@ -136,7 +167,7 @@ section.index {
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        margin: 60px auto;
+        margin: 55px auto;
         font-size: .85em;
         gap: 20px;
         padding: 0 20px;
@@ -354,7 +385,7 @@ section.index {
             padding: 20px;
 
             h1 {
-                font-size: 2.4em;
+                font-size: 2em;
                 font-weight: 600;
                 color: main.$dark-pink;
             }
@@ -404,17 +435,37 @@ section.index {
 @media (max-width: 1024px) {
     section.index {
 
-        .store-services {
-    
-            &>div {
-                flex-direction: column;
-                gap: 5px;
-                text-align: center;
+        .hero-wrapper {
+            justify-content: center;
 
-                .store-service-icon-wrapper {
-                    max-width: 60px;
-                }
+            &>div:first-child {
+                margin-left: 0;
             }
+        }
+
+
+        &>div:first-child {
+
+            .mySwiper .swiper-pagination {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .buttons {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        .store-services >div {
+            flex-direction: column;
+            gap: 5px;
+            text-align: center;
+
+            .store-service-icon-wrapper {
+                max-width: 60px;
+            }
+            
         }
 
         .trellis-comment {
@@ -438,34 +489,13 @@ section.index {
 }
 
 
-@media (max-width: 912px) {
-    section.index {
-
-        .swiper-slide > div {
-            justify-content: center;
-
-            &>div:first-child {
-                margin-left: 0;
-            }
-        }
-
-        &>div:first-child {
-
-            .slick-dots, .buttons {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-    }
-}
 
 
 @media (max-width: 768px) {
     section.index {
 
-        .swiper-slide > div {
+        .hero-wrapper {
             height: 600px;
-            justify-content: center;
     
             &>div:first-child {
                 justify-content: center;
@@ -474,14 +504,17 @@ section.index {
         }
 
         &>div:first-child {
-            .slick-dots {
-                bottom: 115px;
+
+            .mySwiper .swiper-pagination {
+                bottom: 110px;
             }
 
             .buttons {
-                bottom: 95px;
+                bottom: 90px;
             }
+
         }
+
 
         .store-services {
             flex-direction: column;
@@ -574,21 +607,19 @@ section.index {
 @media (max-width: 480px) {
     
     section.index {
-        font-size: .8em;
 
-
-        .swiper-slide > div {
+        .hero-wrapper {
             height: 500px;
     
             &>div:first-child {
-                width: 280px;
+                width: 300px;
 
                 .descriptions {
+                    font-size: .85em;
 
                     .tab-view {
                         display: none;
                     }
-
 
                     h1 {
                         margin-bottom: 10px;
@@ -600,8 +631,9 @@ section.index {
 
         &>div:first-child {
 
-            .slick-dots {
+            .mySwiper .swiper-pagination {
                 bottom: 10px;
+                
             }
 
             .buttons {

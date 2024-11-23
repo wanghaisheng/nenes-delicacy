@@ -1,7 +1,7 @@
 import React from 'react'
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ReactDOM from 'react-dom/client'
 import { allReducers } from './reducers'
 import { Provider} from 'react-redux'

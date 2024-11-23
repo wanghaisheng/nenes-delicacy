@@ -6,7 +6,7 @@ import { Pagination, Navigation } from 'swiper/modules';
 import { useEffect } from 'react';
 import { get } from '../../utils';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 
 const ProductCategory = () => {
@@ -38,10 +38,10 @@ const ProductCategory = () => {
                 <div className='product-title'>
                     <Link to={'/products'}>View all</Link>
                     <ul>
-                        <li className='swiper-prev-button'>
+                        <li className='swiper-prev-button-category'>
                             <ion-icon name="chevron-back-circle-sharp"></ion-icon>
                         </li>
-                        <li className='swiper-next-button'>
+                        <li className='swiper-next-button-category'>
                             <ion-icon name="chevron-forward-circle-sharp"></ion-icon>
                         </li>
                     </ul>
@@ -63,11 +63,11 @@ const ProductCategory = () => {
                     clickable: true,
                     }}
                     navigation={{
-                        nextEl: '.swiper-next-button',
-                        prevEl: '.swiper-prev-button'
+                        nextEl: '.swiper-next-button-category',
+                        prevEl: '.swiper-prev-button-category'
                     }}
                     modules={[Pagination, Navigation]}
-                    className="mySwiper"
+                    className="slider-class"
                 >
                     {isFetching ? (
                         [...Array(4)].map((x, index) => (

@@ -7,7 +7,7 @@ import CartPreloader from './cartPreloader';
 import { Error } from '../preloader/preloader';
 import { Blur } from '../../actions';
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { useMutation,  useQueryClient} from 'react-query'
+import { useMutation,  useQueryClient} from '@tanstack/react-query'
 import axios from '../../axios';
 
 

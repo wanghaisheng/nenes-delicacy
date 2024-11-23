@@ -26,7 +26,7 @@
 }
 
 
-header.index {
+header {
     display: block;
     transition: 0.3s ease-in 0.2s;
     background: white;
@@ -490,7 +490,7 @@ header.index {
 
 @media (max-width: '912px') {
 
-    header.index > div:first-child {
+    header > div:first-child {
         padding: 10px 15px;
 
         .logo {

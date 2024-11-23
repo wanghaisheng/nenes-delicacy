@@ -2,7 +2,7 @@ import './footer.scss';
 import emailValidator  from '../../email';
 import { post } from '../../utils';
 import { useEffect, useState, useRef } from 'react';
-import { useMutation} from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 
 
 const Footer = () => {

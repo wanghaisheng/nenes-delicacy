@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDebounce } from "@uidotdev/usehooks";
 import { Link } from 'react-router-dom';
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { get, getCookie } from '../../utils';
 import CartPreloader from '../cart/cartPreloader';
 import { useMediaQuery } from 'react-responsive'
@@ -162,7 +162,7 @@ const Navbar = () => {
 
 
     return (
-        <header className='index'>
+        <header>
             <div>
                 <div className='nav-info'>
                     {mobileMenu()}

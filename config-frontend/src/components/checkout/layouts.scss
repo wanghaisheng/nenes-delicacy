@@ -41,7 +41,7 @@
     }
 
     .logo-ismobile {
-        margin: 10px 20px;
+        margin: 20px 20px 10px 20px;
     }
 
     &>div:first-child {
@@ -99,24 +99,6 @@
     }
 }
 
-.checkout__preloader {
-    width: 100vw;
-    display: flex;
-    color: main.$black;
-    justify-content: center;
-    align-items: center;
-    background: main.$white;
-    height: 100vh;
-
-    &>div {
-        text-align: center;
-    }
-
-    img {
-        max-width: 50px;
-        margin: 0 auto;
-    }
-}
 
  
 .active {

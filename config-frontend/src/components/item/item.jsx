@@ -1,11 +1,10 @@
  import './item.scss';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import spinner from '/icons/pink-spinner.svg'
 import { useDispatch } from 'react-redux';
 import { Blur } from '../../actions';
-import squircle from '/icons/squircle.svg'
 import ItemPreloader from '../item/itemPreloader'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { get, post, getCookie } from '../../utils';
 import { Error } from '../preloader/preloader';
@@ -34,9 +33,11 @@ const Item = () => {
         }, onSuccess: (res) => {
             queryclient.setQueryData(['carts'], (cart) => {
                 const filtered_cart = cart.cartitems.filter(item => item.id != res.data.id)
-                cart.cartitems = [res.data, ...filtered_cart]
-                cart.total = Number(cart.total) + Number(res.data.price)
-                return cart
+                return {
+                    ...cart,
+                    cartitems: [res.data, ...filtered_cart],
+                    total:  Number(cart.total) + Number(res.data.price)
+                }
             })
             dispatch(Blur())
         }, 
@@ -146,7 +147,7 @@ const Item = () => {
                             </button>
                         </div>
 
-                        <button disabled={newCartItem.isLoading} onClick={() => new newCartItem.mutate({
+                        <button disabled={newCartItem.isLoading} onClick={() => newCartItem.mutate({
                                 'sessionid': session,
                                 'item': data.id,
                                 'quantity': count
