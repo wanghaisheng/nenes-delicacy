@@ -4,6 +4,7 @@ import spinner from '/icons/pink-spinner.svg'
 import { useDispatch } from 'react-redux';
 import { Blur } from '../../actions';
 import ItemPreloader from '../item/itemPreloader'
+import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { get, post, getCookie } from '../../utils';
@@ -16,6 +17,7 @@ const session = getCookie();
 const Item = () => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const url = window.location.href
     const itemName = url.substring(url.lastIndexOf('/') + 1);
     const imageRef = useRef();
@@ -40,7 +42,7 @@ const Item = () => {
                 }
             })
             dispatch(Blur())
-        }, 
+        },
     })
 
 
@@ -48,12 +50,18 @@ const Item = () => {
             isLoading, 
             data, 
             refetch, 
-            isSuccess,
+            error
         } = useQuery({
         queryKey: ['products', itemName],
         queryFn: () => get(`products/get_item?name=${itemName}`)
     })
 
+
+    useEffect(() => {
+        if (error?.response?.data === 'Not found') {
+            navigate('/not-found')
+        }
+    }, [error?.response?.data])
 
     // const variation = useQuery({
     //     queryKey: ['variation', data],
@@ -74,12 +82,7 @@ const Item = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0)
-        document.title = `${data? data.name : 'Item'} | Nene's Delicacy `;
-        
-
-        // if (!data) {
-        //      navigate('/not-found')
-        // }
+        document.title = `${data? data.name : "Nene's Delicacy"}`;
     },[data])
 
 
@@ -89,8 +92,7 @@ const Item = () => {
 
 
     if (isError) {
-        document.title = "Error | Nene's Delicacy";
-        return <Error refetch={refetch} message="An error occurred"/> 
+        return <Error refetch={refetch} message="We’re having trouble getting the item"/> 
     }
 
 

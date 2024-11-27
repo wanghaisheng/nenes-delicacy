@@ -13,6 +13,7 @@ import './app.scss';
 
 const Product = lazy(() => import("../products/product"))
 const Item = lazy(() => import("../item/item"))
+const NotFound = lazy(() => import("../404/404"))
 const Payment = lazy(() => import("../payments/payment"))
 const Grocery = lazy(() => import("../grocery/grocery"))
 const Shipping = lazy(() => import("../shipping/shipping"))
@@ -43,8 +44,8 @@ const App = () => {
             <Router>
                 <Routes>
                     <Route element={<Layout />}>
-                            <Route path="*" element={<div>Not Found</div>}/>
-                            <Route path="/not-found" element={<div>Not Found</div>}/>
+                            <Route path="*" element={<NotFound/>}/>
+                            <Route path="/not-found" element={<NotFound />}/>
                             <Route path="/" element={<Index />} />
 
                             <Route path="/products" element={

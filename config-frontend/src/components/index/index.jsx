@@ -33,6 +33,10 @@ const Index = () => {
     const [isHovered, setIsHovered] = useState(false);
 
 
+    useEffect(() => {
+        document.title = "Nene's Delicacy"
+    }, [])
+
 
     useEffect(() => {
         

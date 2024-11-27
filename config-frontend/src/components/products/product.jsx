@@ -4,6 +4,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component'
 import { Error } from '../preloader/preloader'
 import ProductPreloader from './productPreloader'
 import { Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Pagination from '../pagination/pagination'
 import { get } from '../../utils';
 import './product.scss';
@@ -12,6 +13,7 @@ import '../preloader/preloader.scss'
 
 const Product = () => {
     const [filter, setFilter] = useState('recommended')
+    const navigate = useNavigate()
     const path = window.location.pathname;
     const segments = path.split('/').filter(segment => segment !== '');
     const pathname = segments[segments.length - 1];
@@ -24,21 +26,31 @@ const Product = () => {
             isLoading, 
             isFetching,
             data, 
+            error,
             refetch
         } = useQuery({ 
         queryKey: ['products', filter, pathname, currentPage],
         queryFn: () => get(`products/get_product/?pathname=${pathname}&filter_by=${filter}&page=${currentPage}`),
-        keepPreviousData: true,
+        keepPreviousData: true,        
     }, )
+
+    console.log(data)
 
 
     useEffect(() => {
-        window.scrollTo(0, 0)
-        if (data) {
-            document.title = `${data.isCollection? data.collection.name : data.category.name} | Nene's Delicacy `;
-        } else {
-            document.title = "Nene's Delicacy"
+        if (error?.response?.data === 'Not found') {
+            navigate('/not-found')
         }
+    }, [error?.response?.status])
+
+
+    
+    useEffect(() => {
+        window.scrollTo(0, 0)
+        data? (
+            `${data.isCollection? data.collection.name : data.category.name} | Nene's Delicacy`
+        ) : "Nene's Delicacy"
+        
     }, [data])
 
 
@@ -56,7 +68,7 @@ const Product = () => {
     if (isError) {
         return <Error 
                 refetch={refetch} 
-                message={`An error occured, while fetching products`}/>
+                message="We’re having trouble getting the products"/>
     }
 
     

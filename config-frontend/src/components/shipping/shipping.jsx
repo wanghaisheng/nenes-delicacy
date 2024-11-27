@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react'
 import dateFormat from 'dateformat'
 import { useQuery } from '@tanstack/react-query'
 import axios from '../../axios'
-import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
 import 'react-day-picker/dist/style.css'
 import { getCookie } from '../../utils'
@@ -23,13 +22,14 @@ const Shipping = () => {
     const nextMonth = new Date(year, month + 1)
 
 
-    useQuery({
+    const { isLoading, isError } = useQuery({
         queryKey: ['shipping', selected],
         queryFn: () => axios.put(`shipping/update_shipping/?sessionID=${getCookie()}`, {
             selected: dateFormat(selected, 'yyyy-mm-dd')
         }),
-        enabled: !!selected
+        enabled: !!selected,
     })
+
 
 
     useEffect(() => {    
@@ -39,24 +39,24 @@ const Shipping = () => {
                 state: { data: "Cannot start a shipping session without adding an address"}
             })}
 
-        const deliveryDate = shippingData.data&& new Date(shippingData.data['deliveryDate'])
+        const deliveryDate = shippingData.data && new Date(shippingData.data['deliveryDate'])
         const nextTwoDays = new Date(year, month, day + 2)
         if (deliveryDate > nextTwoDays) {
             setSelected(deliveryDate)
         }
 
     }, [shippingData?.data])
+    console.log(selected)
 
 
     useEffect(() => {
         if (location.state) {
             setTimeout(() => {
-                visibility.current.classList.add('not-visible')
+                visibility.current.remove()
                 navigate(location.pathname, { replace: true, state: null })
             }, 5000 )   
         }}
-    , [location.state])
-
+    , [location.state, isError])
     
     return ( 
             <section className="shipping">  
@@ -64,9 +64,12 @@ const Shipping = () => {
                     <Preview />
                     
                     <div className='calender'>
-                        <div ref={visibility} className={location.state? 'visible': 'not-visible'}>
-                            {location.state?.data}
-                        </div>
+                        {location?.state?.data || isError ? (
+                            <div ref={visibility} className='visible'>
+                                {location.state?.data || (isError && "Could not set the delivery date, please try again")}
+                            </div>
+                        ) : null}
+
                         <div>
                             <h1>Choose a delivery date <br/>for your order</h1>
                         </div>
@@ -89,7 +92,7 @@ const Shipping = () => {
                         <a href='/checkout'>Back to information</a>
                     </div>
 
-                    <button onClick={() => navigate('/payment')}>
+                    <button onClick={() => navigate('/payment')} disabled={!selected || isLoading}>
                         <span>Continue to payment</span>
                         <ion-icon name="arrow-forward"/>
                     </button>

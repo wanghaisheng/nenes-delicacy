@@ -26,6 +26,7 @@ const Grocery = () => {
     const { isError, 
             isLoading,
             isFetching,
+            error,
             data, 
             refetch
         } = useQuery({

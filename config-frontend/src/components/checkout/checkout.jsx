@@ -85,7 +85,7 @@ const Checkout = () => {
         }}, [Shipping, location])
 
 
-    const handleChange = () => {
+    const handleChange = (e) => {
         const query = data.find(
             state => state.state === e.target.value)
         setState(query)

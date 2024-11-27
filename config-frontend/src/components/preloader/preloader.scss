@@ -2,7 +2,6 @@
 
 //scss for preloader and error component
 .loading, .error {
-    width: 100vw;
     display: flex;
     color: main.$black;
     justify-content: center;
@@ -14,9 +13,30 @@
         text-align: center;
     }
 
+    ion-icon {
+        font-size: 50px;
+    }
+
     img {
         max-width: 50px;
         margin: 0 auto;
+    }
+
+    button {
+        background: main.$black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100px;
+        transition: all .3s ease-in-out;
+        max-width: 100%;
+        color: main.$green;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: main.$green;
+        color: main.$black;
     }
 }
 

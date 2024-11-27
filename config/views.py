@@ -1,7 +1,8 @@
 import json
 import math
 from rest_framework import viewsets
-from django.http import HttpResponse
+from rest_framework.exceptions import NotFound
+from django.http import HttpResponse, JsonResponse
 from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.forms.models import model_to_dict
@@ -65,6 +66,7 @@ class ProductView(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def get_product(self, request):
+        paginator = self.pagination_class()
         parameter = self.request.query_params.get('pathname')
         filter = self.request.query_params.get('filter_by')
         isCollection = False
@@ -72,30 +74,36 @@ class ProductView(viewsets.ModelViewSet):
         try:
             product_type = ProductType.objects.get(parameter=parameter)
             queryset = self.queryset.filter(product_type=product_type)
-
         except ProductType.DoesNotExist:
+            product_type = None
             isCollection = True
+
+        try:
             collection = Collection.objects.get(name=parameter)
             queryset = self.queryset.filter(collection=collection)
+        except Collection.DoesNotExist:
+            collection = None
 
+        if not product_type and not collection:
+            return JsonResponse("Not found", status=404, safe=False)
+        
         filtered_queryset = filter_products(filter, queryset)
 
-        paginator = self.pagination_class()
         paginated_queryset = paginator.paginate_queryset(filtered_queryset, request)
-
         serialized_queryset = ProductSerializer(paginated_queryset, many=True)
-        
-        response = paginator.get_paginated_response(serialized_queryset.data)
-        response.data['isCollection'] = isCollection
+        response = paginator.get_paginated_response(serialized_queryset.data, isCollection)
 
         return response
     
 
     @action(detail=False, methods=['get'])
     def get_item(self, request):
-        name = self.request.query_params.get('name')
-        item = Products.objects.get(name=name)
-        item = ProductSerializer(item).data
+        try:
+            name = self.request.query_params.get('name')
+            item = Products.objects.get(name=name)
+            item = ProductSerializer(item).data
+        except Products.DoesNotExist:
+            return JsonResponse("Not found", status=404, safe=False)
         
         return HttpResponse(
             json.dumps(item)
@@ -114,7 +122,6 @@ class ProductView(viewsets.ModelViewSet):
 
         serializedObjects = ProductSerializer(paginated_objects, many=True)
         return paginator.get_paginated_response(serializedObjects.data)
-
 
     
 class ProductTypeView(viewsets.ModelViewSet):
@@ -151,7 +158,6 @@ class CartView(viewsets.ModelViewSet):
 
         total = sum([float(item.price) for item in query])
         cartitems = [CartItemSerializer(item).data for item in query]
-        print(cartitems)
 
         return HttpResponse(
             json.dumps({

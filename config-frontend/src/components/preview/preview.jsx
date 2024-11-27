@@ -7,7 +7,6 @@ const Preview = () => {
 
     const { shippingData } = useOutletContext();
     const navigate = useNavigate()
-    console.log(shippingData)
 
     return ( 
         <div className='preview'>
@@ -30,7 +29,9 @@ const Preview = () => {
                     <ul>
                         <ul>
                             <li>Ship to:</li>
-                            <li>{shippingData.data?.address}</li>
+                            <li>{shippingData.data?.address} <br/>
+                                {shippingData.data?.state}, {shippingData.data?.lga}
+                            </li>
                         </ul>
                         <li onClick={() => navigate('/checkout', { state: { focus: 'address' } })}>Change</li>
                     </ul>

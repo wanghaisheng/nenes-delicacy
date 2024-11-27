@@ -7,10 +7,6 @@
     border-left: 2px solid main.$dark-green;
     flex-basis: 50%;
 
-    * {
-        font-size: clamp(.8em, 0.97em, 1em);
-      }
-
 
     .error {
         text-align: center;
@@ -34,14 +30,14 @@
         }
     }
 
-    .naira-logo img{
-        max-width: 9px;
+    .naira-logo img {
+        max-width: 11px;
+        object-fit: cover;
     }
-
-
 
     .order-summary {
         background: rgb(246, 246, 246);
+        cursor: pointer;
         border-top: 1px solid rgba(216, 216, 216, 0.95);
 
         &>div{
@@ -59,10 +55,6 @@
                     align-items: center;
                 }
             }
-    
-            div:last-child span:first-child {
-                opacity: .75;
-            }
         }
     }
     
@@ -75,45 +67,6 @@
 
 
         &>div:first-child {
-
-            .precart__loader > div {
-                display: grid;
-                margin-bottom: 15px;
-                grid-template-columns: auto 1fr;
-                gap: 10px;
-            
-                &>div:first-child {
-                    width: 70px;
-                    animation: splash 1s linear infinite alternate;
-                    border-radius: 5px;
-                    background: main.$light-gray;
-                    aspect-ratio: 16/14;
-                }
-            
-                &>div:nth-child(2) {
-                    max-width: 400px;
-
-                    ul {
-                        padding: 0;
-                        margin: 0;
- 
-                        li {
-                            background: main.$light-gray;
-                            animation: splash 1s linear infinite alternate;
-                            list-style: none;
-                            margin-bottom: 5px;
-                            height: 8px;
-                            width: 100%;
-                            border-radius: 5px;
-                        }
-
-                        li:first-child {
-                            width: 50%;
-                        }
-                    }
-                }
-            }
-            
 
             .precart-outer > div {
                     display: flex;
@@ -210,6 +163,7 @@
             
                     h1 {
                         font-weight: 400;
+                        font-size: 1em;
                         color: main.$gray;
                     }
 
@@ -263,6 +217,14 @@
 
             .select-wrapper {
                 float: right;
+                display: flex;
+                gap: 10px;
+
+                img {
+                    max-width: 15px;
+                    object-fit: contain;
+
+                }
             }
         
             .toggle, .deselect {
@@ -307,7 +269,7 @@
                     }
                 }
             }
-            }
+        }
         
     }
 
@@ -374,6 +336,7 @@
 
    button:disabled {
     opacity: .6;
+    cursor: not-allowed;
    }
 }
 
@@ -393,7 +356,7 @@
         
         .precart-wrapper {
             border-top: 1px solid main.$dark-green;
-            padding: 25px;
+            padding: 20px;
         
             &>div:first-child {
                 overflow: hidden;
@@ -404,7 +367,7 @@
             }
 
             .route-protection-wrapper {
-                margin-top: 10px;
+                margin-top: 0px;
     
                 &> p {
                     margin-bottom: 0;

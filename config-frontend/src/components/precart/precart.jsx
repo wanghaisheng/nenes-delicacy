@@ -40,19 +40,6 @@ const Precart = ({preCart, data}) => {
     })
 
 
-    const Error = () => {
-        return (
-            <div className='error'>
-                <div>
-                    <ion-icon name="alert-circle-outline"></ion-icon>
-                    <pre>Error loading pre-order items</pre>
-                    <button onClick={() => preCart.refetch()}>
-                        <pre>Try again</pre>
-                    </button>
-                </div>
-            </div>
-        )}
-
    
     //returns JSX element based on a satisfied condition
     const shippingInfo = () => {
@@ -74,77 +61,57 @@ const Precart = ({preCart, data}) => {
 
     return (  
         <section className="precart">
-            {preCart.isError? 
-                <Error /> :
-                <>
-                    {isMobile? 
-                        <div className="order-summary">
-                            <div onClick={() => {
-                                                setHidden(!hidden);
-                                                precart.current.classList.toggle('show-cart')
-                                            }}>
-                                <div>
-                                    <div>{hidden? 'Hide' : 'Show'} order summary</div>
-                                    <div><ion-icon name="chevron-down-outline"></ion-icon></div>
-                                </div>
-
-                                <div>
-                                    <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
-                                    <span>
-                                        {Intl.NumberFormat("en-US").format(
-                                            Number(preCart.data? preCart.data.total: 0) + (isCheckout? 0 : Number(data.price))
-                                        )}
-                                    </span>
-                                </div>
+            <>
+                {isMobile? 
+                    <div className="order-summary">
+                        <div onClick={() => {
+                                            setHidden(!hidden);
+                                            precart.current.classList.toggle('show-cart')
+                                        }}>
+                            <div>
+                                <div>{hidden? 'Hide' : 'Show'} order summary</div>
+                                <div><ion-icon name="chevron-down-outline"></ion-icon></div>
                             </div>
-                        </div> : null }
-                    
-                    <div ref={precart} className="precart-wrapper">
-                        <div>
-                            {preCart.isLoading || preCart.isPlaceholderData? 
-                                <div className='precart__loader'>
-                                {[...Array(4)].map((x, index)=> (
-                                    <div key={index}>
-                                        <div></div>
-                                        
+
+                            <div>
+                                <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
+                                <span>
+                                    {Intl.NumberFormat("en-US").format(
+                                        Number(preCart.data? preCart.data.total: 0) + (isCheckout? 0 : Number(data?.price))
+                                    )}
+                                </span>
+                            </div>
+                        </div>
+                    </div> : null }
+                
+                <div ref={precart} className="precart-wrapper">
+                    <div>
+                        <div className="precart-outer">
+                            {preCart.data.cartitems.map(cart => (
+                                <div key={cart.id}>
+                                    <div className="precart-image">
+                                        <div>{cart.quantity}</div>
+                                        <LazyLoadImage
+                                            src={import.meta.env.VITE_CLOUD_URL + cart.item.image}
+                                            effect='blur'
+                                            alt={cart.item.name}
+                                            placeholderSrc={import.meta.env.VITE_CLOUD_URL + cart.item.lazyImage}
+                                        />
+                                    </div>
+                                    <div className="precart-info">
+                                        <h4>{cart.item.name}</h4>
+                                        <span>{cart.item.description}</span>
+                                    </div>
+                                    <div className="precart-price">
                                         <div>
-                                            <ul>
-                                                <li></li>
-                                                <li></li>
-                                                <li></li>
-                                            </ul>
+                                            <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
+                                            <span>{Intl.NumberFormat("en-US").format(cart.price)}</span>
                                         </div>
                                     </div>
-                                ))}
-                                </div>  
-                            : 
-                                <div className="precart-outer">
-                                    {preCart.data.cartitems.map(cart => (
-                                        <div key={cart.id}>
-                                            <div className="precart-image">
-                                                <div>{cart.quantity}</div>
-                                                <LazyLoadImage
-                                                    src={import.meta.env.VITE_CLOUD_URL + cart.item.image}
-                                                    effect='blur'
-                                                    alt={cart.item.name}
-                                                    placeholderSrc={import.meta.env.VITE_CLOUD_URL + cart.item.lazyImage}
-                                                />
-                                            </div>
-                                            <div className="precart-info">
-                                                <h4>{cart.item.name}</h4>
-                                                <span>{cart.item.description}</span>
-                                            </div>
-                                            <div className="precart-price">
-                                                <div>
-                                                    <span className='naira-logo'><img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1731311449/naira_k99wwn.png"} alt="naira logo" /></span>
-                                                    <span>{Intl.NumberFormat("en-US").format(cart.price)}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
                                 </div>
-                            }
-
+                            ))}
+                        </div>
+                        <div>
                             <div className="pricing">
                                 <div>
                                     <h1>Subtotal</h1>
@@ -172,13 +139,15 @@ const Precart = ({preCart, data}) => {
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div className="route-protection-wrapper">
+                    <div className="route-protection-wrapper">
                             <div>
                                 <div ref={cursor} className='select-wrapper'>
+                                    {updateProtection.isLoading && <img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1721250342/spinner-trans-bg_r89iew.gif"} />}
                                     <div
-                                         className={data && data.routeProtection? "toggle":"deselect"}
-                                         onClick={() => updateProtection.mutate({
+                                            className={data?.routeProtection? "toggle":"deselect"}
+                                            onClick={() => updateProtection.mutate({
                                             'sessionID': getCookie()})
                                             }>
                                         <div>
@@ -194,9 +163,8 @@ const Precart = ({preCart, data}) => {
                             </div>
                             <p>By deselecting ROUTE package protection, customer acknowledges that Nene's delicacy will not be held liable for lost, broken or damaged properties.</p>
                         </div>
-                    </div>
-                </>
-            }
+                </div>
+            </>
         </section>
      );
 }

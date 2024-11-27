@@ -10,7 +10,7 @@ const NotFound = () => {
                 }}>
                 404 Not Found
             </div>
-            <div style={{padding: '20px'}}>
+            <div style={{padding: '20px', maxWidth: '70em'}}>
                 <p>Sorry but the page you're looking for doesn't exist.</p>
                 <p> Please visit our homepage to learn more, or our product page to explore 
                     all of our tasty treats. If you would like to contact us, please email 

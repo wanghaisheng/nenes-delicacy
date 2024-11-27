@@ -18,25 +18,28 @@ const Spinner = (props) => {
 
 
 const Error = (props) => {
+    console.log(props)
     return (
         <div className="error">
-            <pre>
+            <div>
                 <div>
                     <ion-icon name="alert-circle-outline"></ion-icon>
                 </div>
 
                 <div>
-                    {props.message}<br />
-                    Please try again
+                    <pre>
+                        {props.message}<br />
+                        Please try again
+                    </pre>
                 </div>
-
+                
                 <div>
                     <button onClick={() => props.refetch()}>
                         <pre>Try again</pre>
                     </button>
                 </div>
-
-            </pre>
+                
+            </div>
         </div>
     )
 }

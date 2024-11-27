@@ -1,9 +1,8 @@
 import { useLocation, Outlet, useNavigate } from 'react-router-dom';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, lazy } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
-import Precart from '../precart/precart';
-import { Spinner } from '../preloader/preloader';
+import { Spinner, Error} from '../preloader/preloader';
 import { useMediaQuery } from 'react-responsive'
 import './layouts.scss'
 import {
@@ -12,7 +11,7 @@ import {
         get } from '../../utils';
 
 
-// const Precart = lazy(() => import('../precart/precart'))
+const Precart = lazy(() => import('../precart/precart'))
 
 
 
@@ -110,6 +109,13 @@ function CheckoutLayout() {
     if (preCart.isLoading) {
         return (
             <Spinner message="Loading, please wait"/>
+        )
+    }
+
+
+    if (preCart.isError) {
+        return (
+            <Error refetch={refetch} message={'We’re having trouble loading your cart'}/>
         )
     }
     

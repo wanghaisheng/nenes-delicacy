@@ -20,7 +20,6 @@ const ProductCategory = () => {
         placeholderData: []
     })
 
-
     useEffect(() => {}, [data])
 
 

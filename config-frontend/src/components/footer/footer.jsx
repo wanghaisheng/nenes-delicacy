@@ -111,7 +111,7 @@ const Footer = () => {
                                     onChange={(e) => setEmail(e.target.value)} />
                                 <button 
                                     onClick={(e) => {e.preventDefault();
-                                        new mutate({
+                                        mutate({
                                         'email': email,
                                     })}
                                 }>

@@ -12,7 +12,12 @@ const date = new Date();
 
 const get = async (url) => {
 
-    const response = await axios.get(url, { withCredentials: true })
+    const response = await axios.get(url, {
+        withCredentials: true, 
+        headers: {
+            'Accept': 'application/json',
+        },
+    });
     return response.data
 }
 
