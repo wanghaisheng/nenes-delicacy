@@ -1,6 +1,8 @@
  import './item.scss';
 import { useQuery } from '@tanstack/react-query';
-import spinner from '/icons/pink-spinner.svg'
+import Lottie from 'react-lottie';
+import { defaultOptions } from '../../utils';
+import spinner from '../../lotties/item-spinner';
 import { useDispatch } from 'react-redux';
 import { Blur } from '../../actions';
 import ItemPreloader from '../item/itemPreloader'
@@ -161,8 +163,15 @@ const Item = () => {
 
                             <div>
                                 {newCartItem.isLoading? 
-                                    <div className='spinner'>
-                                        <img src={spinner} alt="loading"/>
+                                    <div>
+                                         <Lottie 
+                                            options={{
+                                                ...defaultOptions,
+                                                animationData: spinner
+                                            }}
+                                            height={20}
+                                            width={20}
+                                        />
                                     </div> : null
                                 }
                                 

@@ -1,7 +1,6 @@
 import { useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useCallback, lazy } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useDispatch } from 'react-redux';
 import { Spinner, Error} from '../preloader/preloader';
 import { useMediaQuery } from 'react-responsive'
 import './layouts.scss'
@@ -14,14 +13,12 @@ import {
 const Precart = lazy(() => import('../precart/precart'))
 
 
-
 function CheckoutLayout() {
 
     const mobile = useMediaQuery({query: '(max-width: 767px)'});
     const [ref, setRef] = useState(null);
     const location = useLocation()
     const navigate = useNavigate()
-    const dispatch = useDispatch()
 
     const onRefSet = useCallback(ref => {
         setRef(ref);
@@ -115,7 +112,7 @@ function CheckoutLayout() {
 
     if (preCart.isError) {
         return (
-            <Error refetch={refetch} message={'We’re having trouble loading your cart'}/>
+            <Error refetch={Precart.refetch} message={'We’re having trouble loading your cart'}/>
         )
     }
     

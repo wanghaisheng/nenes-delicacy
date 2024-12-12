@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { getCookie, routeProtection } from '../../utils';
+import { getCookie } from '../../utils';
 import axios from '../../axios';
+import spinner from '../../lotties/spinner';
+import Lottie from 'react-lottie';
 import { useLocation } from 'react-router-dom';
 import { useQueryClient, useMutation} from '@tanstack/react-query'
 import { useMediaQuery } from 'react-responsive' 
@@ -17,6 +19,16 @@ const Precart = ({preCart, data}) => {
     const [hidden, setHidden] = useState(false)
     const isMobile = useMediaQuery({query: '(max-width: 767px)'})
     const isCheckout = location.pathname == '/checkout'
+
+
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: spinner,
+        rendererSettings: {
+          preserveAspectRatio: "xMidYMid slice"
+        }
+    };
 
 
     const updateProtection = useMutation({
@@ -144,7 +156,13 @@ const Precart = ({preCart, data}) => {
                     <div className="route-protection-wrapper">
                             <div>
                                 <div ref={cursor} className='select-wrapper'>
-                                    {updateProtection.isLoading && <img src={import.meta.env.VITE_CLOUD_URL + "image/upload/v1721250342/spinner-trans-bg_r89iew.gif"} />}
+                                    {updateProtection.isLoading && (
+                                         <Lottie 
+                                            options={defaultOptions}
+                                            height={15}
+                                            width={15}
+                                        />
+                                    )}
                                     <div
                                             className={data?.routeProtection? "toggle":"deselect"}
                                             onClick={() => updateProtection.mutate({

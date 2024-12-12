@@ -79,6 +79,7 @@
                         aspect-ratio: 11/9;
                         border-radius: 5px;
                         width: 80px;
+                        height: 60px;
             
                         &>div:first-child {
                             position: absolute;
@@ -218,6 +219,7 @@
             .select-wrapper {
                 float: right;
                 display: flex;
+                align-items: center;
                 gap: 10px;
 
                 img {

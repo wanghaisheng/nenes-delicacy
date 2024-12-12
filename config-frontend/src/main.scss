@@ -26,11 +26,69 @@ $box-shadow: 0 4px 4px 0 $lighter-gray;
 $border: 1px solid $light-gray;
 
 
+
 @font-face {
   font-family: 'bahnschrift';
-  src: url('/fonts/BAHNSCHRIFT9.TTF') format('truetype');
+  src: url('/fonts/BAHNSCHRIFT 9.TTF') format('truetype');
   font-style: normal;
-  font-weight: normal;
+  font-weight: 900;
+}
+
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 8.TTF') format('truetype');
+  font-style: normal;
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 7.TTF') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 6.TTF') format('truetype');
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 5.TTF') format('truetype');
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 4.TTF') format('truetype');
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 3.TTF') format('truetype');
+  font-style: normal;
+  font-weight:400;
+}
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 2.TTF') format('truetype');
+  font-style: normal;
+  font-weight:200;
+}
+
+@font-face {
+  font-family: 'bahnschrift';
+  src: url('/fonts/BAHNSCHRIFT 1.TTF') format('truetype');
+  font-style: normal;
+  font-weight: 100;
 }
 
 
@@ -86,6 +144,7 @@ a {
 
 body {
   margin: 0;
+  font-weight: 400;
   background: $white;
 }
 

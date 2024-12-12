@@ -46,7 +46,6 @@ const Shipping = () => {
         }
 
     }, [shippingData?.data])
-    console.log(selected)
 
 
     useEffect(() => {
@@ -57,6 +56,7 @@ const Shipping = () => {
             }, 5000 )   
         }}
     , [location.state, isError])
+    
     
     return ( 
             <section className="shipping">  

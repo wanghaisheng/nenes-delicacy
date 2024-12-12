@@ -172,7 +172,7 @@ const Index = () => {
                         </div>
 
                         <div className='store-service-description'>
-                            <h1>Package pickup</h1>
+                            <h3>Package pickup</h3>
                             <p> Our classic treats are made daily in our bakery, 
                                 using only the freshest & finest ingredients.
                             </p>
@@ -185,7 +185,7 @@ const Index = () => {
                         </div>
 
                         <div className='store-service-description'>
-                            <h1>Local delivery</h1>
+                            <h3>Local delivery</h3>
                             <p>We deliver locally to homes and businesses 
                                 near our offices in Jos and Abuja.
                             </p>
@@ -198,7 +198,7 @@ const Index = () => {
                         </div>
 
                         <div className='store-service-description'>
-                            <h1>Nationwide shipping</h1>
+                            <h3>Nationwide shipping</h3>
                             <p>Nene's delicacy is now shipping our cakes to up to 6 states in Nigeria, 
                                 more states incoming!
                             </p>
@@ -210,7 +210,7 @@ const Index = () => {
                     <div>
                         <div>
                             <span>We've got you covered</span>
-                            <h1>A Delicious Treat For Any Celebration</h1>
+                            <h2>A Delicious Treat For Any Celebration</h2>
                         </div>
 
                         <div data-trellis-cake-wrapper="">
@@ -286,13 +286,16 @@ const Index = () => {
                 
                 <div className="catering-service">
                     <div>
-                        <h1>Catering & Events</h1>
-                        <p> Catering and Events will soon be available to bring 
-                            Nene's Delicacy finest creations to your special occasions. 
-                            Whether it's an intimate gathering or a grand celebration, 
-                            we’ll have you covered with custom selections—no event is 
-                            too big or too small! Stay tuned for updates!
-                        </p>
+                        <div>
+                            <h2>Catering & Events</h2>
+                            <p> Catering and Events will soon be available to bring
+                                Nene's Delicacy finest creations to your special occasions.
+                                Whether it's an intimate gathering or a grand celebration,
+                                we’ll have you covered with custom selections—no event is
+                                too big or too small! Stay tuned for updates!
+                            </p>
+                        </div>
+
                         <button>
                             <span>Coming Soon</span>
                             <img src={buttonIcon} alt="Icon that links to Catering and Events page" loading='lazy'/>

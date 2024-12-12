@@ -4,10 +4,18 @@ section.index {
     width: 100%;
 
     h1 {
-        font-size: 2.2em;
+        font-size: 2.6em;
+        font-weight: 400;
         max-width: 800px;
-        margin: 0 auto 10px;
+        margin: 0 auto;
     }
+
+    h2 {
+        font-size: 2.2em;
+        font-weight: 400;
+        margin: 0 0 5px;
+    }
+
 
     .slider-class {
 
@@ -51,8 +59,8 @@ section.index {
 
 
         .mySwiper .swiper-pagination {
-            bottom: 218px;
-            left: 304px;
+            bottom: 198px;
+            left: 255px;
             z-index: 2;
             width: fit-content;
 
@@ -64,8 +72,8 @@ section.index {
         .buttons {
             position: absolute;
             display: flex;
-            left: 250px;
-            bottom: 210px;
+            left: 200px;
+            bottom: 190px;
             z-index: 2;
             gap: 80px;
 
@@ -85,7 +93,6 @@ section.index {
     .hero-wrapper {
         background-size: cover;
         transition: .8s translate ease-in-out;
-        padding: 0 40px;
         display: flex;
         align-items: center;
         background-position: center;
@@ -106,15 +113,20 @@ section.index {
 
             .descriptions {
                 position: absolute;
+                margin: 0 auto;
                 padding: 0 20px;
                 text-align: center;
-                left: 0;
                 top: 50%;
                 width: 100%;
                 transform: translateY(-50%);
 
+                p {
+                    font-size: 1.1em;
+                }
+
                 .shop-now {
-                    margin-top: 20px;
+                    position: relative;
+                    bottom: -30px;
         
                     button {
                         border: 0;
@@ -138,8 +150,7 @@ section.index {
                 }
     
                 h1 {
-                    margin: 0 0 25px;
-                    font-weight: 600;
+                    margin: 0 0 15px;
                 }
     
                 p {
@@ -168,7 +179,6 @@ section.index {
         justify-content: center;
         align-items: flex-start;
         margin: 55px auto;
-        font-size: .85em;
         gap: 20px;
         padding: 0 20px;
 
@@ -349,7 +359,6 @@ section.index {
 
         ul {
             display: flex;
-            font-size: .8em;
             font-weight: 500;
             margin: 0 auto;
             overflow: hidden;
@@ -370,6 +379,10 @@ section.index {
         display: flex;
         background: main.$pink;
         margin-top: 60px;
+
+        h2 {
+            color: main.$dark-pink;
+        }
 
         &>div {
             flex-basis: 50%;
@@ -405,7 +418,6 @@ section.index {
                 span {
                     position: absolute;
                     color: main.$pink;
-                    font-size: 1.2em;
                     font-weight: 600;
                     left: 50%;
                     top: 50%;
@@ -434,29 +446,7 @@ section.index {
 
 
 @media (max-width: 1024px) {
-    section.index {
-
-        .hero-wrapper {
-            justify-content: center;
-
-            &>div:first-child {
-                margin-left: 0;
-            }
-        }
-
-
-        &>div:first-child {
-
-            .mySwiper .swiper-pagination {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .buttons {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
+    section.index {  
 
         .store-services >div {
             flex-direction: column;
@@ -495,21 +485,28 @@ section.index {
 
         .hero-wrapper {
             height: 600px;
-    
+            justify-content: center;
+
             &>div:first-child {
+                margin-left: 0;
                 justify-content: center;
                 width: 410px;
             }
+
         }
 
         &>div:first-child {
 
             .mySwiper .swiper-pagination {
-                bottom: 119px;
+                left: 50%;
+                bottom: 89px;
+                transform: translateX(-50%);
             }
 
             .buttons {
-                bottom: 110px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 80px;
             }
 
         }
@@ -578,9 +575,7 @@ section.index {
                     &>div:nth-child(2) {
                         flex-basis: 40%;
     
-                        p {
-                            font-size: 1em;
-                            
+                        p { 
                             span:first-child {
                                 display: block;
                             }
@@ -617,6 +612,10 @@ section.index {
     
     section.index {
 
+        h1 {
+            font-size: 2.2em;
+        }
+
         .hero-wrapper {
                padding: 0 25px;
     
@@ -629,8 +628,16 @@ section.index {
                         display: none;
                     }
 
+                    .descriptions p {
+                        font-size: 1em;
+                    }
+
                     h1 {
                         margin-bottom: 10px;
+                    }
+
+                    .shop-now {
+                        top: 0;
                     }
 
                 }

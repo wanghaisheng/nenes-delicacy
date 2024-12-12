@@ -26,7 +26,7 @@
 }
 
 
-header {
+header.navbar {
     display: block;
     transition: 0.3s ease-in 0.2s;
     background: white;
@@ -490,7 +490,7 @@ header {
 
 @media (max-width: '912px') {
 
-    header > div:first-child {
+    header.navbar > div:first-child {
         padding: 10px 15px;
 
         .logo {

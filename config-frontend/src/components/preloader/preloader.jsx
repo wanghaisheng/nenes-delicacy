@@ -1,15 +1,23 @@
-import { useSelector } from 'react-redux'
 import './preloader.scss'
 import '../cart/cart.scss'
+import { defaultOptions } from '../../utils';
+import Lottie from 'react-lottie';
+import spinner from '../../lotties/spinner';
 
 
 const Spinner = (props) => {
+
     return (
         <div className='loading'>
             <div>
-                <div className='image-holder'>
-                    <img src="/icons/spinner-trans-bg.gif" alt="" />
-                </div>
+                <Lottie 
+                    options={{
+                        ...defaultOptions,
+                        animationData: spinner
+                    }}
+                    height={50}
+                    width={50}
+                />
                 <pre>{props.message}</pre>
             </div>
         </div> 

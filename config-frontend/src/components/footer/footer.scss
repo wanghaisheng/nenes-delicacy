@@ -1,7 +1,6 @@
 @use '../../main.scss';
 
 .main-footer {
-    font-size: .9em;
     width: 100%;
     height: 100%;
 
@@ -212,7 +211,6 @@
 
 @media (max-width: 767px) {
     .main-footer {
-        font-size: .75em;
         
         .footer > div:first-child {
             flex-basis: 100%;

@@ -127,15 +127,6 @@ section.item {
             border:0;
             padding:0;
 
-            .spinner {
-                max-width: 25px;
-                z-index: 3;
-                width: 100%;
-                position: absolute;
-                animation: loader 1.3s infinite linear;
-            }
-
-
             svg {
                 fill: main.$dark-pink;
                 transition: all .3s ease-in-out;
@@ -222,6 +213,21 @@ section.item {
 
         &>div:first-child {
             display: none;
+        }
+    }
+}
+
+
+@media(max-width: 480px) {
+    section.item {
+
+        .add-to-cart {
+            gap: 20px;
+            justify-content: space-between;
+
+            &>button div:nth-child(2) {
+                font-size: 12px;
+            }
         }
     }
 }

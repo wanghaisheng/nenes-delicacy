@@ -2,7 +2,6 @@
 
 .product-category {
     text-align: center;
-    font-size: .95em;
     color: main.$black;
     margin: 40px 0;
 
@@ -116,6 +115,7 @@
             &>div {
                 position: absolute;
                 top: 50%;
+                font-weight: normal;
                 z-index: 2;
                 color: main.$white;
                 width: 100%;

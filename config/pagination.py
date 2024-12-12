@@ -4,7 +4,7 @@ from rest_framework.response import Response
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 12
     max_page_size = 12
-    def get_paginated_response(self, data, collection):
+    def get_paginated_response(self, data, collection=False):
         response_data = {
             'count': self.page.paginator.count,
             'next': self.get_next_link(),

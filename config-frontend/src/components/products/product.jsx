@@ -34,8 +34,6 @@ const Product = () => {
         keepPreviousData: true,        
     }, )
 
-    console.log(data)
-
 
     useEffect(() => {
         if (error?.response?.data === 'Not found') {

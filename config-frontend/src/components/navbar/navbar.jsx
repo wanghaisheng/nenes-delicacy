@@ -44,6 +44,7 @@ const Navbar = () => {
     })
 
 
+
     const handleSubmit = (e) => {
         e.preventDefault()
         inputRef.current.value = ''
@@ -162,7 +163,7 @@ const Navbar = () => {
 
 
     return (
-        <header>
+        <header className='navbar'>
             <div>
                 <div className='nav-info'>
                     {mobileMenu()}

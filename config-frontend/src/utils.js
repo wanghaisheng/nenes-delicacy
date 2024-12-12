@@ -45,7 +45,6 @@ const getCookie = () => {
 }
    
 
-
 const routeProtection = {
     id: uuid4(), 
     quantity: 1, 
@@ -57,7 +56,6 @@ const routeProtection = {
         },
     price: 1000
 }
-
 
 
 const backgroundImages = [
@@ -257,12 +255,22 @@ const collectionPlaceHolder = [
 ]
 
 
+const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  };
+
+
 
 export { 
         get, 
         post, 
         getCookie, 
         routeProtection,
+        defaultOptions,
         backgroundImages,
         placeHolder,
         imageCollage,

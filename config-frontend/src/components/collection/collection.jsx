@@ -25,7 +25,7 @@ const Collection = () => {
     return (
         <div className="collections">
             <div>
-                <h1>Sweets for any gathering</h1>
+                <h2>Sweets for any gathering</h2>
                 <p>Whether it's a holiday, special event, or reason to celebrate, we have everything you need.</p>
             </div>
 

@@ -1,6 +1,9 @@
 import './checkout.scss';
 import { Blur } from '../../actions';
-import { get, post, getCookie, placeHolder } from '../../utils'
+import Lottie from 'react-lottie';
+import spinner from '../../lotties/white-spinner';
+import { defaultOptions } from '../../utils';
+import { get, post, getCookie} from '../../utils'
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { useQueryClient, useQuery } from '@tanstack/react-query'
@@ -143,12 +146,21 @@ const Checkout = () => {
                                 </div>
                         
                                 <button type='submit' disabled={Shipping.isFetching}>
-                                    {Shipping.isFetching?
-                                        <span>Loading...</span> :
+                                    {Shipping.isFetching? (
+                                        <Lottie 
+                                        options={{
+                                            ...defaultOptions,
+                                            animationData: spinner,
+                                        }}
+                                        height={20}
+                                        width={20}
+                                    />
+                                    ) : (
                                         <>  
                                             <span>Continue to Shipping</span>
                                             <ion-icon name="arrow-forward"/>
-                                        </>}
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </form>

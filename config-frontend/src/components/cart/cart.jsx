@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  useDispatch, useSelector } from 'react-redux'
 import { faNairaSign } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom';
+import Lottie from 'react-lottie';
+import { defaultOptions } from '../../utils';
+import spinner from '../../lotties/spinner';
 import CartPreloader from './cartPreloader';
 import { Error } from '../preloader/preloader';
 import { Blur } from '../../actions';
@@ -163,11 +166,18 @@ const Cart = ({ getCart }) => {
                         </div>
                         <div onClick={() => deleteCartItem.mutate(cartitem)}>
 
-                            {deleteCartItem.isLoading? 
-                                <div className='remove-cartitem-inprogress'>
-                                    <img src="/public/icons/spinner-trans-bg.gif" alt="" />
-                                </div>:
-                                <span>REMOVE</span>}
+                            {deleteCartItem.isLoading? (
+                                <Lottie 
+                                    options={{
+                                        ...defaultOptions,
+                                        animationData: spinner,
+                                    }}
+                                    height={15}
+                                    width={15}
+                                />
+                            ) : (
+                                <span>REMOVE</span>
+                            )}
                         </div>
                     </div>
                 )))}

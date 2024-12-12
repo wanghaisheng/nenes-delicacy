@@ -26,7 +26,7 @@ const ProductCategory = () => {
     return ( 
         <div className="product-category">
             <div>
-                <h1>Our products</h1>
+                <h2>Our products</h2>
                 <p>
                     Get ready to embark on a gastronomic journey {isMobile? <br/> : null} with us as we unlock a world of flavors
                     {isMobile? '' : <span>and discover the true artistry behind the finest food products</span>}.

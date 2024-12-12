@@ -6,7 +6,7 @@ const Gallery = () => {
     return (  
         <div className="image-collage-section">
             <div>
-                <h1>No matter the size, be sure to tag us in your celebrations!</h1>
+                <h2>No matter the size, be sure to tag us in your celebrations!</h2>
                 <p>#nenesdelicacy</p>
             </div>
             
